@@ -1,0 +1,8 @@
+# Vocabulary Properties
+uuid = 74a81e5e-f55a-471c-990d-acf5954b8632
+
+# xom.utilities.DateUtils
+xom.utilities.DateUtils#concept.label = date utils
+xom.utilities.DateUtils.daysBetween(java.util.Date,java.util.Date)#phrase.navigation = the number of days between {0} and {1}
+xom.utilities.DateUtils.yearsBetween(java.util.Date,java.util.Date)#phrase.navigation = the number of years between {0} and {1}
+xom.utilities.TernaryOperators.conditionalDouble(boolean,double,double)#phrase.navigation = (when {0}: {1} otherwise {2})

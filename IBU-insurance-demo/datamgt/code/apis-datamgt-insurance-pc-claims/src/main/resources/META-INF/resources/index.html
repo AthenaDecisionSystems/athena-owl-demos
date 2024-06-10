@@ -1,0 +1,172 @@
+ <!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Insurance P&C Claims Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
+    <style>
+        input[type=number] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            -webkit-transition: .5s;
+            transition: .5s;
+            outline: 0;
+            font-family: 'Open Sans', serif;
+        }
+    </style>
+    <!-- Load AngularJS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript">
+      var app = angular.module("ClientManagement", []);
+
+      //Controller Part
+      app.controller("ClientManagementController", function ($scope, $http) {
+
+        //Initialize page with default data which is blank in this example
+        $scope.clients = [];
+
+        $scope.form = {
+          id: -1,
+          name: ""
+        };
+
+        //Now load the data from server
+        _refreshPageData();
+
+        //HTTP POST/PUT methods for add/edit clients
+        $scope.update = function () {
+          var method = "";
+          var url = "";
+          var data = {};
+          if ($scope.form.id == -1) { //Id is absent so add clients - POST operation
+            method = "POST";
+            url = '/repository/clients';
+          }
+          else { // Id is present, it's edit operation - PUT operation
+            method = "PUT";
+            url = '/repository/clients/' + $scope.form.id;
+          }
+            data.firstName = $scope.form.firstName;
+            data.lastName = $scope.form.lastName;
+            data.dateOfBirth = $scope.form.dateOfBirth;
+            data.preferredChannel = $scope.form.preferredChannel;
+            data.cltvPercentile = $scope.form.cltvPercentile;
+            data.propensityToUpgradePolicy = $scope.form.propensityToUpgradePolicy;
+
+          $http({
+            method: method,
+            url: url,
+            data: angular.toJson(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(_success, _error);
+        };
+
+        //HTTP DELETE- delete client by id
+        $scope.remove = function (client) {
+          $http({
+            method: 'DELETE',
+            url: '/repository/clients/' + client.id
+          }).then(_success, _error);
+        };
+
+        //In case of edit clients, populate form with client data
+        $scope.edit = function (client) {
+          $scope.form.firstName = client.firstName;
+          $scope.form.lastName = client.lastName;
+          $scope.form.dateOfBirth = client.dateOfBirth;
+          $scope.form.preferredChannel = client.preferredChannel;
+          $scope.form.cltvPercentile = client.cltvPercentile;
+          $scope.form.propensityToUpgradePolicy = client.propensityToUpgradePolicy;
+          $scope.form.id = client.id;
+        };
+
+          /* Private Methods */
+        //HTTP GET- get all clients collection
+        function _refreshPageData() {
+          $http({
+            method: 'GET',
+            url: '/repository/clients'
+          }).then(function successCallback(response) {
+            $scope.clients = response.data;
+          }, function errorCallback(response) {
+            console.log(response.statusText);
+          });
+        }
+
+        function _success(response) {
+          _refreshPageData();
+          _clearForm()
+        }
+
+        function _error(response) {
+          alert(response.data.message || response.statusText);
+        }
+
+        //Clear the form
+        function _clearForm() {
+          $scope.form.firstName = "";
+          $scope.form.lastName = "";
+          $scope.form.dateOfBirth = "";
+          $scope.form.preferredChannel = "";
+          $scope.form.cltvPercentile = 0;
+          $scope.form.propensityToUpgradePolicy = 0;
+
+          $scope.form.id = -1;
+        }
+      });
+    </script>
+</head>
+<body ng-app="ClientManagement" ng-controller="ClientManagementController">
+
+<div class="container">
+    <h1>Insurance P&C Claims Database</h1>
+    <p>This data management UI can be used to visualize and edit data about clients, their insurance claims and their complaints on existing claims.
+    </p>
+
+    <h4>Client List</h4>
+    <div class="row" style="color: #000; background: lightgrey;">
+        <div class="col-1">First name</div>
+        <div class="col-1">Last name</div>
+        <div class="col-2">Date of birth</div>
+        <div class="col-1">Channel</div>
+        <div class="col-1">CLTV percentile</div>
+        <div class="col-1">Propensity to upgrade</div>
+        <div class="col-3">Actions</div>
+    </div>
+    <div class="row" ng-repeat="client in clients">
+        <div class="col-1">{{ client.firstName }}</div>
+        <div class="col-1">{{ client.lastName }}</div>
+        <div class="col-2">{{ client.dateOfBirth }}</div>
+        <div class="col-1">{{ client.preferredChannel }}</div>
+        <div class="col-1">{{ client.cltvPercentile }}</div>
+        <div class="col-1">{{ client.propensityToUpgradePolicy }}</div>
+        <div class="col-3"><a ng-click="edit( client )" class="btn">Edit</a> <a ng-click="remove( client )" class="btn">Remove</a>
+        </div>
+    </div>
+
+    <h4>Add/Edit a client</h4>
+    <form ng-submit="update()">
+        <div class="row">
+            <div class="col-6">
+                <input type="text" placeholder="First Name" ng-model="form.firstName" size="60"/>
+                <input type="text" placeholder="Last Name" ng-model="form.lastName" size="60"/>
+                <input type="text" placeholder="Date of birth" ng-model="form.dateOfBirth" size="60"/>
+                <input type="text" placeholder="Channel" ng-model="form.preferredChannel" size="60"/>
+                <input type="number" min="0" max="100" placeholder="CLTV percentile" ng-model="form.cltvPercentile" size="60"/>
+                <input type="number" step="0.01" min="0.0" max="1.0" placeholder="Propensity to upgrade" ng-model="form.propensityToUpgradePolicy" size="60"/>
+
+            </div>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+
+</body>
+</html>

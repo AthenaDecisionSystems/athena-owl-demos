@@ -1,0 +1,92 @@
+{
+    "complaint": {
+      "claim": {
+        "id": null,
+        "status": "RECEIVED",
+        "creationDate": "2008-09-29T03:49:45.000+0200",
+        "targetDurationInDays": 3,
+        "policy": {
+          "id": null,
+          "effectiveDate": "2016-01-01T20:07:42.000+0100",
+          "expirationDate": "2012-01-07T20:42:56.000+0100",
+          "policyType": "Auto",
+          "subType": "AutoThirdParty",
+          "client": {
+            "id": null,
+            "firstName": "string",
+            "lastName": "string",
+            "dateOfBirth": "2008-11-15T17:52:58.000+0100",
+            "firstContractDate": "2017-05-15T08:41:13.000+0200",
+            "cltvPercentile": 54,
+            "propensityToUpgradePolicy": 0.75,
+            "preferredChannel": "phone"
+          },
+          "coverages": [
+            {
+              "insurableObject": {
+                "type": "Car",
+                "description": "string",
+                "estimatedValue": 10517320
+              },
+              "code": "WaterDamage",
+              "protectionAmount": 10517320,
+              "deductible": 10517320
+            }
+          ],
+          "options": [
+            "NoDeductible"
+          ]
+        },
+        "damages": [
+          {
+            "insurableObject": {
+              "type": "AuxiliaryResidencialBuilding",
+              "description": "string",
+              "estimatedValue": 10517320
+            },
+            "type": "Freezing",
+            "date": "2014-09-19T01:18:33.000+0200"
+          }
+        ],
+        "settlementOffer": {
+          "creationDate": "2000-09-14T10:07:34.000+0200",
+          "cancelContractAtExpiration": true,
+          "cancelContractObjectCeased": false,
+          "clientResponsibleForDamage": true,
+          "actualCoverages": [
+            {
+              "subscribedCoverage": {
+                "insurableObject": {
+                  "type": "MainResidencialBuilding",
+                  "description": "string",
+                  "estimatedValue": 10517320
+                },
+                "code": "WaterDamage",
+                "protectionAmount": 10517320,
+                "deductible": 10517320
+              },
+              "applies": true,
+              "description": "string",
+              "reimbursementFactor": 10517320,
+              "deductible": 10517320
+            }
+          ]
+        }
+      },
+      "interactions": [
+        {
+          "date": "2009-11-03T13:39:15.000+0100",
+          "motive": "UnsatisfiedWithAppliedCoverages",
+          "intentionToLeave": false,
+          "competitorName": "string",
+          "competitorPolicyName": "string",
+          "competitorPrice": 10517320,
+          "desiredResolutionDate": "2017-08-17T07:44:20.000+0200",
+          "desiredReimbursementDate": "2014-06-27T21:41:15.000+0200",
+          "expectedAmount": 10517320,
+          "unsatisfiedWithDeductible": false
+        }
+      ]
+    },
+    "__DecisionID__": "string"
+}

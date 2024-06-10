@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RuleProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.ibm.rules.studio.model.decisionservice="http://com.ibm.rules.studio/model/decisionservice.ecore" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore" xmlns:ilog.rules.studio.model.bom="http://ilog.rules.studio/model/bom.ecore" xmlns:ilog.rules.studio.model.query="http://ilog.rules.studio/model/query.ecore" xmlns:ilog.rules.studio.model.xom="http://ilog.rules.studio/model/xom.ecore" buildMode="DecisionEngine" isADecisionService="true" migrationFlag="3">
+  <name>ds-insurance-pc-claims-nba</name>
+  <uuid>88f8c5be-d29f-4e50-ae40-58ebee713c6f</uuid>
+  <outputLocation>output</outputLocation>
+  <categories>any</categories>
+  <paths xsi:type="ilog.rules.studio.model.xom:XOMPath" pathID="XOM">
+    <entries xsi:type="ilog.rules.studio.model.xom:LibraryXOMPathEntry" name="org.eclipse.jdt.launching.JRE_CONTAINER" url="file:org.eclipse.jdt.launching.JRE_CONTAINER" kind="LIBRARY"/>
+    <entries xsi:type="ilog.rules.studio.model.xom:SystemXOMPathEntry" name="rules-insurance-pc-claims-nba" url="platform:/rules-insurance-pc-claims-nba" kind="RULE_PROJECT"/>
+  </paths>
+  <paths xsi:type="ilog.rules.studio.model.bom:BOMPath" pathID="BOM">
+    <entries xsi:type="ilog.rules.studio.model.bom:ProjectBOMEntry" name="rules-insurance-pc-claims-nba" url="platform:/rules-insurance-pc-claims-nba" kind="RULE_PROJECT">
+      <ruleProject href="rules-insurance-pc-claims-nba#8ea4e1d5-0b3c-4d79-b31c-12b767c55839"/>
+    </entries>
+  </paths>
+  <modelFolders xsi:type="ilog.rules.studio.model.base:SourceFolder">
+    <name>rules</name>
+  </modelFolders>
+  <modelFolders xsi:type="ilog.rules.studio.model.bom:BOMFolder">
+    <name>bom</name>
+  </modelFolders>
+  <modelFolders xsi:type="ilog.rules.studio.model.query:QueryFolder">
+    <name>queries</name>
+  </modelFolders>
+  <modelFolders xsi:type="ilog.rules.studio.model.base:ResourceFolder">
+    <name>resources</name>
+  </modelFolders>
+  <modelFolders xsi:type="com.ibm.rules.studio.model.decisionservice:OperationFolder">
+    <name>deployment</name>
+  </modelFolders>
+</ilog.rules.studio.model.base:RuleProject>

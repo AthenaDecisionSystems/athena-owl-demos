@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>AC-HOME-CONT-VOUCHER - Propose voucher for extra service with affiliate provider</name>
+  <uuid>63703b15-2d6e-48d4-ac9e-de1eae9fed09</uuid>
+  <locale>en_US</locale>
+  <definition><![CDATA[if
+	the subtype of 'the policy' is HomeBuildingsOnly  
+	and	the motive of 'the last interaction' is UnsatisfiedWithAppliedCoverages 
+	and the CTLV percentile of 'the client' is at least 60
+then
+    append voucher "... with affiliate provider" 
+    	with explanation "AC-HOME-CONT-VOUCHER" ;]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

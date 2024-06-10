@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>QCS-ALL</name>
+  <uuid>de082d53-1fb1-4d63-9b32-afa33716628c</uuid>
+  <locale>en_US</locale>
+  <definition><![CDATA[if
+	the motive of 'the last interaction' is UnsatisfiedWithQualityOfCustomerService 
+then
+	forward to QualitySpecialist as "QCS Issue - look for ways to improve overall quality" 
+		with explanation "QCS-ALL"; ]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

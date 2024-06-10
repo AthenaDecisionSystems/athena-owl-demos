@@ -1,0 +1,68 @@
+services:
+  ibu-backend:
+    hostname: ibu-backend
+    image: athena/ibu-backend
+    container_name: ibu-backend
+    ports:
+      - 8000:8000
+    environment:
+      CONFIG_FILE: /app/config/ibu-config.yaml
+      OPENAI_API_KEY: $OPENAI_API_KEY
+      WATSONX_APIKEY: $WATSONX_APIKEY
+      MISTRAL_API_KEY: $MISTRAL_API_KEY
+    volumes:
+      - ./ibu_backend/config:/app/config
+      - ./file_content:/app/file_content
+  insurance-data-mgr:
+    image: athena/ibu-insurance-data-mgr
+    hostname: datamgr
+    container_name: datamgr
+    depends_on:
+      - postgres
+    ports: 
+      - 8080:8080
+    environment:
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=p0stgrespwd
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres:5432/insurancedb
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p0stgrespwd
+      - POSTGRES_DB=insurancedb
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./database:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgagmin
+    container_name: pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    ports:
+      - "5050:80"
+    volumes: 
+      - ./data_files:/tmp/data_files
+  decisionsvc:
+    image: icr.io/cpopen/odm-k8s/odm:8.12
+    hostname: decisionsvc
+    container_name: decisionsvc
+    ports:
+      - 9443:9443
+      - 9060:9060
+    environment:
+      - SAMPLE=false
+      - LICENSE=accept
+    volumes:
+      - ./decisions/persistence:/config/dbdata/

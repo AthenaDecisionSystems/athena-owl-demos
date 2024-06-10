@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><teamservers>
+<teamserver>
+<target dataSource="" login="odmAdmin" url="http://localhost:9060/decisioncenter"/>
+<entry baseType="B2XMapping" checksum="4088414316" projectName="bom-utilities" qualifiedName="xom-utilities" sourceCS="B9A643EBF18C5700BBFDB341C1F72DB8" targetCS="4088414316" type="B2XMapping" uuid="96ab80ea-b821-4413-b863-4daeb811487c"/>
+<entry baseType="BusinessObjectModel" checksum="4088414316" projectName="bom-utilities" qualifiedName="xom-utilities" sourceCS="69FC609D46D3F031316D7346D7308871" targetCS="4088414316" type="BusinessObjectModel" uuid="e758b1e3-43b4-43f7-9b2b-79183ce0082b"/>
+<entry baseType="Resource" checksum="1678949935" projectName="bom-utilities" qualifiedName="xom-libraries/xom-utilities.zip" sourceCS="7ED091710A07FDFA6CD3606C75F55743" targetCS="1678949935" type="Resource" uuid="xom-libraries/xom-utilities.zip"/>
+<entry baseType="RuleProjectInfo" checksum="2849623063" projectName="bom-utilities" qualifiedName="bom-utilities" sourceCS="EE5033D0BC75795426C46A642B89D087" targetCS="2849623063" type="RuleProjectInfo" uuid="cd56cbb3-a0b2-4b4d-857c-dd3b721f9945"/>
+<entry baseType="Vocabulary" checksum="4088414316" projectName="bom-utilities" qualifiedName="xom-utilities_en_US" sourceCS="2DEDD3E6A34095FA6448014949BE6982" targetCS="4088414316" type="Vocabulary" uuid="74a81e5e-f55a-471c-990d-acf5954b8632"/>
+</teamserver>
+</teamservers>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>rules-insurance-pc-claims-nba</name>
+	<comment></comment>
+	<projects>
+		<project>bom-insurance-pc-claims2</project>
+		<project>bom-utilities</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>ilog.rules.studio.model.ruleBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>ilog.rules.studio.model.operationProject</nature>
+		<nature>ilog.rules.studio.model.ruleNature</nature>
+	</natures>
+</projectDescription>

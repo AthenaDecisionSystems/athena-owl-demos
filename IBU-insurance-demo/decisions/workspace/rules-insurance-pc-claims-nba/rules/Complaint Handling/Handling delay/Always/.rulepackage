@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Always</name>
+  <uuid>5672c19b-ce5f-4cde-9e42-4bfbf424357f</uuid>
+</ilog.rules.studio.model.base:RulePackage>

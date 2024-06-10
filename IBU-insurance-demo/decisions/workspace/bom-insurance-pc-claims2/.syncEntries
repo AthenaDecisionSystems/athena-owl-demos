@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><teamservers>
+<teamserver>
+<target dataSource="" login="odmAdmin" url="http://localhost:9060/decisioncenter"/>
+<entry baseType="B2XMapping" checksum="4081513582" projectName="bom-insurance-pc-claims2" qualifiedName="xom-insurance-pc-claims-1_0_0-SNAPSHOT_jar" sourceCS="94F510ED0679E59703F10BE02B5E29AC" targetCS="4081513582" type="B2XMapping" uuid="621fd34c-32d6-4fe9-b6fa-fc25941db137"/>
+<entry baseType="BusinessObjectModel" checksum="4081513582" projectName="bom-insurance-pc-claims2" qualifiedName="xom-insurance-pc-claims-1_0_0-SNAPSHOT_jar" sourceCS="534A3875701998FDDB95F0BB298BB898" targetCS="4081513582" type="BusinessObjectModel" uuid="e3b84ef1-f5b7-4539-bca2-710a7a3608ea"/>
+<entry baseType="Resource" checksum="1842996425" projectName="bom-insurance-pc-claims2" qualifiedName="xom-libraries/xom-insurance-pc-claims-1.0.0-SNAPSHOT.jar" sourceCS="84BE618C99487046EBC3C2796DF755C2" targetCS="1842996425" type="Resource" uuid="xom-libraries/xom-insurance-pc-claims-1.0.0-SNAPSHOT.jar"/>
+<entry baseType="Resource" checksum="1859826287" projectName="bom-insurance-pc-claims2" qualifiedName="xom-libraries/xom-insurance-pc-claims-lib.zip" sourceCS="88FEE3FFEF17084DEAB399936D0FDD5E" targetCS="1859826287" type="Resource" uuid="xom-libraries/xom-insurance-pc-claims-lib.zip"/>
+<entry baseType="RuleProjectInfo" checksum="1847553898" projectName="bom-insurance-pc-claims2" qualifiedName="bom-insurance-pc-claims2" sourceCS="530A960225D02FF523661819080E9308" targetCS="1847553898" type="RuleProjectInfo" uuid="0aaaf36b-4d3a-433c-bd61-5ed22d35a86a"/>
+<entry baseType="Vocabulary" checksum="4081513582" projectName="bom-insurance-pc-claims2" qualifiedName="xom-insurance-pc-claims-1_0_0-SNAPSHOT_jar_en_US" sourceCS="864642A47401C0F663F24B6BAD71359A" targetCS="4081513582" type="Vocabulary" uuid="f1a6cc16-b9d3-4fb6-86bd-539cb7b4f729"/>
+</teamserver>
+</teamservers>

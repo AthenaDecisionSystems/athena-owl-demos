@@ -1,0 +1,12 @@
+database/
+**/target/
+**/.cache/
+**/.idea/
+**/__pycache__/
+opensearch-data/
+**/chroma_db/
+**/file_content/
+data/
+**/chromadb/
+**/file_content/
+**/.env

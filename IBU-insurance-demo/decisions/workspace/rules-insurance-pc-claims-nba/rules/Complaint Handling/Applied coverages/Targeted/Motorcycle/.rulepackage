@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Motorcycle</name>
+  <uuid>88f62255-d942-4a67-ac2b-014433937f35</uuid>
+</ilog.rules.studio.model.base:RulePackage>

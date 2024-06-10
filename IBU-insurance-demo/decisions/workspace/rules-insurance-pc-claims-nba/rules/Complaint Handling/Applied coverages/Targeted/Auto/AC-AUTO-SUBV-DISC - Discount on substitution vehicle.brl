@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>AC-AUTO-SUBV-DISC - Discount on substitution vehicle</name>
+  <uuid>d68257f3-c375-4da1-8e38-c013de47753b</uuid>
+  <locale>en_US</locale>
+  <definition><![CDATA[definitions
+	set 'the profitability threshold' to 50 ;
+	set 'extraDiscountForProfit' to (the CTLV percentile of 'the client' - 'the profitability threshold') / 2 ;
+	set 'extraDiscountForChurner' to (when the last interaction of 'the complaint' shows intention to leave : 10 otherwise 0 ) ; 
+if
+    the type of 'the policy' is Auto 
+	and the motive of 'the last interaction' is UnsatisfiedWithAppliedCoverages   
+	and there is no option in the options of 'the policy' 
+		where this option is SubstitutionVehicle , 
+	and the CTLV percentile of 'the client' is at least 'the profitability threshold' 
+then
+	discount "SubstitutionVehicle" by 10 + extraDiscountForProfit + extraDiscountForChurner % 
+		with explanation "AC-AUTO-SUBV-DISC" ;]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

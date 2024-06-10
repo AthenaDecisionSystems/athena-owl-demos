@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>PersonalObjects</name>
+  <uuid>170021f3-8310-4acd-a018-a57020a5bb25</uuid>
+</ilog.rules.studio.model.base:RulePackage>

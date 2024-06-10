@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>HD-ALARM</name>
+  <uuid>496c044f-92c2-4132-a8f0-3a272dce6ee6</uuid>
+  <locale>en_US</locale>
+  <definition><![CDATA[if
+	the motive of 'the last interaction' is UnsatisfiedWithDelay 
+	and the number of days between the creation date of 'the claim' and the date of 'the last interaction' is at least 2
+then
+	forward to ClaimsExpert as "Prioritization Alarm" 
+		with explanation "HD-ALARM";]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

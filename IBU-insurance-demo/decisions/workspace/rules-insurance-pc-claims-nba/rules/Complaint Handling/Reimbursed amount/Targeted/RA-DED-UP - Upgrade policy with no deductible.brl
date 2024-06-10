@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>RA-DED-UP - Upgrade policy with no deductible</name>
+  <uuid>a4f59780-c081-49e2-ac19-bb4be9def26a</uuid>
+  <locale>en_US</locale>
+  <definition><![CDATA[definitions
+	set 'the settlement offer' to a claim settlement offer from the settlement offer of 'the claim' ;
+if
+	the motive of 'the last interaction' is UnsatisfiedWithReimbursedAmount 
+and the CTLV percentile of 'the client' is at least 50
+and the propensity to upgrade policy of 'the client' is at least 0.4
+and the deductible total of 'the settlement offer' is at least 120
+and there is no option in the options of 'the policy' 
+		where this option is NoDeductible , 
+then
+	add task sequence ( Reassign to ClaimsExpert but tell client to call back after 8 business days if no news 
+						-> Reassign to a SpecializedClientRepresentative suggesting "policy upgrade with no deductible" 
+						-> end ) 
+		with explanation "RA-DED-UP" ;]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

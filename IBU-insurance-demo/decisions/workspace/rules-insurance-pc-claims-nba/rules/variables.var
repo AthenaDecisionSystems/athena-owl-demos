@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:VariableSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>variables</name>
+  <uuid>0974394d-0e18-411a-bea7-0e706c9e7841</uuid>
+  <variables name="client" type="com.athena.insurance.claims.datamodel.Client" initialValue="complaint.claim.policy.client" verbalization="the client"/>
+  <variables name="response" type="com.athena.insurance.nba.Response" initialValue="new com.athena.insurance.nba.Response()" verbalization="the response"/>
+  <variables name="complaint" type="com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim" initialValue="" verbalization="the complaint"/>
+  <variables name="policy" type="com.athena.insurance.claims.datamodel.InsurancePolicy" initialValue="complaint.claim.policy" verbalization="the policy"/>
+  <variables name="claim" type="com.athena.insurance.claims.datamodel.Claim" initialValue="complaint.claim" verbalization="the claim"/>
+  <variables name="lastInteraction" type="com.athena.insurance.claims.datamodel.complaints.ClientInteraction" initialValue="(com.athena.insurance.claims.datamodel.complaints.ClientInteraction)complaint.interactions.get(0)" verbalization="the last interaction"/>
+</ilog.rules.studio.model.base:VariableSet>

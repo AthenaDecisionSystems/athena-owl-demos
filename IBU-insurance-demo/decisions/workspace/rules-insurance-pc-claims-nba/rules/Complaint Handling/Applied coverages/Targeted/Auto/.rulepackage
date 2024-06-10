@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Auto</name>
+  <uuid>0e132292-487d-4a3d-8e26-9bdf4e8edc56</uuid>
+</ilog.rules.studio.model.base:RulePackage>

@@ -1,0 +1,288 @@
+# Vocabulary Properties
+uuid = f1a6cc16-b9d3-4fb6-86bd-539cb7b4f729
+
+# com.athena.insurance.claims.datamodel.ActualCoverage
+com.athena.insurance.claims.datamodel.ActualCoverage#concept.label = actual coverage
+com.athena.insurance.claims.datamodel.ActualCoverage.applies#phrase.navigation = {this} applies
+com.athena.insurance.claims.datamodel.ActualCoverage.deductible#phrase.action = set the deductible of {this} to {deductible}
+com.athena.insurance.claims.datamodel.ActualCoverage.deductible#phrase.navigation = {deductible} of {this}
+com.athena.insurance.claims.datamodel.ActualCoverage.description#phrase.action = set the description of {this} to {description}
+com.athena.insurance.claims.datamodel.ActualCoverage.description#phrase.navigation = {description} of {this}
+com.athena.insurance.claims.datamodel.ActualCoverage.reimbursementFactor#phrase.action = set the reimbursement factor of {this} to {reimbursement factor}
+com.athena.insurance.claims.datamodel.ActualCoverage.reimbursementFactor#phrase.navigation = {reimbursement factor} of {this}
+com.athena.insurance.claims.datamodel.ActualCoverage.subscribedCoverage#phrase.navigation = {subscribed coverage} of {this}
+
+# com.athena.insurance.claims.datamodel.Claim
+com.athena.insurance.claims.datamodel.Claim#concept.label = claim
+com.athena.insurance.claims.datamodel.Claim.creationDate#phrase.action = set the creation date of {this} to {creation date}
+com.athena.insurance.claims.datamodel.Claim.creationDate#phrase.navigation = {creation date} of {this}
+com.athena.insurance.claims.datamodel.Claim.damages#phrase.action = set the damages of {this} to {damage}
+com.athena.insurance.claims.datamodel.Claim.damages#phrase.navigation = {damage} of {this}
+com.athena.insurance.claims.datamodel.Claim.id#phrase.navigation = {id} of {this}
+com.athena.insurance.claims.datamodel.Claim.policy#phrase.action = set the policy of {this} to {policy}
+com.athena.insurance.claims.datamodel.Claim.policy#phrase.navigation = {policy} of {this}
+com.athena.insurance.claims.datamodel.Claim.settlementOffer#phrase.action = set the settlement offer of {this} to {settlement offer}
+com.athena.insurance.claims.datamodel.Claim.settlementOffer#phrase.navigation = {settlement offer} of {this}
+com.athena.insurance.claims.datamodel.Claim.status#phrase.action = set the status of {this} to {status}
+com.athena.insurance.claims.datamodel.Claim.status#phrase.navigation = {status} of {this}
+com.athena.insurance.claims.datamodel.Claim.targetDurationInDays#phrase.action = set the target duration in days of {this} to {target duration in days}
+com.athena.insurance.claims.datamodel.Claim.targetDurationInDays#phrase.navigation = {target duration in days} of {this}
+
+# com.athena.insurance.claims.datamodel.ClaimSettlementOffer
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer#concept.label = claim settlement offer
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.actualCoverages#phrase.action = set the actual coverages of {this} to {actual coverage}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.actualCoverages#phrase.navigation = {actual coverage} of {this}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.cancelContractAtExpiration#phrase.action = make it {cancel contract at expiration} that {this} is cancel contract at expiration
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.cancelContractAtExpiration#phrase.navigation = {this} is cancel contract at expiration
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.cancelContractObjectCeased#phrase.action = make it {cancel contract object ceased} that {this} is cancel contract object ceased
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.cancelContractObjectCeased#phrase.navigation = {this} is cancel contract object ceased
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.claim#phrase.action = set the claim of {this} to {claim}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.claim#phrase.navigation = {claim} of {this}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.clientResponsibleForDamage#phrase.navigation = the client is responsible for damage according to {this}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.creationDate#phrase.action = set the creation date of {this} to {creation date}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.creationDate#phrase.navigation = {creation date} of {this}
+com.athena.insurance.claims.datamodel.ClaimSettlementOffer.deductibleTotal#phrase.navigation = {deductible total} of {this}
+
+# com.athena.insurance.claims.datamodel.Client
+com.athena.insurance.claims.datamodel.Client#concept.label = client
+com.athena.insurance.claims.datamodel.Client.cltvPercentile#phrase.navigation = {CTLV percentile} of {this}
+com.athena.insurance.claims.datamodel.Client.dateOfBirth#phrase.action = set the date of birth of {this} to {date of birth}
+com.athena.insurance.claims.datamodel.Client.dateOfBirth#phrase.navigation = {date of birth} of {this}
+com.athena.insurance.claims.datamodel.Client.firstContractDate#phrase.navigation = {first contract date} of {this}
+com.athena.insurance.claims.datamodel.Client.firstName#phrase.action = set the first name of {this} to {first name}
+com.athena.insurance.claims.datamodel.Client.firstName#phrase.navigation = {first name} of {this}
+com.athena.insurance.claims.datamodel.Client.id#phrase.navigation = {id} of {this}
+com.athena.insurance.claims.datamodel.Client.lastName#phrase.action = set the last name of {this} to {last name}
+com.athena.insurance.claims.datamodel.Client.lastName#phrase.navigation = {last name} of {this}
+com.athena.insurance.claims.datamodel.Client.preferredChannel#phrase.action = set the preferred channel of {this} to {preferred channel}
+com.athena.insurance.claims.datamodel.Client.preferredChannel#phrase.navigation = {preferred channel} of {this}
+com.athena.insurance.claims.datamodel.Client.propensityToUpgradePolicy#phrase.navigation = {propensity to upgrade policy} of {this}
+
+# com.athena.insurance.claims.datamodel.Damage
+com.athena.insurance.claims.datamodel.Damage#concept.label = damage
+com.athena.insurance.claims.datamodel.Damage.date#phrase.action = set the date of {this} to {date}
+com.athena.insurance.claims.datamodel.Damage.date#phrase.navigation = {date} of {this}
+com.athena.insurance.claims.datamodel.Damage.insurableObject#phrase.action = set the insurable object of {this} to {insurable object}
+com.athena.insurance.claims.datamodel.Damage.insurableObject#phrase.navigation = {insurable object} of {this}
+com.athena.insurance.claims.datamodel.Damage.type#phrase.action = set the type of {this} to {type}
+com.athena.insurance.claims.datamodel.Damage.type#phrase.navigation = {type} of {this}
+
+# com.athena.insurance.claims.datamodel.InsurableObject
+com.athena.insurance.claims.datamodel.InsurableObject#concept.label = insurable object
+com.athena.insurance.claims.datamodel.InsurableObject.description#phrase.navigation = {description} of {this}
+com.athena.insurance.claims.datamodel.InsurableObject.estimatedValue#phrase.navigation = {estimated value} of {this}
+com.athena.insurance.claims.datamodel.InsurableObject.type#phrase.navigation = {type} of {this}
+
+# com.athena.insurance.claims.datamodel.InsurancePolicy
+com.athena.insurance.claims.datamodel.InsurancePolicy#concept.label = insurance policy
+com.athena.insurance.claims.datamodel.InsurancePolicy.client#phrase.action = set the client of {this} to {client}
+com.athena.insurance.claims.datamodel.InsurancePolicy.client#phrase.navigation = {client} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.coverages#phrase.action = set the coverages of {this} to {coverage}
+com.athena.insurance.claims.datamodel.InsurancePolicy.coverages#phrase.navigation = {coverage} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.action = set the effective date of {this} to {effective date}
+com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.navigation = {effective date} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.expirationDate#phrase.action = set the expiration date of {this} to {expiration date}
+com.athena.insurance.claims.datamodel.InsurancePolicy.expirationDate#phrase.navigation = {expiration date} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.id#phrase.navigation = {id} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.options#phrase.action = set the options of {this} to {option}
+com.athena.insurance.claims.datamodel.InsurancePolicy.options#phrase.navigation = {option} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.policyType#phrase.navigation = {type} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.subType#phrase.navigation = {subtype} of {this}
+
+# com.athena.insurance.claims.datamodel.OptionType
+com.athena.insurance.claims.datamodel.OptionType#concept.label = option
+com.athena.insurance.claims.datamodel.OptionType.ContentIncluded#instance.label = ContentIncluded
+com.athena.insurance.claims.datamodel.OptionType.NoDeductible#instance.label = NoDeductible
+com.athena.insurance.claims.datamodel.OptionType.SubstitutionVehicle#instance.label = SubstitutionVehicle
+
+# com.athena.insurance.claims.datamodel.SubscribedCoverage
+com.athena.insurance.claims.datamodel.SubscribedCoverage#concept.label = subscribed coverage
+com.athena.insurance.claims.datamodel.SubscribedCoverage.code#phrase.navigation = {code} of {this}
+com.athena.insurance.claims.datamodel.SubscribedCoverage.deductible#phrase.action = set the deductible of {this} to {deductible}
+com.athena.insurance.claims.datamodel.SubscribedCoverage.deductible#phrase.navigation = {deductible} of {this}
+com.athena.insurance.claims.datamodel.SubscribedCoverage.insurableObject#phrase.navigation = {insurable object} of {this}
+com.athena.insurance.claims.datamodel.SubscribedCoverage.protectionAmount#phrase.action = set the protection amount of {this} to {protection amount}
+com.athena.insurance.claims.datamodel.SubscribedCoverage.protectionAmount#phrase.navigation = {protection amount} of {this}
+
+# com.athena.insurance.claims.datamodel.complaints.ClientInteraction
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction#concept.label = client interaction
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction.date#phrase.navigation = {date} of {this}
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction.intentionToLeave#phrase.action = make it {intention to leave} that {this} is intention to leave
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction.intentionToLeave#phrase.navigation = {this} shows intention to leave
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction.motive#phrase.navigation = {motive} of {this}
+com.athena.insurance.claims.datamodel.complaints.ClientInteraction.noIntentionToLeave()#phrase.navigation = {this} shows no intention to leave
+
+# com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim#concept.label = complaint on claim
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim.claim#phrase.action = set the claim of {this} to {claim}
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim.claim#phrase.navigation = {claim} of {this}
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim.interactions#phrase.action = set the interactions of {this} to {interaction}
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim.interactions#phrase.navigation = {interaction} of {this}
+com.athena.insurance.claims.datamodel.complaints.ComplaintOnClaim.lastInteraction#phrase.navigation = {last interaction} of {this}
+
+# com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction
+com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction#concept.label = degree of insatisfaction
+com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction.High#instance.label = High
+com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction.Low#instance.label = Low
+com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction.Medium#instance.label = Medium
+
+# com.athena.insurance.claims.datamodel.complaints.MotiveType
+com.athena.insurance.claims.datamodel.complaints.MotiveType#concept.label = motive type
+com.athena.insurance.claims.datamodel.complaints.MotiveType.InformationInquiry#instance.label = InformationInquiry
+com.athena.insurance.claims.datamodel.complaints.MotiveType.OtherMotive#instance.label = OtherMotive
+com.athena.insurance.claims.datamodel.complaints.MotiveType.UnsatisfiedWithAppliedCoverages#instance.label = UnsatisfiedWithAppliedCoverages
+com.athena.insurance.claims.datamodel.complaints.MotiveType.UnsatisfiedWithDelay#instance.label = UnsatisfiedWithDelay
+com.athena.insurance.claims.datamodel.complaints.MotiveType.UnsatisfiedWithQualityOfCustomerService#instance.label = UnsatisfiedWithQualityOfCustomerService
+com.athena.insurance.claims.datamodel.complaints.MotiveType.UnsatisfiedWithReimbursedAmount#instance.label = UnsatisfiedWithReimbursedAmount
+
+# com.athena.insurance.claims.datamodel.enums.ChannelType
+com.athena.insurance.claims.datamodel.enums.ChannelType#concept.label = channel type
+com.athena.insurance.claims.datamodel.enums.ChannelType.SMS#instance.label = SMS
+com.athena.insurance.claims.datamodel.enums.ChannelType.email#instance.label = email
+com.athena.insurance.claims.datamodel.enums.ChannelType.mail#instance.label = mail
+com.athena.insurance.claims.datamodel.enums.ChannelType.phone#instance.label = phone
+
+# com.athena.insurance.claims.datamodel.enums.ClaimStatusType
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType#concept.label = claim status type
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.CLOSED#instance.label = CLOSED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.IN_PROCESS_ASSESSED#instance.label = IN_PROCESS_ASSESSED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.IN_PROCESS_LOSS_ADJUSTER_REPORTED#instance.label = IN_PROCESS_LOSS_ADJUSTER_REPORTED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.IN_PROCESS_VALIDATED#instance.label = IN_PROCESS_VALIDATED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.IN_PROCESS_VERIFIED#instance.label = IN_PROCESS_VERIFIED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.OFFER_ACCEPTED#instance.label = OFFER_ACCEPTED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.OFFER_SENT#instance.label = OFFER_SENT
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.PAID#instance.label = PAID
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.RECEIVED#instance.label = RECEIVED
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.REJECTION_COMPLAINT#instance.label = REJECTION_COMPLAINT
+com.athena.insurance.claims.datamodel.enums.ClaimStatusType.REJECTION_SENT#instance.label = REJECTION_SENT
+
+# com.athena.insurance.claims.datamodel.enums.DamageType
+com.athena.insurance.claims.datamodel.enums.DamageType#concept.label = damage type
+com.athena.insurance.claims.datamodel.enums.DamageType.CarAccident#instance.label = CarAccident
+com.athena.insurance.claims.datamodel.enums.DamageType.Fire#instance.label = Fire
+com.athena.insurance.claims.datamodel.enums.DamageType.Freezing#instance.label = Freezing
+com.athena.insurance.claims.datamodel.enums.DamageType.Hail#instance.label = Hail
+com.athena.insurance.claims.datamodel.enums.DamageType.Lightning#instance.label = Lightning
+com.athena.insurance.claims.datamodel.enums.DamageType.OtherDamage#instance.label = OtherDamage
+com.athena.insurance.claims.datamodel.enums.DamageType.Theft#instance.label = Theft
+com.athena.insurance.claims.datamodel.enums.DamageType.WaterDamage#instance.label = WaterDamage
+com.athena.insurance.claims.datamodel.enums.DamageType.Wind#instance.label = Wind
+
+# com.athena.insurance.claims.datamodel.enums.InsurableObjectType
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType#concept.label = insurable object type
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.AuxiliaryNonResidencialBuilding#instance.label = AuxiliaryNonResidencialBuilding
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.AuxiliaryResidencialBuilding#instance.label = AuxiliaryResidencialBuilding
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Car#instance.label = Car
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Flat#instance.label = Flat
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Land#instance.label = Land
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Lorry#instance.label = Lorry
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.MainResidencialBuilding#instance.label = MainResidencialBuilding
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Motorbike#instance.label = Motorbike
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.ParkingLot#instance.label = ParkingLot
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.PersonalObject#instance.label = PersonalObject
+com.athena.insurance.claims.datamodel.enums.InsurableObjectType.Truck#instance.label = Truck
+
+# com.athena.insurance.claims.datamodel.enums.PolicySubType
+com.athena.insurance.claims.datamodel.enums.PolicySubType#concept.label = policy subtype
+com.athena.insurance.claims.datamodel.enums.PolicySubType.AutoAllRisk#instance.label = AutoAllRisk
+com.athena.insurance.claims.datamodel.enums.PolicySubType.AutoThirdParty#instance.label = AutoThirdParty
+com.athena.insurance.claims.datamodel.enums.PolicySubType.HomeBuildingsAndContent#instance.label = HomeBuildingsAndContent
+com.athena.insurance.claims.datamodel.enums.PolicySubType.HomeBuildingsOnly#instance.label = HomeBuildingsOnly
+
+# com.athena.insurance.claims.datamodel.enums.PolicyType
+com.athena.insurance.claims.datamodel.enums.PolicyType#concept.label = policy type
+com.athena.insurance.claims.datamodel.enums.PolicyType.Auto#instance.label = Auto
+com.athena.insurance.claims.datamodel.enums.PolicyType.Health#instance.label = Health
+com.athena.insurance.claims.datamodel.enums.PolicyType.Home#instance.label = Home
+com.athena.insurance.claims.datamodel.enums.PolicyType.Life#instance.label = Life
+com.athena.insurance.claims.datamodel.enums.PolicyType.PersonalObject#instance.label = PersonalObject
+
+# com.athena.insurance.nba.Action
+com.athena.insurance.nba.Action#concept.label = action
+
+# com.athena.insurance.nba.Assign
+com.athena.insurance.nba.Assign#concept.label = assign
+
+# com.athena.insurance.nba.CommunicateWithClient
+com.athena.insurance.nba.CommunicateWithClient#concept.label = communicate with client
+com.athena.insurance.nba.CommunicateWithClient.channel#phrase.action = set the channel of {this} to {channel}
+com.athena.insurance.nba.CommunicateWithClient.channel#phrase.navigation = {channel} of {this}
+com.athena.insurance.nba.CommunicateWithClient.messageType#phrase.action = set the message type of {this} to {message type}
+com.athena.insurance.nba.CommunicateWithClient.messageType#phrase.navigation = {message type} of {this}
+
+# com.athena.insurance.nba.DiscountOnNextRenewal
+com.athena.insurance.nba.DiscountOnNextRenewal#concept.label = discount on next renewal
+com.athena.insurance.nba.DiscountOnNextRenewal.description#phrase.action = set the description of {this} to {description}
+com.athena.insurance.nba.DiscountOnNextRenewal.description#phrase.navigation = {description} of {this}
+com.athena.insurance.nba.DiscountOnNextRenewal.percentage#phrase.action = set the percentage of {this} to {percentage}
+com.athena.insurance.nba.DiscountOnNextRenewal.percentage#phrase.navigation = {percentage} of {this}
+
+# com.athena.insurance.nba.InfoElement
+com.athena.insurance.nba.InfoElement#concept.label = info element
+com.athena.insurance.nba.InfoElement.path#phrase.action = set the path of {this} to {path}
+com.athena.insurance.nba.InfoElement.path#phrase.navigation = {path} of {this}
+com.athena.insurance.nba.InfoElement.questionId#phrase.action = set the question id of {this} to {question id}
+com.athena.insurance.nba.InfoElement.questionId#phrase.navigation = {question id} of {this}
+com.athena.insurance.nba.InfoElement.type#phrase.action = set the type of {this} to {type}
+com.athena.insurance.nba.InfoElement.type#phrase.navigation = {type} of {this}
+
+# com.athena.insurance.nba.MessageType
+com.athena.insurance.nba.MessageType#concept.label = message type
+com.athena.insurance.nba.MessageType.AcknowledgmentOfReceipt#instance.label = AcknowledgmentOfReceipt
+com.athena.insurance.nba.MessageType.ApologyOnly#instance.label = ApologyOnly
+com.athena.insurance.nba.MessageType.Proposal#instance.label = Proposal
+com.athena.insurance.nba.MessageType.SorryAboutPerceptionButFair#instance.label = SorryAboutPerceptionButFair
+
+# com.athena.insurance.nba.Reassign
+com.athena.insurance.nba.Reassign#concept.label = reassign
+com.athena.insurance.nba.Reassign.recipient#phrase.navigation = {recipient} of {this}
+com.athena.insurance.nba.Reassign.suggestion#phrase.navigation = {suggestion} of {this}
+
+# com.athena.insurance.nba.ReassignWithCallback
+com.athena.insurance.nba.ReassignWithCallback#concept.label = reassign with callback
+com.athena.insurance.nba.ReassignWithCallback.callBackDeadline#phrase.navigation = {call back deadline} of {this}
+com.athena.insurance.nba.ReassignWithCallback.recipient#phrase.navigation = {recipient} of {this}
+com.athena.insurance.nba.ReassignWithCallback.suggestion#phrase.navigation = {suggestion} of {this}
+
+# com.athena.insurance.nba.RecipientType
+com.athena.insurance.nba.RecipientType#concept.label = recipient type
+com.athena.insurance.nba.RecipientType.CallCenterClientRepresentative#instance.label = CallCenterClientRepresentative
+com.athena.insurance.nba.RecipientType.ClaimsExpert#instance.label = ClaimsExpert
+com.athena.insurance.nba.RecipientType.QualitySpecialist#instance.label = QualitySpecialist
+com.athena.insurance.nba.RecipientType.SpecializedClientRepresentative#instance.label = SpecializedClientRepresentative
+
+# com.athena.insurance.nba.Response
+com.athena.insurance.nba.Response#concept.label = response
+com.athena.insurance.nba.Response.actions#phrase.action = set the actions of {this} to {action}
+com.athena.insurance.nba.Response.actions#phrase.navigation = {action} of {this}
+com.athena.insurance.nba.Response.addMissingInfo(java.lang.String,java.lang.String,java.lang.String)#phrase.action = need info {0} with question id {1} and type {2}
+com.athena.insurance.nba.Response.addTrace(java.lang.String)#phrase.action = add trace {0}
+com.athena.insurance.nba.Response.appendCommunicateWithClient(java.lang.String,com.athena.insurance.claims.datamodel.enums.ChannelType,com.athena.insurance.nba.MessageType)#phrase.action = communicate with client {2} via {1} with explanation {0}
+com.athena.insurance.nba.Response.appendDiscount(java.lang.String,java.lang.String,double)#phrase.action = discount {1} by {2}% with explanation {0}
+com.athena.insurance.nba.Response.appendResendTo(java.lang.String,com.athena.insurance.nba.RecipientType)#phrase.action = resend to {1} with explanation {0}
+com.athena.insurance.nba.Response.appendResendTo(java.lang.String,com.athena.insurance.nba.RecipientType,java.lang.String)#phrase.action = forward to {1} as {2} with explanation {0}
+com.athena.insurance.nba.Response.appendTaskSequence(java.lang.String,com.athena.insurance.nba.TaskSequence)#phrase.action = add task sequence ({1}) with explanation {0}
+com.athena.insurance.nba.Response.appendUpsellProposal(java.lang.String,java.lang.String)#phrase.action = append upsell proposal {1} with explanation {0}
+com.athena.insurance.nba.Response.appendVoucher(java.lang.String,java.lang.String)#phrase.action = append voucher {1} with explanation {0}
+com.athena.insurance.nba.Response.missingInfoElements#phrase.action = set the missing info elements of {this} to {missing info element}
+com.athena.insurance.nba.Response.missingInfoElements#phrase.navigation = {missing info element} of {this}
+com.athena.insurance.nba.Response.outputTraces#phrase.action = set the output traces of {this} to {output trace}
+com.athena.insurance.nba.Response.outputTraces#phrase.navigation = {output trace} of {this}
+
+# com.athena.insurance.nba.SimpleUpsellProposal
+com.athena.insurance.nba.SimpleUpsellProposal#concept.label = upsell proposal
+
+# com.athena.insurance.nba.TaskSequence
+com.athena.insurance.nba.TaskSequence#concept.label = task sequence
+com.athena.insurance.nba.TaskSequence.concat(com.athena.insurance.nba.Assign,com.athena.insurance.nba.TaskSequence)#phrase.navigation = {0} -> {1}
+com.athena.insurance.nba.TaskSequence.empty()#phrase.navigation = end
+com.athena.insurance.nba.TaskSequence.newReassign(com.athena.insurance.nba.RecipientType)#phrase.navigation = Reassign to a {0}
+com.athena.insurance.nba.TaskSequence.newReassign(com.athena.insurance.nba.RecipientType,java.lang.String)#phrase.navigation = Reassign to a {0} suggesting {1}
+com.athena.insurance.nba.TaskSequence.newReassignWithCallback(int,com.athena.insurance.nba.RecipientType)#phrase.navigation = Reassign to {1} but tell client to call back after {0} business days if no news
+com.athena.insurance.nba.TaskSequence.tasks#phrase.action = set the tasks of {this} to {task}
+com.athena.insurance.nba.TaskSequence.tasks#phrase.navigation = {task} of {this}
+
+# com.athena.insurance.nba.Voucher
+com.athena.insurance.nba.Voucher#concept.label = voucher
+com.athena.insurance.nba.Voucher.description#phrase.action = set the description of {this} to {description}
+com.athena.insurance.nba.Voucher.description#phrase.navigation = {description} of {this}

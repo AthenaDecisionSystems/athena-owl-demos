@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Quality of customer service</name>
+  <uuid>e204e1c2-1d97-4b16-b2de-7ce84cd19d78</uuid>
+</ilog.rules.studio.model.base:RulePackage>

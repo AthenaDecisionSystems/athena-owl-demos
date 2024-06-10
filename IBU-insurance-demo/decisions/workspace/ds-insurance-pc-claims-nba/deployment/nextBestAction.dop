@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.rules.studio.model.decisionservice:Operation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.ibm.rules.studio.model.decisionservice="http://com.ibm.rules.studio/model/decisionservice.ecore" xmlns:ilog.rules.studio.model.query.extractor="http://ilog.rules.studio/model/query/extractor.ecore" rulesetName="nextBestAction" usingRuleflow="true" ruleflowName="ruleflow" targetRuleProjectName="rules-insurance-pc-claims-nba">
+  <name>nextBestAction</name>
+  <uuid>a1bc0961-c11d-4d4c-91a7-41f40ef21672</uuid>
+  <referencedVariables variableName="response" variableSetName="variables" direction="OUT">
+    <variableSet href="../../rules-insurance-pc-claims-nba/rules/variables.var#0974394d-0e18-411a-bea7-0e706c9e7841"/>
+  </referencedVariables>
+  <referencedVariables variableName="complaint" variableSetName="variables">
+    <variableSet href="../../rules-insurance-pc-claims-nba/rules/variables.var#0974394d-0e18-411a-bea7-0e706c9e7841"/>
+  </referencedVariables>
+  <ruleflow href="../../rules-insurance-pc-claims-nba/rules/ruleflow.rfl#e5c8a0cd-147e-47ac-8d45-a5669f1bca7e"/>
+  <extractor xsi:type="ilog.rules.studio.model.query.extractor:QueryExtractor" name="nextBestAction_extractor" validator="Default Validator"/>
+  <targetRuleProject href="../../rules-insurance-pc-claims-nba#8ea4e1d5-0b3c-4d79-b31c-12b767c55839"/>
+</com.ibm.rules.studio.model.decisionservice:Operation>

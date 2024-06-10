@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Applied coverages</name>
+  <uuid>d1e6a385-f8ae-432a-a533-94e3cbac8a91</uuid>
+</ilog.rules.studio.model.base:RulePackage>

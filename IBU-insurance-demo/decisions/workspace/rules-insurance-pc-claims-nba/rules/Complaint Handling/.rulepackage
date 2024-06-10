@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.base:RulePackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.base="http://ilog.rules.studio/model/base.ecore">
+  <name>Complaint Handling</name>
+  <uuid>1b6b6351-1abe-4439-b410-a4049ec27488</uuid>
+</ilog.rules.studio.model.base:RulePackage>

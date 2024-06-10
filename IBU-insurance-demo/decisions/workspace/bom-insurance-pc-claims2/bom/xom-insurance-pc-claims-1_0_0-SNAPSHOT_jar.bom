@@ -1,0 +1,430 @@
+
+property loadGetterSetterAsProperties "true"
+property origin "xom:/bom-insurance-pc-claims2//xom-insurance-pc-claims-lib/lib/xom-insurance-pc-claims-1.0.0-SNAPSHOT.jar"
+property uuid "e3b84ef1-f5b7-4539-bca2-710a7a3608ea"
+package com.athena.insurance.claims.datamodel;
+
+
+public class ActualCoverage
+{
+    public boolean applies;
+    public double deductible;
+    public string description;
+    public double reimbursementFactor;
+    public com.athena.insurance.claims.datamodel.ClaimSettlementOffer settlementOffer;
+    public com.athena.insurance.claims.datamodel.SubscribedCoverage subscribedCoverage;
+    public ActualCoverage(com.athena.insurance.claims.datamodel.SubscribedCoverage arg1, boolean arg2, string arg3, double arg4, double arg5);
+    public ActualCoverage();
+}
+
+public class Claim
+{
+    public java.util.Date creationDate;
+    public java.util.Set damages domain 0,* class com.athena.insurance.claims.datamodel.Damage;
+    public readonly java.lang.Long id;
+    public com.athena.insurance.claims.datamodel.InsurancePolicy policy;
+    public com.athena.insurance.claims.datamodel.ClaimSettlementOffer settlementOffer;
+    public com.athena.insurance.claims.datamodel.enums.ClaimStatusType status;
+    public int targetDurationInDays;
+    public Claim(com.athena.insurance.claims.datamodel.enums.ClaimStatusType arg1, java.util.Date arg2, int arg3, com.athena.insurance.claims.datamodel.InsurancePolicy arg4);
+    public Claim();
+}
+
+public class ClaimSettlementOffer
+{
+    public java.util.Set actualCoverages domain 0,* class com.athena.insurance.claims.datamodel.ActualCoverage;
+    public boolean cancelContractAtExpiration;
+    public boolean cancelContractObjectCeased;
+    public com.athena.insurance.claims.datamodel.Claim claim;
+    public boolean clientResponsibleForDamage;
+    public java.util.Date creationDate;
+    public readonly double deductibleTotal;
+    public ClaimSettlementOffer(java.util.Date arg1, boolean arg2, boolean arg3);
+    public ClaimSettlementOffer();
+}
+
+public class Client
+{
+    public int cltvPercentile;
+    public java.util.Date dateOfBirth;
+    public java.util.Date firstContractDate;
+    public string firstName;
+    public readonly java.lang.Long id;
+    public string lastName;
+    public com.athena.insurance.claims.datamodel.enums.ChannelType preferredChannel;
+    public double propensityToUpgradePolicy;
+    public Client(string arg1, string arg2, java.util.Date arg3, com.athena.insurance.claims.datamodel.enums.ChannelType arg4, int arg5, int arg6, boolean arg7);
+    public Client(string arg1, string arg2, java.util.Date arg3, java.util.Date arg4, int arg5, double arg6, com.athena.insurance.claims.datamodel.enums.ChannelType arg7);
+    public Client();
+}
+
+public class Damage
+{
+    public java.util.Date date;
+    public com.athena.insurance.claims.datamodel.InsurableObject insurableObject;
+    public com.athena.insurance.claims.datamodel.enums.DamageType type;
+    public Damage(com.athena.insurance.claims.datamodel.InsurableObject arg1, com.athena.insurance.claims.datamodel.enums.DamageType arg2, java.util.Date arg3);
+    public Damage();
+}
+
+public class InsurableObject
+{
+    public string description;
+    public double estimatedValue;
+    public com.athena.insurance.claims.datamodel.enums.InsurableObjectType type;
+    public InsurableObject(com.athena.insurance.claims.datamodel.enums.InsurableObjectType arg1, string arg2, double arg3);
+    public InsurableObject();
+}
+
+public class InsurancePolicy
+{
+    public com.athena.insurance.claims.datamodel.Client client;
+    public java.util.Set coverages domain 0,* class com.athena.insurance.claims.datamodel.SubscribedCoverage;
+    public java.util.Date effectiveDate;
+    public java.util.Date expirationDate;
+    public readonly java.lang.Long id;
+    public java.util.List options domain 0,* class com.athena.insurance.claims.datamodel.OptionType;
+    public com.athena.insurance.claims.datamodel.enums.PolicyType policyType;
+    public com.athena.insurance.claims.datamodel.enums.PolicySubType subType;
+    public InsurancePolicy(com.athena.insurance.claims.datamodel.enums.PolicySubType arg1, java.util.Date arg2, java.util.Date arg3, com.athena.insurance.claims.datamodel.Client arg4);
+    public InsurancePolicy(com.athena.insurance.claims.datamodel.enums.PolicySubType arg1, 
+        java.util.Date arg2, 
+        java.util.Date arg3, 
+        com.athena.insurance.claims.datamodel.Client arg4, 
+        java.util.List arg5 domain 0,* class com.athena.insurance.claims.datamodel.OptionType);
+    public InsurancePolicy();
+}
+
+public final class OptionType
+        extends java.lang.Enum
+{
+    domain {static SubstitutionVehicle, static ContentIncluded, static NoDeductible}
+    public static final readonly com.athena.insurance.claims.datamodel.OptionType ContentIncluded;
+    public static final readonly com.athena.insurance.claims.datamodel.OptionType NoDeductible;
+    public static final readonly com.athena.insurance.claims.datamodel.OptionType SubstitutionVehicle;
+    public static com.athena.insurance.claims.datamodel.OptionType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.OptionType[] values();
+}
+
+public class SubscribedCoverage
+{
+    public com.athena.insurance.claims.datamodel.enums.DamageType code;
+    public double deductible;
+    public com.athena.insurance.claims.datamodel.InsurableObject insurableObject;
+    public double protectionAmount;
+    public SubscribedCoverage(com.athena.insurance.claims.datamodel.InsurableObject arg1, com.athena.insurance.claims.datamodel.enums.DamageType arg2, double arg3, double arg4);
+    public SubscribedCoverage();
+}
+
+package com.athena.insurance.claims.datamodel.complaints;
+
+
+public class ClientInteraction
+{
+    public string competitorName;
+    public string competitorPolicyName;
+    public java.lang.Double competitorPrice;
+    public java.util.Date date;
+    public java.util.Date desiredReimbursementDate;
+    public java.util.Date desiredResolutionDate;
+    public java.lang.Double expectedAmount;
+    public boolean intentionToLeave;
+    public com.athena.insurance.claims.datamodel.complaints.MotiveType motive;
+    public boolean unsatisfiedWithDeductible;
+    public ClientInteraction(java.util.Date arg);
+    public ClientInteraction();
+    public boolean noIntentionToLeave();
+}
+
+public class ComplaintOnClaim
+{
+    public com.athena.insurance.claims.datamodel.Claim claim;
+    public java.util.List interactions domain 0,* class com.athena.insurance.claims.datamodel.complaints.ClientInteraction;
+    public readonly com.athena.insurance.claims.datamodel.complaints.ClientInteraction lastInteraction;
+    public ComplaintOnClaim(com.athena.insurance.claims.datamodel.Claim arg1, 
+        java.util.List arg2 domain 0,* class com.athena.insurance.claims.datamodel.complaints.ClientInteraction);
+    public ComplaintOnClaim();
+}
+
+public final class DegreeOfInsatisfaction
+        extends java.lang.Enum
+{
+    domain {static Low, static Medium, static High}
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction High;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction Low;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction Medium;
+    public static com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.complaints.DegreeOfInsatisfaction[] values();
+}
+
+public final class MotiveType
+        extends java.lang.Enum
+{
+    domain 
+    {
+        static UnsatisfiedWithDelay,
+        static UnsatisfiedWithReimbursedAmount,
+        static UnsatisfiedWithAppliedCoverages,
+        static UnsatisfiedWithQualityOfCustomerService,
+        static InformationInquiry,
+        static OtherMotive
+    }
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType InformationInquiry;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType OtherMotive;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType UnsatisfiedWithAppliedCoverages;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType UnsatisfiedWithDelay;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType UnsatisfiedWithQualityOfCustomerService;
+    public static final readonly com.athena.insurance.claims.datamodel.complaints.MotiveType UnsatisfiedWithReimbursedAmount;
+    public static com.athena.insurance.claims.datamodel.complaints.MotiveType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.complaints.MotiveType[] values();
+}
+
+package com.athena.insurance.claims.datamodel.enums;
+
+
+public final class ChannelType
+        extends java.lang.Enum
+{
+    domain {static email, static mail, static SMS, static phone}
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ChannelType SMS;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ChannelType email;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ChannelType mail;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ChannelType phone;
+    public static com.athena.insurance.claims.datamodel.enums.ChannelType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.ChannelType[] values();
+}
+
+public final class ClaimStatusType
+        extends java.lang.Enum
+{
+    domain 
+    {
+        static RECEIVED,
+        static IN_PROCESS_VALIDATED,
+        static IN_PROCESS_ASSESSED,
+        static IN_PROCESS_VERIFIED,
+        static IN_PROCESS_LOSS_ADJUSTER_REPORTED,
+        static REJECTION_SENT,
+        static REJECTION_COMPLAINT,
+        static OFFER_SENT,
+        static OFFER_ACCEPTED,
+        static PAID,
+        static CLOSED
+    }
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType CLOSED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType IN_PROCESS_ASSESSED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType IN_PROCESS_LOSS_ADJUSTER_REPORTED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType IN_PROCESS_VALIDATED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType IN_PROCESS_VERIFIED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType OFFER_ACCEPTED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType OFFER_SENT;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType PAID;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType RECEIVED;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType REJECTION_COMPLAINT;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.ClaimStatusType REJECTION_SENT;
+    public static com.athena.insurance.claims.datamodel.enums.ClaimStatusType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.ClaimStatusType[] values();
+}
+
+public final class DamageType
+        extends java.lang.Enum
+{
+    domain {static Wind, static Hail, static Fire, static Lightning, static WaterDamage, static Freezing, static OtherDamage, static Theft, static CarAccident}
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType CarAccident;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Fire;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Freezing;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Hail;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Lightning;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType OtherDamage;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Theft;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType WaterDamage;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.DamageType Wind;
+    public static com.athena.insurance.claims.datamodel.enums.DamageType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.DamageType[] values();
+}
+
+public final class InsurableObjectType
+        extends java.lang.Enum
+{
+    domain 
+    {
+        static Car,
+        static Motorbike,
+        static Truck,
+        static Lorry,
+        static Land,
+        static MainResidencialBuilding,
+        static AuxiliaryResidencialBuilding,
+        static AuxiliaryNonResidencialBuilding,
+        static Flat,
+        static ParkingLot,
+        static PersonalObject
+    }
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType AuxiliaryNonResidencialBuilding;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType AuxiliaryResidencialBuilding;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Car;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Flat;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Land;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Lorry;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType MainResidencialBuilding;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Motorbike;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType ParkingLot;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType PersonalObject;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.InsurableObjectType Truck;
+    public static com.athena.insurance.claims.datamodel.enums.InsurableObjectType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.InsurableObjectType[] values();
+}
+
+public final class PolicySubType
+        extends java.lang.Enum
+{
+    domain {static AutoThirdParty, static AutoAllRisk, static HomeBuildingsOnly, static HomeBuildingsAndContent}
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicySubType AutoAllRisk;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicySubType AutoThirdParty;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicySubType HomeBuildingsAndContent;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicySubType HomeBuildingsOnly;
+    public static com.athena.insurance.claims.datamodel.enums.PolicySubType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.PolicySubType[] values();
+}
+
+public final class PolicyType
+        extends java.lang.Enum
+{
+    domain {static Auto, static Home, static PersonalObject, static Life, static Health}
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicyType Auto;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicyType Health;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicyType Home;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicyType Life;
+    public static final readonly com.athena.insurance.claims.datamodel.enums.PolicyType PersonalObject;
+    public static com.athena.insurance.claims.datamodel.enums.PolicyType valueOf(string arg);
+    public static com.athena.insurance.claims.datamodel.enums.PolicyType[] values();
+}
+
+package com.athena.insurance.nba;
+
+
+public abstract class Action
+{
+}
+
+public abstract class Assign
+        extends com.athena.insurance.nba.Action
+{
+    public Assign();
+}
+
+public class CommunicateWithClient
+        extends com.athena.insurance.nba.Action
+{
+    public com.athena.insurance.claims.datamodel.enums.ChannelType channel;
+    public com.athena.insurance.nba.MessageType messageType;
+    public CommunicateWithClient();
+}
+
+public class DiscountOnNextRenewal
+        extends com.athena.insurance.nba.Action
+{
+    public string description;
+    public double percentage;
+    public DiscountOnNextRenewal();
+}
+
+public class InfoElement
+{
+    public string path;
+    public string questionId;
+    public string type;
+    public InfoElement(string arg1, string arg2, string arg3);
+    public InfoElement();
+}
+
+public final class MessageType
+        extends java.lang.Enum
+{
+    domain {static ApologyOnly, static SorryAboutPerceptionButFair, static AcknowledgmentOfReceipt, static Proposal}
+    public static final readonly com.athena.insurance.nba.MessageType AcknowledgmentOfReceipt;
+    public static final readonly com.athena.insurance.nba.MessageType ApologyOnly;
+    public static final readonly com.athena.insurance.nba.MessageType Proposal;
+    public static final readonly com.athena.insurance.nba.MessageType SorryAboutPerceptionButFair;
+    public static com.athena.insurance.nba.MessageType valueOf(string arg);
+    public static com.athena.insurance.nba.MessageType[] values();
+}
+
+public class Reassign
+        extends com.athena.insurance.nba.Assign
+{
+    public com.athena.insurance.nba.RecipientType recipient;
+    public string suggestion;
+    public Reassign(com.athena.insurance.nba.RecipientType arg);
+    public Reassign(com.athena.insurance.nba.RecipientType arg1, string arg2);
+    public Reassign();
+}
+
+public class ReassignWithCallback
+        extends com.athena.insurance.nba.Assign
+{
+    public int callBackDeadline;
+    public com.athena.insurance.nba.RecipientType recipient;
+    public string suggestion;
+    public ReassignWithCallback(int arg1, com.athena.insurance.nba.RecipientType arg2);
+    public ReassignWithCallback(int arg1, com.athena.insurance.nba.RecipientType arg2, string arg3);
+    public ReassignWithCallback();
+}
+
+public final class RecipientType
+        extends java.lang.Enum
+{
+    domain {static CallCenterClientRepresentative, static SpecializedClientRepresentative, static ClaimsExpert, static QualitySpecialist}
+    public static final readonly com.athena.insurance.nba.RecipientType CallCenterClientRepresentative;
+    public static final readonly com.athena.insurance.nba.RecipientType ClaimsExpert;
+    public static final readonly com.athena.insurance.nba.RecipientType QualitySpecialist;
+    public static final readonly com.athena.insurance.nba.RecipientType SpecializedClientRepresentative;
+    public static com.athena.insurance.nba.RecipientType valueOf(string arg);
+    public static com.athena.insurance.nba.RecipientType[] values();
+}
+
+public class Response
+{
+    public java.util.List actions domain 0,* class com.athena.insurance.nba.Action;
+    public java.util.List missingInfoElements domain 0,* class com.athena.insurance.nba.InfoElement;
+    public java.util.List outputTraces domain 0,* class string;
+    public Response();
+    public void addMissingInfo(string path, string questionId, string type);
+    public void addTrace(string arg);
+    public void appendCommunicateWithClient(string explanation, com.athena.insurance.claims.datamodel.enums.ChannelType arg1, com.athena.insurance.nba.MessageType arg2);
+    public void appendDiscount(string explanation, string description, double percentage);
+    public void appendResendTo(string explanation, com.athena.insurance.nba.RecipientType arg);
+    public void appendResendTo(string explanation, com.athena.insurance.nba.RecipientType arg1, string arg2);
+    public void appendTaskSequence(string explanation, com.athena.insurance.nba.TaskSequence arg);
+    public void appendUpsellProposal(string explanation, string arg2);
+    public void appendVoucher(string explanation, string arg1);
+}
+
+public class SimpleUpsellProposal
+        extends com.athena.insurance.nba.Action
+{
+    public string description;
+    public SimpleUpsellProposal();
+}
+
+public class TaskSequence
+        extends com.athena.insurance.nba.Action
+{
+    public java.util.LinkedList tasks domain 0,* class com.athena.insurance.nba.Assign;
+    public TaskSequence();
+    public static com.athena.insurance.nba.TaskSequence concat(com.athena.insurance.nba.Assign arg1, com.athena.insurance.nba.TaskSequence arg2);
+    public static com.athena.insurance.nba.TaskSequence empty();
+    public static com.athena.insurance.nba.Reassign newReassign(com.athena.insurance.nba.RecipientType arg);
+    public static com.athena.insurance.nba.Reassign newReassign(com.athena.insurance.nba.RecipientType arg1, string arg2);
+    public static com.athena.insurance.nba.ReassignWithCallback newReassignWithCallback(int arg1, com.athena.insurance.nba.RecipientType arg2);
+    public static com.athena.insurance.nba.ReassignWithCallback newReassignWithCallback(int arg1, com.athena.insurance.nba.RecipientType arg2, string arg3);
+    public void prependTask(com.athena.insurance.nba.Assign arg);
+}
+
+public class Voucher
+        extends com.athena.insurance.nba.Action
+{
+    public string description;
+    public Voucher();
+}
+
