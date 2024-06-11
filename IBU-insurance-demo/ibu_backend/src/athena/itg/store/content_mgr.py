@@ -4,6 +4,7 @@ Copyright 2024 Athena Decision Systems
 """
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
+from langchain_text_splitters.markdown import MarkdownTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import PyMuPDFLoader, BSHTMLLoader, WebBaseLoader
@@ -110,7 +111,6 @@ class ContentManager:
             texts = text_splitter.create_documents([doc])
             self.build_embeddings(texts)
             return len(texts)
-      
     
     def embed_md_docs(self, file_description: FileDescription) -> int:
         """
@@ -128,7 +128,6 @@ class ContentManager:
             self.build_embeddings(md_header_splits)       
             LOGGER.debug(f"Added {str(len(md_header_splits))} chunks to vector DB ")
             return len(md_header_splits)
-        
         
     def embed_html_docs(self, file_description: FileDescription) -> int:
         """

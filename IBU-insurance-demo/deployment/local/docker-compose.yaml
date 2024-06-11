@@ -9,8 +9,8 @@ services:
       CONFIG_FILE: /app/config/config.yaml
       OPENAI_API_KEY: $OPENAI_API_KEY
     volumes:
-      - ./ibu_backend/config:/app/config
-      - ./.env:/app/.env
+      - ../../ibu_backend/config:/app/config
+      - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
       - ./data/chromadb:/app/chromadb
   insurance-data-mgr:
@@ -53,4 +53,4 @@ services:
       - SAMPLE=false
       - LICENSE=accept
     volumes:
-      - ./decisions/persistence:/config/dbdata/
+      - ../../decisions/persistence:/config/dbdata/

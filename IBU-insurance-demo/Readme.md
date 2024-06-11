@@ -3,15 +3,15 @@
 04/20 current demo support OpenAI.
 06/06: tune docker compose and configuration for ibu_backend component
 
-See the IBU backend for readme.md for development activities and to build the image used in the demonstration using docker compose or Minikube.
+See the IBU backend readme.md for development activities and how to build the image used in the demonstration. The docker compose to run locally is under `deployment\local`.
 
+## Component explanation
 
 ## Prerequisites
 
 For end-to-end testing and demonstration purpose, it is better to have the docker engine with the docker compose cli installed. If you are not able to use Docker Desktop, you can use minikube and then specify the docker engine (see minikube section below).
 
-
-* Be sure to have docker engine to build image and be able to run docker-compose. If under constraint and not able to run Docker Desktop, see Minikube deployment below.
+Be sure to have docker engine to build image and be able to run docker-compose. 
 
 
 ## Build for demonstration

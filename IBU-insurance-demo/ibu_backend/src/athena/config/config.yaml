@@ -13,6 +13,7 @@ owl_agent_content_collection_name: base_collection
 owl_agent_content_file_path: /app/file_content
 owl_agent_vs_path: /app/chromadb
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
+owl_agent_llm_history_length: 5
 
 #owl_agent_llm_client_class: athena.llm.agent_watsonx.WatsonXClient
 
