@@ -1,7 +1,7 @@
 # IBU-Insurance demonstration
 
-04/20 current demo support OpenAI.
-06/06: tune docker compose and configuration for ibu_backend component
+* 04/20/24: Current demo supports OpenAI.
+* 06/06/24: Tune docker compose and configuration for ibu_backend component
 
 See the IBU backend readme.md for development activities and how to build the image used in the demonstration. The docker compose to run locally is under `deployment\local`.
 
@@ -20,7 +20,7 @@ Be sure to have docker engine to build image and be able to run docker-compose.
 
     ```
     cd datamgt
-    ./build/builldImage.sh
+    ./build/buildImage.sh
     ```
 
 * build the IBU agent backend,
@@ -47,7 +47,7 @@ To start the ibu_agent backend, the data manager, postgresql, and ODM decision s
 docker-compose up -d 
 ```
 
-Verify with the 4 containers running
+Verify that the 4 containers are running:
 
 ```sh
 docker ps
