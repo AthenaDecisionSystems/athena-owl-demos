@@ -7,6 +7,19 @@ This folder includes the specific for the demonstration of IBU insurance demonst
 
 ## Pre-requisites
 
+* Prepare your .env file
+
+    ```
+    Declare your personal keys
+    OPENAI_API_KEY=---your-key---
+    WATSONX_APIKEY=---your-key---
+    MISTRAL_API_KEY=---your-key---
+    LANGCHAIN_API_KEY=---your-key---
+    LANGCHAIN_TRACING_V2=true
+    LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+    ...
+    `
+
 * Start virtual python env.
 
     ```sh
