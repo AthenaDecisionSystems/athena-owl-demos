@@ -7,3 +7,5 @@
 **/chromadb/
 **/file_content/
 **/.env
+**/output/
+**/**.class

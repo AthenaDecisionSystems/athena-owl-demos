@@ -18,7 +18,7 @@ This folder includes the specific for the demonstration of IBU insurance demonst
     LANGCHAIN_TRACING_V2=true
     LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
     ...
-    `
+    ```
 
 * Start virtual python env.
 

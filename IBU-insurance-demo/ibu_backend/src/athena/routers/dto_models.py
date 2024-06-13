@@ -25,7 +25,7 @@ class ConversationControl(BaseModel):
     reset: bool = False
     prompt_ref:  str = "openai_insurance_with_tool"
     modelParameters: Optional[ModelParameters] = None
-    chat_history: List[Union[ HumanMessage, AIMessage]] = []
+    chat_history: List[Union[HumanMessage, AIMessage]] = []
 
 
 class ResponseChoice(BaseModel):
@@ -39,6 +39,6 @@ class ResponseControl(BaseModel):
     question_type: Optional[str] = ''
     possibleResponse: Optional[List[ResponseChoice]] = None
     error: Optional[str] = ''
-    chat_history: List[Union[ HumanMessage, AIMessage]] = []
+    chat_history: List[Union[HumanMessage, AIMessage]] = []
 
 
