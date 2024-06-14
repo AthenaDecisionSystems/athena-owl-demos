@@ -1,8 +1,8 @@
 services:
-  ibu-backend:
-    hostname: ibu-backend
-    image: athena/ibu-backend
-    container_name: ibu-backend
+  owl-backend:
+    hostname: owl-backend
+    image: athena/owl-backend
+    container_name: owl-backend
     ports:
       - 8000:8000
     environment:
@@ -13,6 +13,7 @@ services:
       - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
       - ./data/chromadb:/app/chromadb
+      - ../../ibu_backend/src/ibu:/app/ibu
   insurance-data-mgr:
     image: athena/ibu-insurance-data-mgr
     hostname: datamgr
@@ -41,7 +42,7 @@ services:
     ports:
       - '5432:5432'
     volumes: 
-      - ./database:/var/lib/postgresql/data
+      - ./data/claimdb:/var/lib/postgresql/data
   decisionsvc:
     image: icr.io/cpopen/odm-k8s/odm:8.12
     hostname: decisionsvc

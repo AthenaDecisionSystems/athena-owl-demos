@@ -1,18 +1,19 @@
 services:
-  ibu-backend:
-    hostname: ibu-backend
-    image: athena/ibu-backend
-    container_name: ibu-backend
+  owl-backend:
+    hostname: owl-backend
+    image: athena/owl-backend
+    container_name: owl-backend
     ports:
       - 8000:8000
     environment:
-      CONFIG_FILE: /app/config/ibu-config.yaml
+      CONFIG_FILE: /app/config/config.yaml
       OPENAI_API_KEY: $OPENAI_API_KEY
-      WATSONX_APIKEY: $WATSONX_APIKEY
-      MISTRAL_API_KEY: $MISTRAL_API_KEY
     volumes:
-      - ./ibu_backend/config:/app/config
-      - ./file_content:/app/file_content
+      - ../../ibu_backend/config:/app/config
+      - ../../.env:/app/.env
+      - ./data/file_content:/app/file_content
+      - ./data/chromadb:/app/chromadb
+      - ../../ibu_backend/src/ibu:/app/ibu
   insurance-data-mgr:
     image: athena/ibu-insurance-data-mgr
     hostname: datamgr

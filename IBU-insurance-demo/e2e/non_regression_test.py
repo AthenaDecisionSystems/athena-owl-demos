@@ -16,7 +16,14 @@ print("\n--> Validate Basic Query to LLM\n")
 data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
   "query": "can you give me some information about langchain",\
   "type": "chat",\
-  "prompt_ref": "default_prompt", \
+  "modelParameters": { \
+    "modelName": "gpt-3.5-turbo-0125",\
+    "modelClass": "agent_openai",\
+    "prompt_ref": "default_prompt",\
+    "temperature": 0,\
+    "top_k": 1,\
+    "top_p": 1\
+  },\
   "chat_history": []\
 }'
 rep = requests.post(URL + "/c/generic_qa", data=data, headers = {"Content-Type": "application/json"}).content.decode()
