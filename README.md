@@ -2,6 +2,8 @@
 
 A repository to include different demonstrations using Athena Owl Core code.
 
+[ Read in book format](https://athenadecisionsystems.github.io/athena-owl-demos)
+
 ## IBU Insurance Demonstration
 
 See [the readme](./IBU-insurance-demo/Readme.md) about this insurance domain specific demonstration which includes, LLM, tool callings, decision services and database accesses. The Chatbot integrates some configuration controls to demonstrate that even RAG does not help to reduce hallucinations.
