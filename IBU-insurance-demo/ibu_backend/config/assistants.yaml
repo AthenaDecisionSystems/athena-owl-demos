@@ -1,0 +1,12 @@
+default_assistant:
+  assistant_id: default_assistant
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
+  description: A default assistant to do simple LLM calls with web search
+  name: Default assistant
+
+ibu_assistant:
+  assistant_id: ibu_assistant
+  class_name: ibu.llm.assistants.IBU_Assistant.IBUAssistant
+  description: The IBU insurance claim processing assistant
+  name: IBU_assistant
+  agent_id: ibu_agent
