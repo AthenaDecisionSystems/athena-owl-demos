@@ -1,12 +1,20 @@
-default_assistant:
-  assistant_id: default_assistant
-  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
-  description: A default assistant to do simple LLM calls with web search
-  name: Default assistant
-
 ibu_assistant:
   assistant_id: ibu_assistant
   class_name: ibu.llm.assistants.IBU_Assistant.IBUAssistant
   description: The IBU insurance claim processing assistant
   name: IBU_assistant
   agent_id: ibu_agent
+
+base_tool_assistant:
+  assistant_id: base_tool_assistant
+  class_name: athena.llm.assistants.BaseToolAssistant.BaseToolAssistant
+  description: A default assistant use LLM and tool to do web search
+  name: Default tool assistant
+  agent_id: anthropic_claude_3
+
+base_assistant:
+  assistant_id: base_assistant
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
+  description: A default assistant to do simple LLM calls
+  name: Default assistant
+  agent_id: open_ai_gpt35

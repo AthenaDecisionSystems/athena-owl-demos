@@ -7,7 +7,7 @@ from .insurance_claim_repo import InsuranceClaimRepositoryInterface
 from .ComplaintHandling_generated_model import *
 class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
 
-    def __init__(self):
+    def __init__(self,config):
         self.CLAIMSDB = dict()
         self.initialize_claims_db()
 
