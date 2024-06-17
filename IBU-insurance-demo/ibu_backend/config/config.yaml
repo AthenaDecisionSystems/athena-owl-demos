@@ -1,4 +1,4 @@
-logging_level: INFO
+logging_level: DEBUG
 version: 0.0.2
 owl_env_path: ../.env
 owl_agent_llm_client_class: ibu.llm.agent_openai.OpenAIClient

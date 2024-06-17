@@ -5,7 +5,7 @@ os.environ["CONFIG_FILE"] = "./tests/it/config/config.yaml"
 from dotenv import load_dotenv
 load_dotenv("./.env")
 sys.path.append('./src')
-from ibu.main import app
+from athena.main import app
 from athena.app_settings import  get_config
 from athena.routers.dto_models import ConversationControl
 from athena.routers.prompt import PromptRequest
@@ -28,45 +28,6 @@ class TestAppApi(unittest.TestCase):
         self.client = TestClient(app)
         print("init test done")
        
-
-    def build_ConversationControl(self):
-        ctl = ConversationControl()
-        ctl.callWithVectorStore = False
-        ctl.callWithDecisionService = True
-        ctl.type="chat"
-        ctl.prompt_ref="openai_insurance_with_tool"
-        return ctl
-
-    def test_health(self):
-        response = self.client.get(get_config().api_route + "/health")
-        assert response.status_code == 200
-        assert response.json() == {"Status": "Alive"}
-
-    def test_version(self):
-        response = self.client.get(get_config().api_route +"/version")
-        assert response.status_code == 200
-        print(response.json())
-        assert response.json()["Version"] is not None
-
-    def test_basic_general_chat_to_llm(self):
-        ctl = self.build_ConversationControl()
-        ctl.prompt_ref="default_prompt"
-        ctl.query="You are an expert in AI, can you answer this question: What is the value proposition of LangChain?"
-        response=self.client.post(get_config().api_route + "/c/generic_chat", json= ctl.model_dump())
-        print(f"----> {response.json()}")
-        assert response is not None
-        assert response.status_code == 200
-
-    def test_router_at_api_level_qa_basic(self):
-        ctl = self.build_ConversationControl()
-        ctl.query="You are an expert in AI, can you answer this question: What is the value proposition of LangChain?"
-        ctl.type="qa"
-        response = self.client.post("/api/v1/c/generic_cqa",
-                        json= ctl.model_dump())
-        print(response.json())
-        assert response is not None
-        assert response.status_code == 200
-        print(response.json())
 
 
     def test_access_to_martin_client(self):

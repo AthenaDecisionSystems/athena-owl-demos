@@ -7,7 +7,7 @@ load_dotenv("./.env")
 from athena.routers.documents import FileDescription
 from fastapi.testclient import TestClient
 import unittest
-from ibu.main import app
+from athena.main import app
 
 class TestDocumentMgt(unittest.TestCase):
     PATH_TO_DOCS="./tests/it/documents"
