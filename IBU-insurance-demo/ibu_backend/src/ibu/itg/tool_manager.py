@@ -6,7 +6,7 @@ from langchain.agents import tool
 from langchain.tools.retriever import create_retriever_tool
 from ibu.itg.ds.ComplaintHandling_generated_model import Motive
 from importlib import import_module
-from typing import Sequence
+from typing import Sequence, Any
 import logging
 from athena.app_settings import get_config
 from athena.routers.dto_models import ConversationControl
@@ -78,9 +78,9 @@ def define_next_best_action_with_decision(claim_id : int, client_motive: Motive,
 
 
 
-_tools = [get_client_by_id, get_claim_by_id]
+_tools = [get_client_by_id, get_claim_by_id, get_client_by_name]
 
-def get_tools_to_use(conversationControl:ConversationControl) -> Sequence[tool] :
+def get_tools_to_use(conversationControl:ConversationControl) -> Sequence[Any] :
     """
     Define the Tools to be used by the Agent. It is controlled by the input controller object to give
     more context

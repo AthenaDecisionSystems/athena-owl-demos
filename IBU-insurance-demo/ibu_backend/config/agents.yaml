@@ -20,3 +20,19 @@ anthropic_claude_3:
   top_p: 1
   tools:
   - tavily
+
+ibu_agent:
+  agent_id: ibu_agent
+  name: ibu_agent
+  description: openai based agent withIBU prompt and tools
+  class_name: ibu.llm.agents.IBU_Agent.IBUAgent
+  modelName: gpt-3.5-turbo-0125
+  prompt_ref: openai_insurance_with_tool
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+  - ibu_client_by_id
+  - ibu_client_by_name
+  - ibu_claim_by_id
+  - ibu_best_action
