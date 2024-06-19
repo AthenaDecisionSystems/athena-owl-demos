@@ -9,6 +9,19 @@ open_ai:
   top_k: 1
   top_p: 1
 
+ibu_open_ai_tool:
+  agent_id: ibu_open_ai_tool
+  name: ibu_open_ai_tool
+  description: openai based agent with tool to support ibu insurance demo and variable model 
+  class_name: ibu.llm.agents.openai_agent_tool.OpenAIAgent
+  modelName: gpt-3.5-turbo-0125
+  prompt_ref: openai_insurance_with_tool
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+  - ibu_client_by_id
+
 anthropic_claude_3:
   agent_id: anthropic_claude_3
   name: anthropic_claude_3
