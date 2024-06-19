@@ -41,7 +41,7 @@ methods = {"get_claim_by_id" : get_claim_by_id, "define_next_best_action_with_de
 def define_tool(name: str, description: str, funct_name):
     return StructuredTool.from_function(
         func=methods[funct_name],
-        name=name,
+        name=funct_name,
         description=description,
         #args_schema=,
         return_direct=False,

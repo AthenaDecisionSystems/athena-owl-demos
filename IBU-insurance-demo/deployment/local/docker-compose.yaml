@@ -55,3 +55,9 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
+  chroma-db:
+    image: ghcr.io/chroma-core/chroma:latest
+    volumes:
+      - ./chromadb/.chroma/index
+    ports:
+      - 8005:8000

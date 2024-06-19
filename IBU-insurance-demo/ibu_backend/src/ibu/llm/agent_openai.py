@@ -17,8 +17,8 @@ if get_config().logging_level == "DEBUG":
 class OpenAIClient(BaseOwlAgent):
 
 
-    def get_model(self, stream, callbacks):
-        return ChatOpenAI(model=get_config().owl_agent_llm_model, temperature=0, Callbacks=callbacks)  
+    def get_model(self, model_name, stream, callbacks):
+        return ChatOpenAI(model=model_name, temperature=0)  
     
     def get_agent(self, model, prompt, tools ):
         return create_openai_tools_agent(model, tools, prompt)
