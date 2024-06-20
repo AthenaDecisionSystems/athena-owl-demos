@@ -1,7 +1,7 @@
 #!/bin/bash
 scriptDir=$(dirname $0)
 
-IMAGE_NAME=athena/ibu-insurance-data-mgr
+IMAGE_NAME=jbcodeforce/ibu-insurance-data-mgr
 
 if [[ $# -eq 1 ]]
 then
