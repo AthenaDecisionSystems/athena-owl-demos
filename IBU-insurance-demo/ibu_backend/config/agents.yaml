@@ -61,3 +61,9 @@ ibu_agent:
   - ibu_client_by_name
   - ibu_claim_by_id
   - ibu_best_action
+
+ibu_open_ai_tool:
+  agent_id: ibu_open_ai_tool
+  name: ibu_open_ai_tool
+  description: openai based agent with tool to support ibu insurance demo and variable model 
+  class_name: ibu.llm.agents.openai_agent_tool.OpenAIAgent

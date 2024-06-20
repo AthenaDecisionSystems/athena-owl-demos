@@ -89,10 +89,36 @@ def validate_ibu_tools(base_url, tool_id):
   return rep
 
 
-def get_client_using_LLM(base_url, client_id):
-  print("\n--> Get client description using tool and llm\n")
-  pass
-
+def get_client_using_LLM_legacy_mode(base_url):
+  print("\n--> Get client description using tool and llm - legacy mode\n")
+  data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
+            "query": "who is the client with id 1?",\
+            "type": "chat",\
+            "modelParameters": { \
+                "modelName": "gpt-3.5-turbo-0125",\
+                "modelClass": "agent_openai",\
+                "prompt_ref": "default_prompt",\
+                "temperature": 0,\
+                "top_k": 1,\
+                "top_p": 1\
+            },\
+            "chat_history": []\
+        }'
+  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+  print(f"\n@@@> {rep}")
+ 
+def get_best_action_using_LLM(base_url):
+  print("\n--> Get claim - client best actin using assistant with langgraph\n")
+  data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
+            "query": "David Martin is not happy with the settlement of his claim with a claim_id 1. He thinks the amount reimbursed is far too low. He is threatening to leave to the competition.",\
+            "type": "chat",\
+            "chat_history": [],\
+            "assistant_id":"ibu_assistant_lg",  \
+            "user_id" : "remote_test" \
+        }'
+  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+  print(f"\n@@@> {rep}")
+  
 if __name__ == "__main__":
   print("################ Non Regression Tests ##############")
   verify_health(IBU_BASE_URL)
@@ -102,6 +128,8 @@ if __name__ == "__main__":
   ae=validate_ibu_assistant(IBU_BASE_URL)
   validate_ibu_agent(IBU_BASE_URL,ae.agent_id)
   validate_ibu_tools(IBU_BASE_URL,"ibu_claim_by_id")
+  get_client_using_LLM_legacy_mode(IBU_BASE_URL)
+  get_best_action_using_LLM(IBU_BASE_URL)
 
 
 

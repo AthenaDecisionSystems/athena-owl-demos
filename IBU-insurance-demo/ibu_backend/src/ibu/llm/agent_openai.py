@@ -28,7 +28,10 @@ class OpenAIClient(BaseOwlAgent):
     def build_agent_executor(self,controller:ConversationControl,stream = False, callbacks = None):
         prompt= self.assess_what_prompt_to_use(controller)
         tools = get_tools_to_use(controller)
-        model = self.get_model(stream,callbacks)
+        if controller.modelParameters is not None and controller.modelParameters.modelName != "":
+            model = self.get_model( controller.modelParameters.modelName,stream,callbacks)
+        else:
+            model = self.get_model(get_config().owl_agent_llm_model,stream,callbacks)
         model.bind_tools(tools)
         agent = self.get_agent(model, prompt, tools)
         return AgentExecutor(agent=agent, tools=tools, verbose=True)

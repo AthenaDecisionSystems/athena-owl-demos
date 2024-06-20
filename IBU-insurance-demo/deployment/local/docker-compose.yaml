@@ -7,7 +7,9 @@ services:
       - 8000:8000
     environment:
       CONFIG_FILE: /app/config/config.yaml
-      OPENAI_API_KEY: $OPENAI_API_KEY
+      #OPENAI_API_KEY: $OPENAI_API_KEY
+    env_file:
+      - ../../.env
     volumes:
       - ../../ibu_backend/config:/app/config
       - ../../.env:/app/.env
@@ -51,7 +53,7 @@ services:
       - 9443:9443
       - 9060:9060
     environment:
-      - SAMPLE=false
+      - SAMPLE=true
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
@@ -63,3 +65,17 @@ services:
       - ./chromadb:/.chroma/index
     ports:
       - 8005:8000
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgagmin
+    container_name: pgadmin
+    restart: always
+    profiles: 
+      - dev
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    ports:
+      - "5050:80"
+    volumes: 
+      - ./data_files:/tmp/data_files
