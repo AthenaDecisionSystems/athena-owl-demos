@@ -5,19 +5,7 @@ Copyright 2024 Athena Decision Systems
 from pydantic import BaseModel
 from typing import List
 import json
-
-class Borrower(BaseModel):
-    name: str = ""
-    creditScore: int = 0
-    yearlyIncome: int = 60000
- 
-class Loan(BaseModel):
-    amount: int = 0
-    duration: int =0
-    yearlyInterestRate: float = 0
-    yearlyRepayment: int = 0
-    approved: bool = False
-    messages: List[str] = []
+from .pydantic_generated_model import *
 
 class LoanApplicationClientRepositoryInterface:
 

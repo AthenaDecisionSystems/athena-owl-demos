@@ -9,3 +9,5 @@
 **/.env
 **/output/
 **/**.class
+**/.venv
+**/.DS_Store

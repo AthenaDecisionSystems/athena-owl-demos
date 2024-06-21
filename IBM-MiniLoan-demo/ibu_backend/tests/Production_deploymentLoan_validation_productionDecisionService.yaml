@@ -1,0 +1,173 @@
+openapi: 3.0.1
+info:
+  title: loan_validation_production API
+  description: API to invoke the execution of the decision service operation loan_validation_production.
+  version: 1.0.0
+servers:
+- url: http://localhost:9060/DecisionService/rest
+paths:
+  /production_deployment/1.0/loan_validation_production:
+    post:
+      summary: Invokes the execution of the decision service operation loan_validation_production.
+      description: Executes the decision service operation loan_validation_production
+        with the path /production_deployment/1.0/loan_validation_production.
+      operationId: callloan_validation_productionDecisionServiceOperation
+      requestBody:
+        description: Request for the execution of the decision service operation.
+          Contains notably the input parameters that are used for the execution.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+        required: true
+      responses:
+        "200":
+          description: Response for the execution of the decision service operation.
+            Contains notably the output parameters that are returned by the execution.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        default:
+          description: Error occurring when invoking the execution of the decision
+            service operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Request:
+      type: object
+      properties:
+        __DecisionID__:
+          type: string
+          description: "Unique identifier representing the execution of the decision\
+            \ service operation. If it is not specified, it will be computed automatically."
+        borrower:
+          $ref: '#/components/schemas/Borrower'
+        loan:
+          $ref: '#/components/schemas/LoanRequest'
+      description: Request for the execution of the decision service operation. Contains
+        notably the input parameters that are used for the execution.
+    Response:
+      type: object
+      properties:
+        __DecisionID__:
+          type: string
+          description: "Unique identifier representing the execution of the decision\
+            \ service operation. If it is not specified, it will be computed automatically."
+        report:
+          $ref: '#/components/schemas/Report'
+      description: Response for the execution of the decision service operation. Contains
+        notably the output parameters that are returned by the execution.
+    Bankruptcy:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        chapter:
+          type: integer
+          format: int32
+        reason:
+          type: string
+    Borrower:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birth:
+          type: string
+          format: date-time
+        SSN:
+          $ref: '#/components/schemas/SSN'
+        yearlyIncome:
+          type: integer
+          format: int32
+        zipCode:
+          type: string
+        creditScore:
+          type: integer
+          format: int32
+        spouse:
+          $ref: '#/components/schemas/Borrower'
+        latestBankruptcy:
+          $ref: '#/components/schemas/Bankruptcy'
+    SSN:
+      type: object
+      properties:
+        areaNumber:
+          type: string
+        groupCode:
+          type: string
+        serialNumber:
+          type: string
+    LoanRequest:
+      type: object
+      properties:
+        numberOfMonthlyPayments:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        amount:
+          type: integer
+          format: int32
+        loanToValue:
+          type: number
+          format: double
+    Report:
+      type: object
+      properties:
+        borrower:
+          $ref: '#/components/schemas/Borrower'
+        loan:
+          $ref: '#/components/schemas/LoanRequest'
+        validData:
+          type: boolean
+        insuranceRequired:
+          type: boolean
+        insuranceRate:
+          type: number
+          format: double
+        approved:
+          type: boolean
+        messages:
+          type: array
+          items:
+            type: string
+        yearlyInterestRate:
+          type: number
+          format: double
+        monthlyRepayment:
+          type: number
+          format: double
+        insurance:
+          type: string
+        message:
+          type: string
+        yearlyRepayment:
+          type: number
+          format: double
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP error code.
+          format: int32
+        message:
+          type: string
+          description: Error message.
+        details:
+          type: string
+          description: Detailed error message.
+        errorCode:
+          type: string
+          description: Product error code.
+      description: Error occurring when invoking the execution of the decision service
+        operation.
