@@ -5,7 +5,7 @@
 ibu_assistant:
   assistant_id: ibu_assistant
   class_name: athena.llm.assistants.BaseToolAssistant.BaseToolAssistant
-  description: A default assistant that uses LLM and search tool to do web search
+  description: A default assistant that uses LLM, and local defined tools like get borrower, and next best action
   name: IBU Loan App assistant
   agent_id: ibu_agent
 

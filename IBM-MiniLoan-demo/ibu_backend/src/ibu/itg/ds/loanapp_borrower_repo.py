@@ -5,17 +5,15 @@ Copyright 2024 Athena Decision Systems
 from pydantic import BaseModel
 from typing import List
 import json
-from .pydantic_generated_model import *
+from ibu.itg.ds.pydantic_generated_model import Borrower
 
 class LoanApplicationClientRepositoryInterface:
 
-    def add_client(self,client: Borrower):
-        pass
-
-    def get_client_by_name(self,name: str) -> Borrower | None:
+    def get_client_by_name(self,first_name: str, last_name: str) -> Borrower | None:
         return None
     
-    def get_client_by_name_json(self, name: str) -> str | None:
+    
+    def get_client_by_name_json(self,first_name: str, last_name: str) -> str | None:
         return None
     
     def get_all_clients_json(self) -> str | None:

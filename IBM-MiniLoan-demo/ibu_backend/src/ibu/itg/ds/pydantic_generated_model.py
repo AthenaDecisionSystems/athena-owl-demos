@@ -32,10 +32,10 @@ class Error(BaseModel):
     errorCode: Optional[str] = Field(None, description='Product error code.')
 
 class LoanRequest(BaseModel):
-    numberOfMonthlyPayments: Optional[int] = None
-    startDate: Optional[datetime] = None
-    amount: Optional[int] = None
-    loanToValue: Optional[float] = None
+    numberOfMonthlyPayments: Optional[int] =  Field(None, description="number of monthly payments for the loan")
+    startDate: Optional[datetime] =  Field(None, description="the start date")
+    amount: Optional[int] =  Field(None, description="the amount for the loan")
+    loanToValue: Optional[float] =  Field(None, description="the loan to value")
     
 class Borrower(BaseModel):
     firstName: Optional[str] = None

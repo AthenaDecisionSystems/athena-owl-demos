@@ -2,17 +2,6 @@
 # @author Jerome Boyer
 # IBU Loan Application Demo
 # ------------------------------------------------------------------
-open_ai:
-  agent_id: open_ai_gpt35
-  name: open_ai_gpt35
-  description: openai based agent with simple prompt 
-  class_name: athena.llm.agents.agent_openai.OpenAIAgent
-  modelName: gpt-3.5-turbo-0125
-  prompt_ref: default_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
-
 open_ai_tool:
   agent_id: open_ai_tool
   name: open_ai_gpt35
@@ -26,27 +15,18 @@ open_ai_tool:
   tools:
   - tavily
 
-fake_agent:
-  agent_id: fake_agent
-  name: fake_agent
-  description: Fake agent for testing 
-  class_name: athena.llm.agents.fake_agent.FakeAgent
-  modelName: not_needed
-  prompt_ref: default_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
 
 ibu_agent:
   agent_id: ibu_agent
   name: ibu_agent
   description: openai based agent with IBU prompt and tools
-  class_name: ibu.llm.agents.IBU_Agent.IBUAgent
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
   modelName: gpt-3.5-turbo-0125
-  prompt_ref: openai_insurance_with_tool
+  modelClassName: langchain_openai.ChatOpenAI
+  prompt_ref: default_prompt
   temperature: 0
   top_k: 1
   top_p: 1
   tools:
   - ibu_client_by_name
-  - ibu_best_action
+  - ibu_loan_assessment_action

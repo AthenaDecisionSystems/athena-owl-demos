@@ -5,6 +5,7 @@ nav:
   - Introduction: index.md
   - Demonstrations: 
     - IBU Insurance: insurance.md
+    - IBM-ODM LoanApp: miniloan.md
   - Back to Owl agent: https://AthenaDecisionSystems.github.io/athena-owl-core
 theme: 
   name: material
