@@ -27,4 +27,6 @@ owl_agent_vs_path: /app/chromadb
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_llm_history_length: 5
 owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService
-app_client_repository: ibu.itg.ds.loanapp_client_repo_mock.LoanAppRepositoryInMem
+
+owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuLoanToolInstanceFactory
+app_borrower_repository: ibu.itg.ds.loanapp_borrower_repo_mock.BorrowerRepositoryInMem

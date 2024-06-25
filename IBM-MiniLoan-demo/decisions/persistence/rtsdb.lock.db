@@ -1,0 +1,6 @@
+#FileLock
+#Tue Jun 25 22:19:28 CEST 2024
+server=172.26.0.3\:33737
+hostName=decisionsvc
+method=file
+id=190510da8dfe75ca2c656fc006ac6269d7745b13274

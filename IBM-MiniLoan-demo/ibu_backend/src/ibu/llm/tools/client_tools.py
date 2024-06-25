@@ -12,17 +12,17 @@ from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolE
 from langchain_community.tools.tavily_search import TavilySearchResults
 LOGGER = logging.getLogger(__name__)
 
-_loan_client: LoanApplicationClientRepositoryInterface
+_loan_client: LoanApplicationClientRepositoryInterface = None
 
 def build_or_get_loan_client_repo() -> LoanApplicationClientRepositoryInterface:
     global _loan_client
-    if _loan_client:
+    if not _loan_client:
         config = get_config()
         module_path, class_name = config.app_borrower_repository.rsplit('.',1)
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
         LOGGER.debug(f"---> klass {klass}")
-        _loan_client= klass(config)
+        _loan_client= klass()
         LOGGER.debug("Created repository for client")
     return _loan_client
 
@@ -60,11 +60,11 @@ methods = { "get_client_by_name": get_client_by_name,
            "assess_loan_app_with_decision": assess_loan_app_with_decision}
 arg_schemas = { "LoanRequest": LoanRequest}
 
-def define_tool(name: str, description: str, funct_name, args: Optional[str]):
+def define_tool(description: str, funct_name, args: Optional[str]):
     if args:
         return StructuredTool.from_function(
             func=methods[funct_name],
-            name=name,
+            name=funct_name,
             description=description,
             args_schema= arg_schemas[args], # type: ignore
             return_direct=False,
@@ -72,7 +72,7 @@ def define_tool(name: str, description: str, funct_name, args: Optional[str]):
     else:
         return StructuredTool.from_function(
             func=methods[funct_name],
-            name=name,
+            name=funct_name,
             description=description,
             return_direct=False,
         )
@@ -86,9 +86,9 @@ class IbuLoanToolInstanceFactory(ToolInstanceFactoryInterface):
             if tool_entity.tool_id == "tavily":
                 tool_list.append(TavilySearchResults(max_results=2))
             elif "client" in tool_entity.tool_id:
-                tool_list.append(define_tool(tool_entity.tool_name, tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class)) # type: ignore
+                tool_list.append(define_tool( tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class)) # type: ignore
             elif  tool_entity.tool_id == "ibu_loan_assessment_action":
-                tool_list.append(define_tool(tool_entity.tool_name, tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class)) # type: ignore
+                tool_list.append(define_tool(tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class)) # type: ignore
             else:
                 raise Exception("Not yet implemented")
         return tool_list

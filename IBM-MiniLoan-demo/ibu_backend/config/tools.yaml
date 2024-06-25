@@ -8,7 +8,6 @@ tavily:
   tool_description: 'A search engine optimized for comprehensive, accurate, and trusted results'
   tool_fct_name: ''
   tool_id: tavily
-  tool_name: "tavily search"
 
 
 ibu_client_by_name:
@@ -16,14 +15,13 @@ ibu_client_by_name:
   tool_class_name: 'ibu.llm.tools.client_tools'
   tool_description: 'get client information given his or her name'
   tool_fct_name: get_client_by_name
-  tool_name: "get client by name"
+
 
 ibu_best_action:
   tool_id: ibu_best_action
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: 'perform the loan application request assessment for the given borrower name'
   tool_fct_name: define_next_best_action_with_decision
-  tool_name: "define_next_best_action_with_decision"
   tool_arg_schema_class: LoanRequest
 
 ibu_loan_assessment_action:
@@ -31,4 +29,3 @@ ibu_loan_assessment_action:
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: 'perform the loan application request assessment for the given borrower name'
   tool_fct_name: assess_loan_app_with_decision
-  tool_name: ibu_loan_assessment_action

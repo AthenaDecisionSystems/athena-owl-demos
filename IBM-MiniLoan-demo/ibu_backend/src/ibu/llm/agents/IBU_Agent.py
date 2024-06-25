@@ -11,9 +11,14 @@ from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.llm.base_owl_agent import BaseOwlAgent
 from ibu.llm.tools import client_tools
 from typing import Any
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
 class IBUAgent(BaseOwlAgent):
     
-    def __init__(self, modelName, system_prompt, temperature, top_p, tool_instances: list[Any]):
+    def __init__(self, modelName, system_prompt, temperature, tool_instances: list[Any]):
+        LOGGER.debug("Creating IBUAgent")
         self.model = ChatOpenAI(model=modelName, temperature= temperature / 50)
         self.tools = tool_instances
         self.system_prompt = system_prompt

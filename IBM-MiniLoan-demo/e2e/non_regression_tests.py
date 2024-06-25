@@ -23,24 +23,13 @@ def verify_health(base_url):
   rep = requests.get(base_url + "/health").content.decode()
   print(f"\n@@@> {rep}")
   assert "Alive" in rep
-
-
-def perform_general_knowledge_query_legacy(base_url):
-  print("\n--> Validate Basic Query to LLM\n")
-  data='{ "locale": "en",\
-    "query": "can you give me some information about langgraph?",\
-    "assistant_id": "base_assistant", \
-    "thread_id" : "1" \
-  }'
-  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
-  print(f"\n@@@> {rep}")
   
 
 def validate_access_to_ibu_prompt(base_url):
   print("\n--> Get IBU default prompt\n")
-  rep = requests.get(base_url + "/a/prompts/default_prompt/en").content.decode()
+  rep = requests.get(base_url + "/a/prompts/ibu_loan_prompt/en").content.decode()
   print(f"\n@@@> {rep}")
-  assert "questions based" in rep
+  assert "bank" in rep
   
   
 def validate_ibu_assistant(base_url):
@@ -66,17 +55,29 @@ def validate_ibu_tools(base_url, tool_id):
   print(f"\n@@@> {rep}")
   return rep
 
+def validate_get_credit_score(base_url, fn: str, ln: str):
+  print("\n--> Get information about one of the client\n")
+  data='{ "locale": "en",\
+    "query": "What is the credit score of Robert Smith using IBU loan database?",\
+    "type": "chat",\
+    "assistant_id": "ibu_assistant", \
+    "thread_id" : "1" \
+    "user_id" : "a_test_user" \
+    "chat_history": ""\
+  }'
+  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+  print(f"\n@@@> {rep}")
+  return rep
 
   
 if __name__ == "__main__":
   print("################ Non Regression Tests ##############")
   verify_health(IBU_BASE_URL)
-  perform_general_knowledge_query_legacy(IBU_BASE_URL)
-
   validate_access_to_ibu_prompt(IBU_BASE_URL)
   ae=validate_ibu_assistant(IBU_BASE_URL)
   validate_ibu_agent(IBU_BASE_URL,ae.agent_id)
   validate_ibu_tools(IBU_BASE_URL,"ibu_client_by_name")
+  validate_get_credit_score(IBU_BASE_URL,"Robert", "Smith")
 
 
 

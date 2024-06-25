@@ -20,7 +20,7 @@ def get_config():
         
         CONFIG_FILE= os.getenv("CONFIG_FILE")
         if CONFIG_FILE:
-            print(f"reload config from file:{CONFIG_FILE}")
+            print(f"IBU app setting reload config from file:{CONFIG_FILE}")
             with open(CONFIG_FILE, 'r') as file:
                 _config = parse_yaml_raw_as(LoanAppSettings,file.read())
         else:

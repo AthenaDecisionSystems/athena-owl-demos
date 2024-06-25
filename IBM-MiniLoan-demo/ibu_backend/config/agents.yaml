@@ -19,11 +19,12 @@ open_ai_tool:
 ibu_agent:
   agent_id: ibu_agent
   name: ibu_agent
-  description: openai based agent with IBU prompt and tools
+  description: openai based agent with IBU loan app prompt and tools
   class_name: athena.llm.agents.base_chain_agent.OwlAgent
   modelName: gpt-3.5-turbo-0125
   modelClassName: langchain_openai.ChatOpenAI
-  prompt_ref: default_prompt
+  prompt_ref: ibu_loan_prompt
+  # hwchase17/react-chat-json 
   temperature: 0
   top_k: 1
   top_p: 1

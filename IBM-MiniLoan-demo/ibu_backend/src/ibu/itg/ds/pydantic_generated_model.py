@@ -21,10 +21,6 @@ class SSN(BaseModel):
     groupCode: Optional[str] = None
     serialNumber: Optional[str] = None
 
-
-
-
-
 class Error(BaseModel):
     code: Optional[int] = Field(None, description='HTTP error code.')
     message: Optional[str] = Field(None, description='Error message.')
