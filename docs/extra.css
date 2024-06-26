@@ -9,6 +9,10 @@
   --md-primary-font-color: #220390;
 }
 
+.md-content {
+  --md-typeset-a-color: #09bfdd;
+}
+
 .section ul li {
   margin-bottom: 10px;
 }
@@ -21,6 +25,8 @@
 
 code>* {
   --md-default-fg-color--light: hsl(65, 17%, 29%);
+  --md-code-hl-color:                  hsla(#{hex2hsl($clr-blue-a200)}, 1);
+  --md-code-hl-color--light:           hsla(#{hex2hsl($clr-blue-a200)}, 0.1);
   --md-code-hl-number-color: hsla(6, 74%, 63%, 1);
   --md-code-hl-special-color: hsla(340, 83%, 66%, 1);
   --md-code-hl-function-color: hsla(291, 57%, 65%, 1);

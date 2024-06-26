@@ -26,9 +26,10 @@ class TestLoanDecisionServiceBackend(unittest.TestCase):
                 creditScore = 500)
         )
         payload: str = request.model_dump_json()
+        print(f"request to rule execution server: {request}\n")
         resp = callRuleExecutionServer(payload)
         response_json = resp.json()
-        print(response_json)
+        print(f"--> response from rule execution server: {response_json}")
         
     def test_using_repo_to_get_low_credit_score_user_borrower(self):
         print("\n\n---- test_using_repo_to_get_bankrupted_borrower")
@@ -36,10 +37,12 @@ class TestLoanDecisionServiceBackend(unittest.TestCase):
         rsmith = repo.get_client_by_name(first_name = "Robert", last_name = "Smith")
         request = Request(loan=Loan(
             duration= 60,
+            yearlyRepayment=3000,
             yearlyInterestRate= 5,
             amount = 100000),
             borrower=rsmith)
         payload: str = request.model_dump_json()
+        print(f"request to rule execution server: {request}\n")
         resp = callRuleExecutionServer(payload)
         response_json = resp.json()
-        print(response_json)
+        print(f"--> response from rule execution server: {response_json}")

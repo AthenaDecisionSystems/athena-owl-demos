@@ -8,7 +8,8 @@ The Miniloan application is part of the IBM Operational Decision Management prod
 The questions that are tested and validated are:
 
 * What is the credit score of Robert Smith?
-* 
+* My client robert smith wants to borrow $1,000,000 for 180 months do you think it is possible?
+* My client jean martin wants to get a $300,000 loan for his house enhancement, do you think it is possible?
 
 ## Architecture
 
@@ -51,12 +52,24 @@ This section explains the code approach to use Agent for tool calling.
 
 ## Development around the demonstration
 
-In case you need to work on the current demonstration, and run some of the test cases, this section addresses what needs to be done to run on you local laptop with Docker engine.
+In case you need to work on the current demonstration, and run some of the test cases, this section addresses what needs to be done to run on you local laptop with Docker engine. Currently in development mode the source code of the core framework is needed so you need to clone it.
+
+```sh
+# for example in $HOME/Code/Athena
+
+git clone https://github.com/AthenaDecisionSystems/athena-owl-core
+```
 
 ### Unit tests
 
-* Define the PYTHONPATH so the core module can be accessed in the unit tests
+* Define the PYTHONPATH so the core modules can be accessed during the tests execution
 
-    ```sh
-     export PYTHONPATH=$WHERE_YOUR_CODE_IS/athena-owl-core/owl-agent-backend/src
-    ```
+```sh
+    export PYTHONPATH=$WHERE_YOUR_CODE_IS/athena-owl-core/owl-agent-backend/src
+```
+
+* Run all unit tests
+
+```sh
+pytest -s tests/ut
+```

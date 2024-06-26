@@ -1,6 +1,6 @@
-2024-06-26 07:04:21 jdbc[3]: exception
+2024-06-26 17:30:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NOADDITION" not found; SQL statement:
 select count(*) from NOADDITION [42102-199]
-2024-06-26 07:04:22 jdbc[3]: exception
+2024-06-26 17:30:01 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DBLOCK" not found; SQL statement:
 select count(*) from DBLOCK [42102-199]

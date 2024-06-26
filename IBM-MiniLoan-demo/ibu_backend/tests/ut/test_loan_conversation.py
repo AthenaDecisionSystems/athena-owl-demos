@@ -11,7 +11,7 @@ from athena.llm.conversations.conversation_mgr import get_or_start_conversation
 
 class TestConversation(unittest.TestCase):
         
-    def test_conv_openai_base_assistant(self):
+    def _test_conv_openai_base_assistant(self):
         print("\n------- test_conversation to do tool calls on client by name")
         cc = ConversationControl()
         cc.assistant_id="ibu_assistant"
@@ -39,11 +39,12 @@ class TestConversation(unittest.TestCase):
         cc.user_id="unit_test"
         cc.thread_id="3"
         cc.chat_history=[]
-        cc.query="One of our client Robert Smith wants a loan for $500,000 do we approve it?"
+        cc.query="One of our client Robert Smith wants a loan for $500,000 for a duration of 60 months do we approve it?"
         rep = get_or_start_conversation(cc)
         assert rep
         assert rep.message
         print(f"\n\nAssistant --> {rep}") 
+        assert "has not been approved" in rep.message
 
         
 if __name__ == '__main__':

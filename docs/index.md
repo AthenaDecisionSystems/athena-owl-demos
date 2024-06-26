@@ -5,8 +5,8 @@ This repository includes pre-defined demonstration that can be used with differe
 
 | Name | Goal |
 | --- | --- |
-| [IBU Insurance](./insurance.md) | A chatbot to help IBU Insurance’s customer service representatives manage customer complaints |
-| [IBU MiniLoan](./miniloan.md) | A demonstration of Agentic solution with IBM ODM Miniloan sample |
+| **[IBU Insurance](./insurance.md)** | A chatbot to help IBU Insurance’s customer service representatives manage customer complaints |
+| **[IBU MiniLoan](./miniloan.md)** | A demonstration of Agentic solution with IBM ODM Miniloan sample |
 
 If you need to develop your own demonstration see [these instructions](./build_sol.md)
 

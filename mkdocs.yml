@@ -14,6 +14,7 @@ theme:
   favicon: assets/owl.png
   palette:
     scheme: default
+    primary: custom
   language: en
   features:
       - content.code.annotate
