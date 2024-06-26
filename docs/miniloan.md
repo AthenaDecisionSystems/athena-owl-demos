@@ -137,3 +137,15 @@ The previous section demonstrates the Yaml manifests for the declaration of the 
 
 The tool function coding is done in one class, the [client_tools.py](https://github.com/AthenaDecisionSystems/athena-owl-demos/blob/main/IBM-MiniLoan-demo/ibu_backend/src/ibu/llm/tools/client_tools.py).
 
+Taking the tool definition below
+
+```yaml
+ibu_loan_assessment_action:
+  tool_id: ibu_loan_assessment_action
+  tool_class_name: ibu.llm.tools.client_tools
+  tool_description: 'perform the loan application request assessment for the given borrower name'
+  tool_fct_name: assess_loan_app_with_decision
+```
+
+The module `ibu.llm.tools.client_tools` includes the function `assess_loan_app_with_decision` 
+

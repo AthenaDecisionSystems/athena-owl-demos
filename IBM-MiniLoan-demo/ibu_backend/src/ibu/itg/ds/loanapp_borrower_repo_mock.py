@@ -22,7 +22,7 @@ class BorrowerRepositoryInMem(LoanApplicationClientRepositoryInterface):
     def initialize_client_db(self):
         self.add_client(Borrower(name = "robert dupont",
                             yearlyIncome = 50000,
-                            creditScore = 180
+                            creditScore = 300
                             ))
         self.add_client(Borrower(name = "joe hurt",
                             yearlyIncome = 30000,
@@ -37,11 +37,8 @@ class BorrowerRepositoryInMem(LoanApplicationClientRepositoryInterface):
                             creditScore = 500,
                             ))
         self.add_client(Borrower(name = "sophie lefevre",
-                          
-                            yearlyIncome = 40000,
-                           
-                            creditScore = 500,
-                           
+                            yearlyIncome = 150000,
+                            creditScore = 800,
                             ))
         self.add_client(Borrower(name = "pierre moreau",
                             yearlyIncome = 120000,

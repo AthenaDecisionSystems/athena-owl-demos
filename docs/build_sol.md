@@ -60,7 +60,7 @@ The decision service exposes an REST API with an Open API document. From this do
 datamodel-codegen  --input MydeploymentMiniloan_ServiceRulesetDecisionService.yaml --input-file-type openapi --output ../ibu/itg/ds/pydantic_generated_model.py
 ```
 
-*If needed review the input and optional fields as some empty attribute may generate null pointer exception in the rules* For example approved need to be inialised to False and messages to be an empty array instead of None:
+*If needed review the input and optional fields as some empty attribute may generate null pointer exception in the rules* For example approved need to be initialized to False and messages to be an empty array instead of None:
 
 ```python
     yearlyRepayment: Optional[int] = None

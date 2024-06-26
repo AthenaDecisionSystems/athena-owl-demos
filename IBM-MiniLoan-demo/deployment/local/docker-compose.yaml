@@ -6,8 +6,7 @@ services:
     ports:
       - 8000:8000
     environment:
-      CONFIG_FILE: /app/config/config.yaml
-      #OPENAI_API_KEY: $OPENAI_API_KEY
+      - CONFIG_FILE=/app/config/config.yaml
     env_file:
       - ../../.env
     volumes:
@@ -16,7 +15,18 @@ services:
       - ./data/file_content:/app/file_content
       - ./data/chromadb:/app/chromadb
       - ../../ibu_backend/src/ibu:/app/ibu
-  
+  owl-frontend:
+    hostname: owl-frontend
+    image: athena/owl-frontend:latest 
+    container_name: owl-frontend
+    ports:
+      - 3000:80
+    environment:
+      - REACT_APP_BACKEND_URL=http://owl-backend:8000/api/v1/
+      - REACT_APP_ASSISTANT_ID_WITH_RULES='ibu_assistant'
+      - REACT_APP_ASSISTANT_ID_WITHOUT_RULES='ibu_assistant_limited'
+      - REACT_APP_DEMO_TEXT="One of our client Robert Smith wants a loan for \$500,000 for a duration of 60 months do we approve it?"
+
   decisionsvc:
     image: icr.io/cpopen/odm-k8s/odm:8.12
     hostname: decisionsvc

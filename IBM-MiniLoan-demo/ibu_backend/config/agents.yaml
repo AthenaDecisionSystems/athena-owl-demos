@@ -46,3 +46,14 @@ ibu_agent_limited:
   top_p: 1
   tools:
   - ibu_client_by_name
+
+fake_agent:
+  agent_id: fake_agent
+  name: fake_agent
+  description: Fake agent for testing 
+  class_name: athena.llm.agents.fake_agent.FakeAgent
+  modelName: not_needed
+  prompt_ref: default_prompt
+  temperature: 0
+  top_k: 1
+  top_p: 1

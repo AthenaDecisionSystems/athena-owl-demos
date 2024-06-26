@@ -47,9 +47,9 @@ def define_next_best_action_with_decision(loanRequest: Loan, first_name: str, la
     else:
         return None
 
-def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name: str, last_name: str):
+def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name: str, last_name: str, yearlyRepayment: int):
     loanRequest= Loan(duration=duration, 
-                      yearlyRepayment=3000,
+                      yearlyRepayment=yearlyRepayment,
                       yearlyInterestRate=4,
                       amount=loan_amount)
     
