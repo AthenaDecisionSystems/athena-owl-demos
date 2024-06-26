@@ -34,10 +34,9 @@ class TestAssistantsAPIs(unittest.TestCase):
         ctl = self.build_ConversationControl()
         ctl.query="What is the credit score of Robert Smith as future borrower?"
         response=requests.post(get_config().api_route + "/c/generic_chat", json= ctl.model_dump())
-        print(f"\n--it--> {response.content}")
         assert response
         assert response.status_code == 200
-        
+        print(f"\n--it--> {response.content}")
         
 if __name__ == '__main__':
     unittest.main()

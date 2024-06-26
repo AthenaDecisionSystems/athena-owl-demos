@@ -54,7 +54,7 @@ def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name:
                       amount=loan_amount)
     
     borrower =  build_or_get_loan_client_repo().get_client_by_name(first_name=first_name, last_name=last_name)
-    ds_request = Request(__DecisionID__= str(uuid.uuid4),borrower=borrower, loan=loanRequest)
+    ds_request = Request(borrower=borrower, loan=loanRequest) # type: ignore
     payload: str = ds_request.model_dump_json()
     LOGGER.info(f"@@@> decision service request {payload}")
     rep = callRuleExecutionServer(payload)

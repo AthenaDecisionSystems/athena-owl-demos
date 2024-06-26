@@ -99,17 +99,15 @@ def validate_approve_a__good_loan(base_url, fn: str, ln: str):
 
 
 if __name__ == "__main__":
-  print("################ Non Regression Tests ##############")
-  """
+  print("################ Non Regression Tests ##############") 
   verify_health(IBU_BASE_URL)
   validate_access_to_ibu_prompt(IBU_BASE_URL)
   ae=validate_ibu_assistant(IBU_BASE_URL)
   validate_ibu_agent(IBU_BASE_URL,ae.agent_id)
   validate_ibu_tools(IBU_BASE_URL,"ibu_client_by_name")
   validate_get_credit_score(IBU_BASE_URL,"Robert", "Smith")
-  """
   validate_approve_a_loan(IBU_BASE_URL,"Robert", "Smith")
-  #validate_approve_a__good_loan(IBU_BASE_URL,"Jean", "Martin")
+  validate_approve_a__good_loan(IBU_BASE_URL,"Jean", "Martin")
 
 
 

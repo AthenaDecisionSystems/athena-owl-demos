@@ -127,24 +127,6 @@ The class name is coming from Owl Agent core library. This is the LangGraph flow
 
 
 
-#### Adding a mockup repository 
-
-Define an interface for the repository with only the methods used in the solution:
-
-```python
-class LoanApplicationClientRepositoryInterface:
-
-    def get_client_by_name(self,first_name: str, last_name: str) -> Borrower | None:
-        return None
-    
-    
-    def get_client_by_name_json(self,first_name: str, last_name: str) -> str | None:
-        return None
-
-```
-
-Then implement the mockup repository with your test data.
-
 ### Define prompt
 
 ### Integration tests
@@ -163,10 +145,10 @@ docker logs decisionsvc
 
 ### Exception when starting ODM decision server 
 
-The trace of the decision service may log an escpetion of sequence number already created. 
+The trace of the decision service may log an exception of sequence number already created. 
 
-```
+```sh
  org.h2.jdbc.JdbcSQLSyntaxErrorException: Sequence "SYSTEM_SEQUENCE_AAD2612D_FF17_4435_A436_6D4A63BF6D6E" already exists; SQL statement:
 ```
 
-This may come from previous execution on a new database. Just deleting the decision/persistence folder, and restarting the decision server solved the problem.
+This may come from previous execution on a new database. Just deleting the `decisions/persistence` folder, and restarting the decision server solved the problem.

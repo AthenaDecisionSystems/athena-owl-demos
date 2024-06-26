@@ -4,7 +4,6 @@ os.environ["CONFIG_FILE"] = "./tests/ut/config/config.yaml"
 module_path = "./src"
 sys.path.append(os.path.abspath(module_path))
 
-from ibu.app_settings import get_config
 from ibu.itg.ds.pydantic_generated_model import Request, Loan, Borrower
 from ibu.itg.decisions.next_best_action_ds_client import callRuleExecutionServer
 from ibu.itg.ds.loanapp_borrower_repo_mock import BorrowerRepositoryInMem
@@ -28,6 +27,8 @@ class TestLoanDecisionServiceBackend(unittest.TestCase):
         payload: str = request.model_dump_json()
         print(f"request to rule execution server: {request}\n")
         resp = callRuleExecutionServer(payload)
+        assert resp
+        assert resp.json
         response_json = resp.json()
         print(f"--> response from rule execution server: {response_json}")
         
@@ -44,5 +45,8 @@ class TestLoanDecisionServiceBackend(unittest.TestCase):
         payload: str = request.model_dump_json()
         print(f"request to rule execution server: {request}\n")
         resp = callRuleExecutionServer(payload)
+        assert resp
+        assert resp.json
         response_json = resp.json()
         print(f"--> response from rule execution server: {response_json}")
+        assert not response_json["approved"]

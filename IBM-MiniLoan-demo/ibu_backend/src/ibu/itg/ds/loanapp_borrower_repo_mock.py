@@ -30,14 +30,11 @@ class BorrowerRepositoryInMem(LoanApplicationClientRepositoryInterface):
                             ))
         self.add_client(Borrower(name = "marie durand",
                             yearlyIncome = 80000,
-                            creditScore = 500
+                            creditScore = 100
                             ))
         self.add_client(Borrower(name = "jean martin",
-                          
-                            yearlyIncome = 100000,
-                          
+                            yearlyIncome = 150000,
                             creditScore = 500,
-                           
                             ))
         self.add_client(Borrower(name = "sophie lefevre",
                           

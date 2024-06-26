@@ -45,6 +45,20 @@ class TestConversation(unittest.TestCase):
         assert rep.message
         print(f"\n\nAssistant --> {rep}") 
         assert "has not been approved" in rep.message
+        
+    def test_conv_to_get_a_loan_approved(self):
+        print("\n------- test_conversation to do tool calls on get loan decision")
+        cc = ConversationControl()
+        cc.assistant_id="ibu_assistant"
+        cc.user_id="unit_test"
+        cc.thread_id="3"
+        cc.chat_history=[]
+        cc.query="One of our client Jean Martin wants a loan for $300,000 for a duration of 60 months do we approve it?"
+        rep = get_or_start_conversation(cc)
+        assert rep
+        assert rep.message
+        print(f"\n\nAssistant --> {rep}") 
+        assert "has been approved" in rep.message
 
         
 if __name__ == '__main__':
