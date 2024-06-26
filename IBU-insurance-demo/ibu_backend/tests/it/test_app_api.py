@@ -25,14 +25,6 @@ class TestAppApi(unittest.TestCase):
         data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
             "query": "who is the client with id 1?",\
             "type": "chat",\
-            "modelParameters": { \
-                "modelName": "gpt-3.5-turbo-0125",\
-                "modelClass": "agent_openai",\
-                "prompt_ref": "default_prompt",\
-                "temperature": 0,\
-                "top_k": 1,\
-                "top_p": 1\
-            },\
             "chat_history": [],\
             "assistant_id":"ibu_assistant",  \
             "user_id" : "remote_test" \

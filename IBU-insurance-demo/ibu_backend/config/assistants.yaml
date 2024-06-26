@@ -1,20 +1,14 @@
 ibu_assistant:
   assistant_id: ibu_assistant
-  class_name: ibu.llm.assistants.IBU_Assistant.IBUAssistant
+  #class_name: ibu.llm.assistants.IBU_Assistant.IBUAssistant
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
   description: The IBU insurance claim processing assistant
   name: IBU_assistant
-  agent_id: ibu_open_ai_tool
-
-ibu_assistant_lg:
-  assistant_id: ibu_assistant_lg
-  class_name: ibu.llm.assistants.IBU_Assistant_LG.IBUAssistant
-  description: The IBU insurance claim processing assistant with LangGraph
-  name: IBU_assistant_LG
   agent_id: ibu_agent
 
 base_tool_assistant:
   assistant_id: base_tool_assistant
-  class_name: athena.llm.assistants.BaseToolAssistant.BaseToolAssistant
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
   description: A default assistant that uses LLM and search tool to do web search
   name: Default tool assistant
   agent_id: open_ai_tool

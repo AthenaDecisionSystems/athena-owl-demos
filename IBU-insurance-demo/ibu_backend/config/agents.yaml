@@ -1,20 +1,22 @@
-open_ai:
-  agent_id: open_ai_gpt35
-  name: open_ai_gpt35
+openai_chain:
+  agent_id: openai_chain
+  name: openai_chain
   description: openai based agent with simple prompt 
-  class_name: athena.llm.agents.agent_openai.OpenAIAgent
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: default_prompt
   temperature: 0
   top_k: 1
   top_p: 1
 
-open_ai_tool:
-  agent_id: open_ai_tool
-  name: open_ai_gpt35
+openai_tool_chain:
+  agent_id: openai_tool_chain
+  name: openai_tool_chain
   description: openai based agent with prompt coming from langchain hub  and tool
-  class_name: athena.llm.agents.tool_agent_openai.OpenAIToolAgent
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
   modelName: gpt-3.5-turbo-0125
+  modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: hwchase17/openai-functions-agent
   temperature: 0
   top_k: 1
@@ -33,25 +35,13 @@ fake_agent:
   top_k: 1
   top_p: 1
 
-anthropic_claude_3:
-  agent_id: anthropic_claude_3
-  name: anthropic_claude_3
-  description: Claude 3 with tool calling
-  class_name: athena.llm.agents.agent_anthropic.AnthropicAgent
-  modelName: claude-3-opus-20240229
-  prompt_ref: default_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
-  tools:
-  - tavily
-
 ibu_agent:
   agent_id: ibu_agent
   name: ibu_agent
-  description: openai based agent withIBU prompt and tools
-  class_name: ibu.llm.agents.IBU_Agent.IBUAgent
+  description:  openai based agent with tool to support ibu insurance demo and variable model 
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
   modelName: gpt-3.5-turbo-0125
+  modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: openai_insurance_with_tool
   temperature: 0
   top_k: 1
@@ -61,9 +51,3 @@ ibu_agent:
   - ibu_client_by_name
   - ibu_claim_by_id
   - ibu_best_action
-
-ibu_open_ai_tool:
-  agent_id: ibu_open_ai_tool
-  name: ibu_open_ai_tool
-  description: openai based agent with tool to support ibu insurance demo and variable model 
-  class_name: ibu.llm.agents.openai_agent_tool.OpenAIAgent

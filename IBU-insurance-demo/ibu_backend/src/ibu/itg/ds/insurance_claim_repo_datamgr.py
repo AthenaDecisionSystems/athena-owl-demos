@@ -5,15 +5,16 @@ Copyright 2024 Athena Decision Systems
 import json, logging
 import requests
 from fastapi.encoders import jsonable_encoder
-from .insurance_claim_repo import InsuranceClaimRepositoryInterface
-from .ComplaintHandling_generated_model import *
+from athena.app_settings import get_config
+from ibu.itg.ds.insurance_claim_repo import InsuranceClaimRepositoryInterface
+from ibu.itg.ds.ComplaintHandling_generated_model import *
 LOGGER = logging.getLogger(__name__)
 
 
 class InsuranceClaimFromDataMgr(InsuranceClaimRepositoryInterface):
 
-    def __init__(self,config):
-        self.data_mgr_url= config.app_insurance_backend_url
+    def __init__(self):
+        self.data_mgr_url= get_config().app_insurance_backend_url
         
     def get_all_claims(self) -> list[Claim]:
         resp = []

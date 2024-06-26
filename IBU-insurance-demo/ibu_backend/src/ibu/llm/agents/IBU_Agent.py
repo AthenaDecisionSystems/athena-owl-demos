@@ -9,14 +9,12 @@ from langchain.agents import create_tool_calling_agent
 from langchain_core.output_parsers import StrOutputParser
 from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.llm.base_owl_agent import BaseOwlAgent
-from ibu.llm.tools import claim_tools
 from ibu.llm.tools import client_tools
 
 class IBUAgent(BaseOwlAgent):
     
     def __init__(self, modelName, system_prompt, temperature, top_p, tool_entities: list[OwlToolEntity]):
         self.model = ChatOpenAI(model=modelName, temperature= temperature / 50)
-        self.tools = self.build_tool_instances(tool_entities)
         self.system_prompt = system_prompt
         self.prompt =  ChatPromptTemplate.from_messages([
             ("system", system_prompt),
@@ -53,15 +51,4 @@ class IBUAgent(BaseOwlAgent):
     def get_tools(self):
         return self.tools
         
-    def build_tool_instances(self, tool_entities: list[OwlToolEntity]):
-        tool_list=[]
-        for tool_entity in tool_entities:
-            if tool_entity.tool_id == "ibu_claim_by_id":
-                tool_list.append( claim_tools.define_tool(tool_entity.tool_name, tool_entity.tool_description, tool_entity.tool_fct_name))
-            elif "client" in tool_entity.tool_id:
-                tool_list.append(client_tools.define_tool(tool_entity.tool_name, tool_entity.tool_description, tool_entity.tool_fct_name))
-            elif  tool_entity.tool_id == "ibu_best_action":
-                tool_list.append(claim_tools.define_tool(tool_entity.tool_name, tool_entity.tool_description, tool_entity.tool_fct_name))
-            else:
-                raise Exception(f"{tool_entity.tool_id}: Not yet implemented")
-        return tool_list
+  

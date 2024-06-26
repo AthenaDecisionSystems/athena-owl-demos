@@ -8,7 +8,7 @@ from ibu.itg.ds.ComplaintHandling_generated_model import *
 
 class InsuranceClientInMem(InsuranceClientRepositoryInterface):
 
-    def __init__(self, config):
+    def __init__(self):
         self.CLIENTDB = dict()
         self.initialize_client_db()
 

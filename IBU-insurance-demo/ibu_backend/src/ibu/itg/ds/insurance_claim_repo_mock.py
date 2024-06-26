@@ -3,11 +3,11 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 import json,logging
-from .insurance_claim_repo import InsuranceClaimRepositoryInterface
-from .ComplaintHandling_generated_model import *
+from ibu.itg.ds.insurance_claim_repo import InsuranceClaimRepositoryInterface
+from ibu.itg.ds.ComplaintHandling_generated_model import *
 class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
 
-    def __init__(self,config):
+    def __init__(self):
         self.CLAIMSDB = dict()
         self.initialize_claims_db()
 

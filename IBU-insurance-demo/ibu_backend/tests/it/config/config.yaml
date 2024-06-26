@@ -20,4 +20,4 @@ app_insurance_backend_url: http://localhost:8080/repository
 
 
 owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService
-
+owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory

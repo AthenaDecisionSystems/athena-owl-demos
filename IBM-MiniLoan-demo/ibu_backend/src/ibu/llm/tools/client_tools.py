@@ -2,12 +2,10 @@ import logging, uuid, datetime
 from ibu.app_settings import get_config
 from importlib import import_module
 from typing import Optional, Any
-from pydantic import BaseModel, Field
 from langchain.tools import StructuredTool
 from ibu.itg.ds.loanapp_borrower_repo_mock import LoanApplicationClientRepositoryInterface
 from ibu.itg.ds.pydantic_generated_model import Loan, Request
 from ibu.itg.decisions.next_best_action_ds_client import callRuleExecutionServer
-from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity
 from langchain_community.tools.tavily_search import TavilySearchResults
 LOGGER = logging.getLogger(__name__)

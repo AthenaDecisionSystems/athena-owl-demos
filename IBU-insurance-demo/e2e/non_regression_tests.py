@@ -109,11 +109,10 @@ def get_client_using_LLM_legacy_mode(base_url):
  
 def get_best_action_using_LLM(base_url):
   print("\n--> Get claim - client best actin using assistant with langgraph\n")
-  data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
+  data='{ "locale": "en",\
             "query": "David Martin is not happy with the settlement of his claim with a claim_id 1. He thinks the amount reimbursed is far too low. He is threatening to leave to the competition.",\
-            "type": "chat",\
             "chat_history": [],\
-            "assistant_id":"ibu_assistant_lg",  \
+            "assistant_id":"ibu_assistant",  \
             "user_id" : "remote_test" \
         }'
   rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
