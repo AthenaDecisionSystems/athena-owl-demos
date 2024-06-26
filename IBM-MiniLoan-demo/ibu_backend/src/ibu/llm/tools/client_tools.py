@@ -5,7 +5,7 @@ from typing import Optional, Any
 from pydantic import BaseModel, Field
 from langchain.tools import StructuredTool
 from ibu.itg.ds.loanapp_borrower_repo_mock import LoanApplicationClientRepositoryInterface
-from ibu.itg.ds.pydantic_generated_model import LoanRequest, Request
+from ibu.itg.ds.pydantic_generated_model import Loan, Request
 from ibu.itg.decisions.next_best_action_ds_client import callRuleExecutionServer
 from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity
@@ -32,10 +32,10 @@ def get_client_by_name(first_name: str, last_name: str) -> str | None:
     """get borrower client information given his or her name"""
     return build_or_get_loan_client_repo().get_client_by_name_json(first_name,last_name)
 
-def define_next_best_action_with_decision(loanRequest: LoanRequest, first_name: str, last_name: str ):
+def define_next_best_action_with_decision(loanRequest: Loan, first_name: str, last_name: str ):
     """perform the loan application request assessment for the given borrower name
     """
-    if loanRequest and type(loanRequest) == LoanRequest:
+    if loanRequest and type(loanRequest) == Loan:
         borrower =  build_or_get_loan_client_repo().get_client_by_name(first_name=first_name, last_name=last_name)
         ds_request = Request(__DecisionID__= str(uuid.uuid4),borrower=borrower, loan=loanRequest)
         payload: str = ds_request.model_dump_json()
@@ -43,11 +43,9 @@ def define_next_best_action_with_decision(loanRequest: LoanRequest, first_name: 
     else:
         return None
 
-def assess_loan_app_with_decision(loan_amount: int, number_of_monthly_payment: int, loan_to_value: float,  first_name: str, last_name: str):
-    loanRequest= LoanRequest(numberOfMonthlyPayments=number_of_monthly_payment, 
-                             amount=loan_amount,
-                             startDate=datetime.datetime.now(),
-                             loanToValue=loan_to_value)
+def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name: str, last_name: str):
+    loanRequest= Loan(duration=duration, 
+                             amount=loan_amount)
     
     borrower =  build_or_get_loan_client_repo().get_client_by_name(first_name=first_name, last_name=last_name)
     ds_request = Request(__DecisionID__= str(uuid.uuid4),borrower=borrower, loan=loanRequest)
@@ -56,9 +54,8 @@ def assess_loan_app_with_decision(loan_amount: int, number_of_monthly_payment: i
 
     
 methods = { "get_client_by_name": get_client_by_name, 
-           "define_next_best_action_with_decision" : define_next_best_action_with_decision,
            "assess_loan_app_with_decision": assess_loan_app_with_decision}
-arg_schemas = { "LoanRequest": LoanRequest}
+arg_schemas = { "Loan": Loan}
 
 def define_tool(description: str, funct_name, args: Optional[str]):
     if args:

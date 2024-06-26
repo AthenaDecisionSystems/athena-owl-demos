@@ -8,7 +8,7 @@ import requests, logging, json
 #from athena.glossary.glossary_mgr import build_get_glossary, Glossary
 
 from ibu.itg.ds.loanapp_borrower_repo_mock import BorrowerRepositoryInMem
-from ibu.itg.ds.pydantic_generated_model import Request, Borrower, Loan
+from ibu.itg.ds.pydantic_generated_model import Request, Borrower, LoanRequest
 from ibu.app_settings import get_config
 
 

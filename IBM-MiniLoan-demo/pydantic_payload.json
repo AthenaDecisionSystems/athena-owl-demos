@@ -1,1 +1,0 @@
-{"field__DecisionID__":null,"borrower":{"firstName":"Joe","lastName":"Hurt","birth":"2000-09-29T00:00:00","SSN":null,"yearlyIncome":50000,"zipCode":"ABC123","creditScore":3,"spouse":null,"latestBankruptcy":null},"loan":{"numberOfMonthlyPayments":12,"startDate":"2006-08-19T19:27:14+02:00","amount":100000,"loanToValue":0.7}}

@@ -6,7 +6,6 @@ from pydantic import BaseModel
 import requests
 
 IBU_BASE_URL="http://localhost:8000/api/v1"
-IBU_BASE_URL="http://localhost:8000/api/v1"
 PROMPT_REFERENCE="ibu_loan_prompt"
 ASSISTANT_REF="ibu_assistant"
 
@@ -70,17 +69,6 @@ def validate_get_credit_score(base_url, fn: str, ln: str):
   print(f"\n@@@> {rep}")
   return rep
 
-def validate_approve_a_loan(base_url, fn: str, ln: str):
-  print("\n--> Get information about one of the client\n")
-  data='{ "locale": "en",\
-    "query": "One of our client Robert Smith wants a loan for $500,000 do we approve it?",\
-    "assistant_id": "ibu_assistant", \
-    "thread_id" : "1", \
-    "user_id" : "a_test_user"\
-  }'
-  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
-  print(f"\n@@@> {rep}")
-  return rep
 
   
 if __name__ == "__main__":
@@ -91,7 +79,7 @@ if __name__ == "__main__":
   validate_ibu_agent(IBU_BASE_URL,ae.agent_id)
   validate_ibu_tools(IBU_BASE_URL,"ibu_client_by_name")
   validate_get_credit_score(IBU_BASE_URL,"Robert", "Smith")
-  validate_approve_a_loan(IBU_BASE_URL,"Robert", "Smith")
+  
 
 
 

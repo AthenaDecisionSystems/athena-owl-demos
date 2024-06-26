@@ -1,17 +1,17 @@
 openapi: 3.0.1
 info:
-  title: loan_validation_production API
-  description: API to invoke the execution of the decision service operation loan_validation_production.
+  title: Miniloan_ServiceRuleset API
+  description: API to invoke the execution of the decision service operation Miniloan_ServiceRuleset.
   version: 1.0.0
 servers:
 - url: http://localhost:9060/DecisionService/rest
 paths:
-  /production_deployment/1.0/loan_validation_production:
+  /mydeployment/1.0/Miniloan_ServiceRuleset/1.0:
     post:
-      summary: Invokes the execution of the decision service operation loan_validation_production.
-      description: Executes the decision service operation loan_validation_production
-        with the path /production_deployment/1.0/loan_validation_production.
-      operationId: callloan_validation_productionDecisionServiceOperation
+      summary: Invokes the execution of the decision service operation Miniloan_ServiceRuleset.
+      description: Executes the decision service operation Miniloan_ServiceRuleset
+        with the path /mydeployment/1.0/Miniloan_ServiceRuleset/1.0.
+      operationId: callMiniloan_ServiceRulesetDecisionServiceOperation
       requestBody:
         description: Request for the execution of the decision service operation.
           Contains notably the input parameters that are used for the execution.
@@ -47,7 +47,7 @@ components:
         borrower:
           $ref: '#/components/schemas/Borrower'
         loan:
-          $ref: '#/components/schemas/LoanRequest'
+          $ref: '#/components/schemas/Loan'
       description: Request for the execution of the decision service operation. Contains
         notably the input parameters that are used for the execution.
     Response:
@@ -57,102 +57,42 @@ components:
           type: string
           description: "Unique identifier representing the execution of the decision\
             \ service operation. If it is not specified, it will be computed automatically."
-        report:
-          $ref: '#/components/schemas/Report'
+        loan:
+          $ref: '#/components/schemas/Loan'
       description: Response for the execution of the decision service operation. Contains
         notably the output parameters that are returned by the execution.
-    Bankruptcy:
-      type: object
-      properties:
-        date:
-          type: string
-          format: date-time
-        chapter:
-          type: integer
-          format: int32
-        reason:
-          type: string
     Borrower:
       type: object
       properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        birth:
-          type: string
-          format: date-time
-        SSN:
-          $ref: '#/components/schemas/SSN'
-        yearlyIncome:
-          type: integer
-          format: int32
-        zipCode:
+        name:
           type: string
         creditScore:
           type: integer
           format: int32
-        spouse:
-          $ref: '#/components/schemas/Borrower'
-        latestBankruptcy:
-          $ref: '#/components/schemas/Bankruptcy'
-    SSN:
-      type: object
-      properties:
-        areaNumber:
-          type: string
-        groupCode:
-          type: string
-        serialNumber:
-          type: string
-    LoanRequest:
-      type: object
-      properties:
-        numberOfMonthlyPayments:
+        yearlyIncome:
           type: integer
           format: int32
-        startDate:
-          type: string
-          format: date-time
+    Loan:
+      type: object
+      properties:
         amount:
           type: integer
           format: int32
-        loanToValue:
+        duration:
+          type: integer
+          format: int32
+        yearlyInterestRate:
           type: number
           format: double
-    Report:
-      type: object
-      properties:
-        borrower:
-          $ref: '#/components/schemas/Borrower'
-        loan:
-          $ref: '#/components/schemas/LoanRequest'
-        validData:
-          type: boolean
-        insuranceRequired:
-          type: boolean
-        insuranceRate:
-          type: number
-          format: double
+        yearlyRepayment:
+          type: integer
+          format: int32
         approved:
           type: boolean
         messages:
           type: array
           items:
             type: string
-        yearlyInterestRate:
-          type: number
-          format: double
-        monthlyRepayment:
-          type: number
-          format: double
-        insurance:
-          type: string
-        message:
-          type: string
-        yearlyRepayment:
-          type: number
-          format: double
     Error:
       type: object
       properties:

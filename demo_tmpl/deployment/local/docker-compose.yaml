@@ -1,0 +1,33 @@
+services:
+  owl-backend:
+    hostname: owl-backend
+    image: jbcodeforce/athena-owl-backend:latest 
+    container_name: owl-backend
+    ports:
+      - 8000:8000
+    environment:
+      CONFIG_FILE: /app/config/config.yaml
+      #OPENAI_API_KEY: $OPENAI_API_KEY
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../ibu_backend/config:/app/config
+      - ../../.env:/app/.env
+      - ./data/file_content:/app/file_content
+      - ./data/chromadb:/app/chromadb
+      - ../../ibu_backend/src/ibu:/app/ibu
+  
+  decisionsvc:
+    image: icr.io/cpopen/odm-k8s/odm:8.12
+    hostname: decisionsvc
+    container_name: decisionsvc
+    ports:
+      - 9443:9443
+      - 9060:9060
+    environment:
+      - SAMPLE=true
+      - LICENSE=accept
+    volumes:
+      - ../../decisions/persistence:/config/dbdata/
+
+  

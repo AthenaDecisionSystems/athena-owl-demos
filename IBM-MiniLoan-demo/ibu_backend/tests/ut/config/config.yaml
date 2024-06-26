@@ -11,7 +11,8 @@ owl_agent_llm_model: gpt-3.5-turbo-0125
 
 
 #for loan validation demo
-app_loanapp_decision_service_url: http://localhost:9060/DecisionService/rest/v1/production_deployment/1.0/loan_validation_production/1.0
+#app_loanapp_decision_service_url: http://localhost:9060/DecisionService/rest/v1/production_deployment/1.0/loan_validation_production/1.0
+app_loanapp_decision_service_url: http://localhost:9060/DecisionService/rest/v1/mydeployment/1.0/Miniloan_ServiceRuleset/1.0
 
 owl_glossary_path: ./config/glossary.json
 

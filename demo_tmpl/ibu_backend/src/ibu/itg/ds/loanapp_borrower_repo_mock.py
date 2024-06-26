@@ -58,9 +58,8 @@ class BorrowerRepositoryInMem(LoanApplicationClientRepositoryInterface):
 
 
     def get_client_by_name(self, first_name: str, last_name: str) -> Borrower | None:
-        name_to_search = first_name.lower() + " " + last_name.lower()
         for client in self.BORROWERDB.values():
-            if client.name == name_to_search:
+            if client.name == first_name.lower() + " " + client.lastName.lower():
                 return client
         return None
 

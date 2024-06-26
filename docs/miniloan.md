@@ -26,20 +26,20 @@ To make it easier the loanApp and client the repositories are mockup and loaded 
 
 ## Demonstration Flows
 
-1. Start the docker compose with all the components of the above architecture.
+* Start the docker compose with all the components of the above architecture.
 
-    ```sh
-    cd IBM-MiniLoan-demo/deployment/local/
-    docker compose up -d
-    ```
+```sh
+cd IBM-MiniLoan-demo/deployment/local/
+docker compose up -d
+```
 
-    The backend APIs is available at the following URL [http://localhost:8000/docs](http://localhost:8000/docs).
+The backend APIs is available at the following URL [http://localhost:8000/docs](http://localhost:8000/docs).
 
-1. Run a demonstration scripts to validate the deployment
+* Run a demonstration scripts to validate the deployment:
 
-    ```sh
-    python non_regression_tests.py
-    ```
+```sh
+python non_regression_tests.py
+```
 
 ## Agentic with Rule Engine
 
