@@ -11,3 +11,4 @@
 **/**.class
 **/.venv
 **/.DS_Store
+**/decisions/persistence/
