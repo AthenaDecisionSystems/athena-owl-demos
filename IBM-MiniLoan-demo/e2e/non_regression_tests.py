@@ -60,8 +60,10 @@ def validate_ibu_tools(base_url, tool_id):
 
 def validate_get_credit_score(base_url, fn: str, ln: str):
   print("\n--> Get information about one of the client\n")
+  question = "What is the credit score of Robert Smith using IBU loan database?"
+  print("\n the question: {question}")
   data='{ "locale": "en",\
-    "query": "What is the credit score of Robert Smith using IBU loan database?",\
+    "query": "' + question+ '",\
     "assistant_id": "ibu_assistant", \
     "thread_id" : "1", \
     "user_id" : "a_test_user"\
@@ -72,7 +74,7 @@ def validate_get_credit_score(base_url, fn: str, ln: str):
 
 def validate_approve_a_loan(base_url, fn: str, ln: str):
   print(f"\n--> Assess a loan for {fn} {ln}\n")
-  question= f"\"One of our client {fn} {ln} wants a loan for $1,000,000 for 180 months do we approve it?\""
+  question= f"\"One of our client {fn} {ln} wants a loan for $1,000,000 for 180 months with a yearly repayment of $60,000  do we approve it?\""
   data='{ "locale": "en",\
     "query": ' + question +',\
     "assistant_id": "ibu_assistant", \
@@ -85,7 +87,7 @@ def validate_approve_a_loan(base_url, fn: str, ln: str):
 
 def validate_approve_a__good_loan(base_url, fn: str, ln: str):
   print(f"\n--> Assess a loan for {fn} {ln}\n")
-  question=f"\"My client {fn} {ln} wants to get a $300,000 loan for a period of 120 months for his house enhancement, do you think it is possible?\""
+  question=f"\"My client {fn} {ln} wants to get a $200,000 loan for a period of 120 months for his house enhancement with a yearly repayment of $40,000 , do you think it is possible?\""
   data='{ "locale": "en",\
     "query": ' + question +',\
     "assistant_id": "ibu_assistant", \
