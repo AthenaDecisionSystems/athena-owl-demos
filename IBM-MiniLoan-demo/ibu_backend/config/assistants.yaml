@@ -16,16 +16,10 @@ ibu_assistant_limited:
   name: IBU Loan App assistant
   agent_id: ibu_agent_limited
 
-fake_assistant:
-  assistant_id: fake_assistant
-  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
-  description: A default assistant that uses fake LLM
-  name: Fake assistant
-  agent_id: fake_agent
 
-base_assistant:
-  assistant_id: base_assistant
+base_openai_assistant:
+  assistant_id: base_openai_assistant
   class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
-  description: A base assistant to do simple LLM calls
-  name: Base assistant
-  agent_id: open_ai_gpt35
+  description: A default assistant that uses LLM using chain
+  name: Base openai assistant
+  agent_id: openai_chain

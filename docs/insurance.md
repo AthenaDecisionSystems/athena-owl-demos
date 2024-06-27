@@ -11,6 +11,12 @@ The IBU Insurance agent chatbot helps IBU Insurance’s customer service represe
 The chatbot should bring consistent responses and actionable decisions, which improves the complain management by more than 27% and improve the quality responses by 35% while reducing the cost by around 60%. 
 
 
+![type:video](https://www.youtube.com/watch?v=fGEU_obHM5M)
+
+[Link to video](https://www.youtube.com/watch?v=fGEU_obHM5M)
+
+
+
 ## Build for demonstration
 
 For development purpose build the DataManager microservice images:

@@ -72,7 +72,7 @@ def validate_get_credit_score(base_url, fn: str, ln: str):
 
 def validate_approve_a_loan(base_url, fn: str, ln: str):
   print(f"\n--> Assess a loan for {fn} {ln}\n")
-  question= f"\"One of our client {fn} {ln} wants a loan for $500,000 for 180 months do we approve it?\""
+  question= f"\"One of our client {fn} {ln} wants a loan for $1,000,000 for 180 months do we approve it?\""
   data='{ "locale": "en",\
     "query": ' + question +',\
     "assistant_id": "ibu_assistant", \

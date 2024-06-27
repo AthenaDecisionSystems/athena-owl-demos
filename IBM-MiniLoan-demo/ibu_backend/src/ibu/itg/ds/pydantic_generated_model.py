@@ -20,7 +20,7 @@ class Loan(BaseModel):
     duration: Optional[int] = None
     yearlyInterestRate: Optional[float] = None
     yearlyRepayment: Optional[int] = None
-    approved: Optional[bool] = None
+    approved: Optional[bool] = True
     messages: Optional[List[str]] = []
 
 

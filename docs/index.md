@@ -8,6 +8,12 @@ This repository includes pre-defined demonstration that can be used with differe
 | **[IBU Insurance](./insurance.md)** | A chatbot to help IBU Insurance’s customer service representatives manage customer complaints |
 | **[IBU MiniLoan](./miniloan.md)** | A demonstration of Agentic solution with IBM ODM Miniloan sample |
 
+
+To watch the **IBU Insurance demonstration video**  on YouTube.
+
+[![alt text](https://img.youtube.com/vi/fGEU_obHM5M/0.jpg)](https://www.youtube.com/watch?v=fGEU_obHM5M)
+
+
 If you need to develop your own demonstration see [these instructions](./build_sol.md)
 
 ## Contact us

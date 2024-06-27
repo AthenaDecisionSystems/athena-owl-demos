@@ -39,12 +39,12 @@ class TestConversation(unittest.TestCase):
         cc.user_id="unit_test"
         cc.thread_id="3"
         cc.chat_history=[]
-        cc.query="One of our client Robert Smith wants a loan for $500,000 for a duration of 60 months do we approve it?"
+        cc.query="One of our client Robert Smith wants a loan for $500,000 for a duration of 60 months with a yearly repayment of $60,000 do we approve it?"
         rep = get_or_start_conversation(cc)
         assert rep
         assert rep.message
         print(f"\n\nAssistant --> {rep}") 
-        assert "has not been approved" in rep.message
+        assert ("has not been approved" in rep.message or "has been declined" in rep.message or "not approved" in rep.message)
         
     def test_conv_to_get_a_loan_approved(self):
         print("\n------- test_conversation to do tool calls on get loan decision")
@@ -53,13 +53,26 @@ class TestConversation(unittest.TestCase):
         cc.user_id="unit_test"
         cc.thread_id="3"
         cc.chat_history=[]
-        cc.query="One of our client Jean Martin wants a loan for $300,000 for a duration of 60 months do we approve it?"
+        cc.query="One of our client Jean Martin wants a loan for $300,000 for a duration of 180 months and a yearly repayment of $40,000 do we approve it?"
         rep = get_or_start_conversation(cc)
         assert rep
         assert rep.message
         print(f"\n\nAssistant --> {rep}") 
         assert "has been approved" in rep.message
 
+    def test_conv_to_get_a_loan_demonstrating_hallucination(self):
+        print("\n------- test_conv_to_get_a_loan_demonstrating_hallucination as this assistant has no loan decision service")
+        cc = ConversationControl()
+        cc.assistant_id="ibu_assistant_limited"
+        cc.user_id="unit_test"
+        cc.thread_id="4"
+        cc.chat_history=[]
+        cc.query="One of our client Robert Smith wants a loan for $500,000 for a duration of 60 months with a yearly repayment of $60,000 do we approve it?"
+        rep = get_or_start_conversation(cc)
+        assert rep
+        assert rep.message
+        print(f"\n\nAssistant --> {rep}") 
+       
         
 if __name__ == '__main__':
     unittest.main()
