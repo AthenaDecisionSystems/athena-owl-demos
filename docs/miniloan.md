@@ -1,15 +1,17 @@
 # IBM Miniloan ODM demonstration with Agent
 
+???+ Info "Version"
+    Created 06.2024
 
 ## Goals
 
-The Miniloan application is part of the IBM Operational Decision Management product and [tutorial](https://www.ibm.com/docs/en/odm/8.12.0?topic=rules-tutorials). The goal of this demonstration is to illustrate how unstructured query in natural language can be decomposed and call to decision service to get a loan application pre-approved can be done with Owl Framework.
+The Miniloan application is part of the IBM Operational Decision Management product and [tutorial](https://www.ibm.com/docs/en/odm/8.12.0?topic=rules-tutorials). The goal of this hybrid AI demonstration is to illustrate how unstructured query in natural language can be decomposed using a LLM to identify parameters to call the loan application decision serviceand how to do it with the Owl Framework.
 
-The questions that are tested and validated are:
+The end-user's questions that are tested and validated are:
 
-* What is the credit score of Robert Smith?
-* My client robert smith wants to borrow $1,000,000 for 180 months  with a yearly repayment of $60,000 do you think it is possible?
-* One of our client, Jean Martin, wants a loan for $300,000 for a duration of 180 months and a yearly repayment of $40,000 do we approve it?
+* **What is the credit score of Robert Smith?**: this will demonstrate call to a backend CRM database.
+* **My client robert smith wants to borrow $1,000,000 for 180 months  with a yearly repayment of $60,000 do you think it is possible?**: will illustrate the call to the miniloan ruleapp using the loan parameters extracted by the LLM.
+* **One of our client, Jean Martin, wants a loan for $300,000 for a duration of 180 months and a yearly repayment of $40,000 do we approve it?**, just to demonstrate that different rules apply.
 
 
 ## Architecture
@@ -18,35 +20,37 @@ The high level the architecture for this demonstration looks like in the figure 
 
 ![](./diagrams/miniloan/hl-arch.drawio.png){ width=800 }
 
-* A chatbot supports the interactions with a customer support representative with natural language queries
-* The assistant server manages the conversation and the integration with different backends. There are two assistants defined for this demonstration, one using IBM ODM MiniLoan decision service, one without.
+* A chatbot supports the interactions with a customer support representative using natural language queries
+* The assistant server manages the conversation and the integration with different backends. There are two assistants defined for this demonstration, one using IBM ODM MiniLoan decision service, one without it.
 * The Loan App Decision service is the SAMPLE RuleApp deployed in a Rule Execution Server
-* The different microservices to access the client database as future or existing borrowers, and the loan applications repository.
+* The different microservices to access the client database as future or existing borrowers, and to access the loan applications repository.
 * The LLM is an externally Large Language Model accessible via API. Different models can be used.
 
 To make it easier the loanApp and client the repositories are mockup and loaded in memory.
 
-Recall that the rule implemented control the data on the loan and borrower attributes:
+Recall that the rules implemented validate the data on the loan and borrower attributes:
 
 * The max amount of money a loan could be:
 
-![](./images/miniloan/max-loan-amount.PNG)
+![](./images/miniloan/max-loan-amount.PNG){ width=800 }
 
 * The minimum credit score the borrower needs to have:
 
-![](./images/miniloan/min-credit-score.PNG)
+![](./images/miniloan/min-credit-score.PNG){ width=800 }
 
 * The yearly payment compare to the borrower incomes and credit score as a decision table:
 
-![](./images/miniloan/replayment-score.PNG)
+![](./images/miniloan/replayment-score.PNG){ width=800 }
 
-Those rule evaluations are key to get reliable answer event if we have to process unstructured text.
+Those rule evaluations are key to get reliable answer even if we have to process unstructured text.
+
+For more detail on the OWL Core components [design see this note.](https://athenadecisionsystems.github.io/athena-owl-core/design/)
 
 ### Physical deployment of the demonstration
 
 As of now the owl-backend is a container image, deployable as a unit and ables to mount the python code of the demonstration to run the different orchestration logic. The diagram illustrates those concepts to run on a local machine
 
-![](./diagrams/miniloan/ibu_loan_depl_local.drawio.png){ width=900 }
+![](./diagrams/miniloan/ibu_loan_depl_local.drawio.png){ width=800 }
 
 For production deployment the owl-backend code and the specific logic may be packaged in its own container.
 
@@ -63,7 +67,7 @@ docker compose up -d
 
   ![](./images/miniloan/ibu_settings.PNG){ width=900 }
 
-* The backend APIs is available at the following URL [http://localhost:8000/docs](http://localhost:8000/docs). You do not need it for the demonstration.
+* The backend APIs is available at the following URL [http://localhost:8000/docs](http://localhost:8000/docs). You do not need to use it for the demonstration scenario but feel free to use to it to understand the OWL entity model.
 
   ![](./images/miniloan/backend_api.PNG){ width=900 }
 
@@ -74,9 +78,9 @@ docker compose up -d
 python non_regression_tests.py
 ```
 
-The script validates
+The script validates:
 
-  * The health end-point
+  * The health if the server end-point
   * Get the default system prompt designed for the demonstration
   * Get the main assistant entity (the metadata about the assistant)
   * Get the loan agent entity
@@ -99,7 +103,7 @@ The following figure is using the `ibu_assistant_limited` assistant to try to an
 
 This section explains how to use the OWL framework to support the demonstration. 
 
-An assistant supports a customer representative to answer questions and queries about a loan. Assistant uses an agent, which is linked to the LLM to call via API and the tool definitions.
+An assistant supports a customer representative to answer questions and queries about a loan. Assistant entity uses an agent, which is linked to the LLM to call via API and the tool definitions.
 
 ![](./diagrams/miniloan/owl_entities.drawio.png){ width=900 }
 
@@ -116,7 +120,13 @@ ibu_assistant:
 
 The assistant without ODM decision service function is:
 
-```
+```yaml
+ibu_assistant_limited:
+  assistant_id: ibu_assistant_limited
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
+  description: A default assistant that uses LLM, and local defined tools like get borrower, without decision service
+  name: IBU Loan App assistant
+  agent_id: ibu_agent_limited
 ```
 
 * The agent entity definition lists the prompt, and tools to use, and the LLM model. The `langchain_openai.ChatOpenAI` class is part of the langchain library. So a class that wraps a specific LLM API can be used.  

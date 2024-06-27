@@ -1,22 +1,29 @@
 # Build solution
 
-Developing a new solution should be simple, but potential complexity will be dependant of the level of integration needed, as usual. 
+???+ Info "Version"
+    Created 06.2024
+
+Creating a new solution using this framework should be straightforward, but the potential complexity will depend on the level of integration required. 
 
 To get started consider the scope of the demonstration and assess if you need to:
 
 - Use a specific LLM backend
 - Have an existing decision service available to be used or if you need to develop a new one. A new decision service means new rules but also a new execution model.
 
+Recall that an Hybrid-AI solution includes as set of components working together to deliver more reliable results, higher accuracy with stateful persistence:
+
+![]()
+
 ## Develop your own demonstration
 
-As a first tutorial we will use an existing decision service deployed to the decision server.
+As a first tutorial, we will use an existing decision service deployed to the ODM decision server.
 
 ### Create project
 
-This will be automatised as of now it is manual:
+The following will soon be automatized with scripts and tools, but as of now, it is manual (sorry):
 
 * Create a folder for your project: `IBM-MiniLoan-demo`
-* Copy the project template to the new folder
+* Copy the project template to the new folder:
 
 ```sh
 cp -r demo_tmpl/ IBM-MiniLoan-demo
@@ -121,7 +128,7 @@ The two important properties are the class_name and the agent_id.
 
 The class name is coming from Owl Agent core library. This is the LangGraph flow with tool and LLM. The graph looks like in the following figure:
 
-![](./diagrams/lg_tool_flow.drawio.pngs)
+![](./diagrams/lg_tool_flow.drawio.png)
 
 ### Define Agent
 
