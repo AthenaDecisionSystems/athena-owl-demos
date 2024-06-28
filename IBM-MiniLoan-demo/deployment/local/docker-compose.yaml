@@ -22,7 +22,8 @@ services:
     ports:
       - 3000:80
     environment:
-      - REACT_APP_BACKEND_URL=http://owl-backend:8000/api/v1/
+      - REACT_APP_OWL_AGENT_NAME="MiniLoan Management Agent"
+      - REACT_APP_BACKEND_URL=http://localhost:8000/api/v1/
       - REACT_APP_ASSISTANT_ID_WITH_RULES='ibu_assistant'
       - REACT_APP_ASSISTANT_ID_WITHOUT_RULES='ibu_assistant_limited'
       - REACT_APP_DEMO_TEXT="One of our client Robert Smith wants a loan for \$500,000 for a duration of 60 months and a yearly repayment of $60,000 do we approve it?"

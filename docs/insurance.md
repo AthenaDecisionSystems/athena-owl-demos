@@ -1,8 +1,11 @@
 # IBU Insurance
 
-The IBU insurance demonstration illustrates the integration with data manager service and a decision service, a vector store and a LLM.
+???+ Info "Version"
+    Created 06.2024 . STILL UNDER WORK
 
-![](./diagrams/ibu_ins_sys_ctx.drawio.png)
+The IBU insurance demonstration illustrates the integration with data manager service, a decision service, a vector store and a LLM as shown in the figure below:
+
+![](./diagrams/ibu_ins_sys_ctx.drawio.png){ width=800 }
 
 ## Goals
 
@@ -11,7 +14,7 @@ The IBU Insurance agent chatbot helps IBU Insurance’s customer service represe
 The chatbot should bring consistent responses and actionable decisions, which improves the complain management by more than 27% and improve the quality responses by 35% while reducing the cost by around 60%. 
 
 
-![type:video](https://www.youtube.com/watch?v=fGEU_obHM5M)
+[![alt text](https://img.youtube.com/vi/fGEU_obHM5M/0.jpg)](https://www.youtube.com/watch?v=fGEU_obHM5M){ width=600 }
 
 [Link to video](https://www.youtube.com/watch?v=fGEU_obHM5M)
 
