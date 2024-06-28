@@ -96,8 +96,9 @@ The User interface may be used to do a live demonstration:
 
 The following figure is using the `ibu_assistant_limited` assistant to try to answer the question. The tool calling to access the client data is successful but the LLM generates hallucinations:
 
-![](./images/miniloan/hallucination.PNG)
 
+
+![type:video](./assets/video-Miniloan.mp4){ width = 900}
 
 ## Agentic with Rule Engine
 

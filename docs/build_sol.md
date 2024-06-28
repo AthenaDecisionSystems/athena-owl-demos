@@ -12,17 +12,25 @@ To get started consider the scope of the demonstration and assess if you need to
 
 Recall that an Hybrid-AI solution includes as set of components working together to deliver more reliable results, higher accuracy with stateful persistence:
 
-![]()
+![](./diagrams/hybrid_ai_comp.drawio.png){ width=800 }
 
 ## Develop your own demonstration
 
 As a first tutorial, we will use an existing decision service deployed to the ODM decision server.
 
+### Git repositories
+
+We encourage you to fork the OWL core repository [https://github.com/AthenaDecisionSystems/athena-owl-core](https://github.com/AthenaDecisionSystems/athena-owl-core)
+
+![](./images/fork-core.PNG)
+
+And the demonstration one: [https://github.com/AthenaDecisionSystems/athena-owl-demos](https://github.com/AthenaDecisionSystems/athena-owl-demos)
+
 ### Create project
 
 The following will soon be automatized with scripts and tools, but as of now, it is manual (sorry):
 
-* Create a folder for your project: `IBM-MiniLoan-demo`
+* Create a folder for your project: `IBM-MiniLoan-demo` in the athena-owl-demos folder. 
 * Copy the project template to the new folder:
 
 ```sh
@@ -47,6 +55,8 @@ source .venv/bin/activate
 ```sh
 pip -r ibu-backend/src/requirements.txt
 ```
+
+* 
 
 ### Build the object model for decision service
 
