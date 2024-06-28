@@ -6,6 +6,14 @@ ibu_assistant:
   name: IBU_assistant
   agent_id: ibu_agent
 
+ibu_assistant_limited:
+  assistant_id: ibu_assistant_limited
+  class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
+  description: A default assistant that uses LLM, and local defined tools like get borrower, without decision service
+  name: IBU Loan App assistant
+  agent_id: ibu_agent_limited
+
+
 base_tool_assistant:
   assistant_id: base_tool_assistant
   class_name: athena.llm.assistants.BaseAssistant.BaseAssistant

@@ -13,7 +13,7 @@ tavily:
 ibu_client_by_name:
   tool_id: ibu_client_by_name
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get client information given his or her name'
+  tool_description: 'get client information given his first and last name'
   tool_fct_name: get_client_by_name
 
 

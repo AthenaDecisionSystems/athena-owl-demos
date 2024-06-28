@@ -150,16 +150,29 @@ As some Owl assistants are using LangGraph for agent orchestration, we will use 
 
 There are [three ways](https://python.langchain.com/v0.1/docs/modules/tools/custom_tools/) to do so with LangChain: function annotation, using a factory function or class sub-classing. 
 
-The tool annotation is the simplest approach. The following declaration uses annotation, and the argument names, type and comment description are very important as they will be injected as context in the prompt to the LLM. Be sure to be short but brings semantic so the LLM can decide to call the function to get more information about a client, and being able to extract the first and last names from the query message.
+The tool annotation is the simplest approach. The following declaration uses annotation, and the argument names, type and comment description are very important as they will be injected as context in the prompt to the LLM. Be sure to be short but brings semantic so the LLM can decide which function to call and what parameters to extract such as the first and last names.
 
 ```python
 @tool
 def get_client_by_name(first_name: str, last_name: str) -> str | None:
     """get borrower client information given his or her name"""
     return build_or_get_loan_client_repo().get_client_by_name_json(first_name,last_name)
-
 ```
 
+#### Declaring the tool in yaml
+
+Update the `tools.yaml` file in the config folder:
+
+```yaml
+ibu_client_by_name:
+  tool_id: ibu_client_by_name
+  tool_class_name: 'ibu.llm.tools.client_tools'
+  tool_description: 'get client information given his first and last name'
+  tool_fct_name: get_client_by_name
+```
+
+???- Info "Behind the scene"
+    The tool factory implementation 
 ### Define Assistant
 
 Add the following base declaration for the main Assistant of the solution. One Assistant per use case.
@@ -175,7 +188,10 @@ ibu_assistant:
 
 The two important properties are the class_name and the agent_id.
 
-The class name is coming from Owl Agent core library. This is the LangGraph flow with tool and LLM. The graph looks like in the following figure:
+The [BaseAssistant class]() name is coming from Owl Agent core library. 
+
+
+This is the LangGraph flow with tool and LLM. The graph looks like in the following figure:
 
 ![](./diagrams/lg_tool_flow.drawio.png)
 
@@ -189,6 +205,23 @@ The class name is coming from Owl Agent core library. This is the LangGraph flow
 
 ### Custom user interface
 
+You can use the OWL Front End user interface as is and can slightly customize it via environment variables which can be set in the docker-compose file:
+
+```yaml
+  owl-frontend:
+    hostname: owl-frontend
+    image: jbcodeforce/athena-owl-frontend:latest 
+    container_name: owl-frontend
+    ports:
+      - 3000:80
+    environment:
+      - REACT_APP_OWL_AGENT_NAME="YOUR DEMO NAME"
+      - REACT_APP_BACKEND_URL=http://localhost:8000/api/v1/
+      - REACT_APP_ASSISTANT_ID_WITH_RULES='ibu_assistant'
+      - REACT_APP_ASSISTANT_ID_WITHOUT_RULES='ibu_assistant_limited'
+      - REACT_APP_DEMO_TEXT="ONE SENTENCE to use for the demo"
+
+```
 
 ## Troubleshooting
 
