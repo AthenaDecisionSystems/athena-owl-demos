@@ -56,11 +56,9 @@ source .venv/bin/activate
 pip -r ibu-backend/src/requirements.txt
 ```
 
-* 
-
 ### Build the object model for decision service
 
-The decision service exposes an REST API with an Open API document. From this document it is easy to get the data model and create Python Pydantic object. Here are the steps
+The decision service exposes an REST API with an Open API document. From this document it is easy to get the data model and create Python Pydantic objects from it. Here are the steps:
 
 1. Access the ODM Developer Edition console at [http://localhost:9060/](http://localhost:9060/), select he decision server console
 1. Navigate to the RuleApp > Ruleset in the `Explorer` tab that you want to call:
@@ -77,37 +75,78 @@ The decision service exposes an REST API with an Open API document. From this do
 datamodel-codegen  --input MydeploymentMiniloan_ServiceRulesetDecisionService.yaml --input-file-type openapi --output ../ibu/itg/ds/pydantic_generated_model.py
 ```
 
-*If needed review the input and optional fields as some empty attribute may generate null pointer exception in the rules* For example approved need to be initialized to False and messages to be an empty array instead of None:
+Below is an extract of the generated code, and an [link to the code](https://github.com/AthenaDecisionSystems/athena-owl-demos/blob/main/IBM-MiniLoan-demo/ibu_backend/src/ibu/itg/ds/pydantic_generated_model.py).
 
 ```python
+class Borrower(BaseModel):
+    name: Optional[str] = None
+    creditScore: Optional[int] = None
+    yearlyIncome: Optional[int] = None
+
+
+class Loan(BaseModel):
+    amount: Optional[int] = None
+    duration: Optional[int] = None
+    yearlyInterestRate: Optional[float] = None
     yearlyRepayment: Optional[int] = None
-    approved: Optional[bool] = False
+    approved: Optional[bool] = True
     messages: Optional[List[str]] = []
 ```
 
+*If needed review the input and optional fields as some empty attribute may generate null pointer exception in the rules* For example approved need to be initialized to True and messages to be an empty array instead of None:
+
+```python
+    yearlyRepayment: Optional[int] = None
+    approved: Optional[bool] = True
+    messages: Optional[List[str]] = []
+```
+
+Those steps need to be done each time there are changes to the ODM eXecutable Object Model. If this model is stable, those steps are done only one time.
+
 ### Build the python function to call ODM
 
-In the code template `src/ibu/llm/tools/client_tools.py` define a new function to expose simple parameters
+???+ info "LLM and Tool calling"
+    OpenAI has started the initiative of function calling and now most of the major proprietary or open source LLM model supports tool calling. *In the LLM tool calling mechanism the prompt is enhanced with information about the function signature. For example the LLM will see the following signature and will prepare the argument from the user's query*
+    ```python
+    def get_client_by_name(first_name: str, last_name: str)
+    ```
+
+    Here is an example of LLM trace showing the preparation of the data:
+    ```
+    Invoking: `get_client_by_name` with `{'first_name': 'Robert', 'last_name': 'Smith'}`
+    ```
+
+In the code template `src/ibu/llm/tools/client_tools.py` define a new function to expose a set of parameters the LLM will be able to extract from unstructured query text:
 
 ```python
 def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name: str, last_name: str):
-    loanRequest= Loan(duration=duration, 
-                             amount=loan_amount)
-    
+    loanRequest= Loan(duration=duration, amount=loan_amount)
     borrower =  build_or_get_loan_client_repo().get_client_by_name(first_name=first_name, last_name=last_name)
     ds_request = Request(__DecisionID__= str(uuid.uuid4),borrower=borrower, loan=loanRequest)
     payload: str = ds_request.model_dump_json()
     return callRuleExecutionServer(payload)
 ```
+
+The code needs to prepare the data to call IBM ODM, using the Pydantic objects created above. 
+
 ### Define Tools
 
 The classical common integration is when the solution needs to get data from an existing database or better a microservice managing a specific business entity. In this case the solution leverage a python function that can remote call the microservice URL using library like `requests`.
 
-For short demonstration you may need to implement some mockup repository that could be integrated into the demo run time.
+For short demonstration you may need to implement some mockup repository that could be integrated into the demo run time. The template folder includes such in memory repository. You need to update with your own data (See this file [loanapp_borrower_repo_mock.py](https://github.com/AthenaDecisionSystems/athena-owl-demos/blob/main/IBM-MiniLoan-demo/ibu_backend/src/ibu/itg/ds/loanapp_borrower_repo_mock.py)).
+
+```python
+def initialize_client_db(self):
+        self.add_client(Borrower(name = "robert dupont",
+                            yearlyIncome = 50000,
+                            creditScore = 180
+                            ))
+    # ...
+```
 
 #### Adding a function as tool
 
-OpenAI has started the initiative of function calling and now most of the major proprietary or open source LLM model supports tool calling. As Owl Agent is using LangGraph for agent orchestration, we will use LangChain tools API to define function calling.
+As some Owl assistants are using LangGraph for agent orchestration, we will use LangChain tools API to define function calling.
 
 There are [three ways](https://python.langchain.com/v0.1/docs/modules/tools/custom_tools/) to do so with LangChain: function annotation, using a factory function or class sub-classing. 
 
