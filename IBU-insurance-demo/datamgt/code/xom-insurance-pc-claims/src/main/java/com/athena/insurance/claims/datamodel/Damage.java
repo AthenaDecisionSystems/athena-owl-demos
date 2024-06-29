@@ -23,12 +23,22 @@ public class Damage {
 
     @Enumerated(EnumType.STRING)
     private DamageType type;
+
+    private boolean isRepairable;
+    private double lossValue;
+    private String description;
+
     private Date date;
 
     public Damage() {}
-    public Damage(InsurableObject insurableObject, DamageType type, Date date) {
+    public Damage(InsurableObject insurableObject, DamageType type, boolean isRepairable, double lossValue, String description, Date date) {
         this.insurableObject = insurableObject;
         this.type = type;
+        
+        this.isRepairable = isRepairable;
+        this.lossValue = lossValue;
+        this.description = description;
+
         this.date = date;
     }
 
@@ -47,6 +57,15 @@ public class Damage {
     public void setType(DamageType type) {
         this.type = type;
     }
+
+    public double getLossValue() { return this.lossValue; }
+    public void setLossValue(double lossValue) { this.lossValue = lossValue;}
+    
+    public boolean isRepairable() { return this.isRepairable; }
+    public void setRepairable(boolean isRepairable) { this.isRepairable = isRepairable; }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String description) { this.description = description; }
 
     public Date getDate() {
         return date;

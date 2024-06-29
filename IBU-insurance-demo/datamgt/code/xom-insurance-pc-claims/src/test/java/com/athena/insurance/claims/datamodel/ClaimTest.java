@@ -43,9 +43,11 @@ public class ClaimTest {
         Calendar claim_cal = new GregorianCalendar(2024,3,23);
         Claim claim = new Claim(ClaimStatusType.OFFER_SENT, claim_cal.getTime(), 3, policy);
         Calendar damage_cal = new GregorianCalendar(2024,3,21);
-        Damage houseDamage = new Damage(house, DamageType.WaterDamage, damage_cal.getTime());
-        Damage landDamage = new Damage(land, DamageType.WaterDamage, damage_cal.getTime());
-        Damage cabinDamage = new Damage(cabin, DamageType.WaterDamage, damage_cal.getTime());
+
+        // Damage(InsurableObject insurableObject, DamageType type, boolean isRepairable, double lossValue, String description, Date date)
+        Damage houseDamage = new Damage(house, DamageType.WaterDamage, true, 4000, "", damage_cal.getTime());
+        Damage landDamage = new Damage(land, DamageType.WaterDamage, true, 3000, "", damage_cal.getTime());
+        Damage cabinDamage = new Damage(cabin, DamageType.WaterDamage, true, 3300, "", damage_cal.getTime());
         Set<Damage> damages = new HashSet<>(Arrays.asList(houseDamage, landDamage, cabinDamage));
         claim.setDamages(damages);
 

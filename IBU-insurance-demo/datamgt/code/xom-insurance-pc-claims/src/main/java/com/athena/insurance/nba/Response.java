@@ -21,15 +21,16 @@ public class Response {
 		this.actions = actions;
 	}
 	
-	// {type} un effort commercial
-	public void appendVoucher(String explanationCode, String description) {
+	// propose a voucher of {value} with {description}
+	public void appendVoucher(String explanationCode, double value, String description) {
 		Voucher voucher = new Voucher();
 		voucher.setExplanationCode(explanationCode);
+		voucher.setValue(value);
 		voucher.setDescription(description);
 		this.actions.add(voucher);
 	}
 	
-	// communique un {messageType} au client par {channel}
+	// communicate a {messageType} to the client via {channel}
 	public void appendCommunicateWithClient(String explanationCode, ChannelType channel, MessageType messageType) {
 		CommunicateWithClient cwc = new CommunicateWithClient();
 		cwc.setExplanationCode(explanationCode);
@@ -38,7 +39,7 @@ public class Response {
 		this.actions.add(cwc);
 	}
 
-	// revoins à {recepient}
+	// resend to {recepient}
 	public void appendResendTo(String explanationCode, RecipientType recipient) {
 		Reassign resend = new Reassign();
 		resend.setExplanationCode(explanationCode);
@@ -46,7 +47,7 @@ public class Response {
 		this.actions.add(resend);
 	}
 
-	// revoins à {recepient} en suggérant {suggestion}
+	// resend to {recepient} suggesting {suggestion}
 	public void appendResendTo(String explanationCode, RecipientType recipient, String suggestion) {
 		Reassign resend = new Reassign();
 		resend.setExplanationCode(explanationCode);
