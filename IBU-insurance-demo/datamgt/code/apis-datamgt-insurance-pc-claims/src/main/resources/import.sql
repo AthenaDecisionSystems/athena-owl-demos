@@ -86,13 +86,13 @@ INSERT INTO claim(id, status, creationDate, targetDurationInDays, policy_id)
 --ALTER SEQUENCE claim_seq RESTART WITH 5;
 
 -- damages attached to claims
-INSERT INTO damage(id, date, type, claim_id, insurableObject_id)
-    VALUES (1, '2024-04-19', 'CarAccident', 1, 1);
+INSERT INTO damage(id, date, type, isRepairable, lossValue, description, claim_id, insurableObject_id)
+    VALUES (1, '2024-04-19', 'CarAccident', true, 1000.0, 'car accident description', 1, 1);
 
-INSERT INTO damage(id, date, type, claim_id, insurableObject_id)
-    VALUES (101, '2024-04-19', 'Lightning', 2, 101);
-INSERT INTO damage(id, date, type, claim_id, insurableObject_id)
-    VALUES (102, '2024-04-19', 'Fire', 2, 101);
+INSERT INTO damage(id, date, type, isRepairable, lossValue, description, claim_id, insurableObject_id)
+    VALUES (101, '2024-04-19', 'WaterDamage', true, 1000.0, 'Wooden flooring in living room has been damaged by water', 2, 101);
+INSERT INTO damage(id, date, type, isRepairable, lossValue, description, claim_id, insurableObject_id)
+    VALUES (102, '2024-04-19', 'WaterDamage', true, 300.0, 'A carpet is damaged by water', 2, 101);
 --ALTER SEQUENCE damage_seq RESTART WITH 3;
 
 -- claim settlement offers attached to a claim
@@ -104,7 +104,7 @@ INSERT INTO claimSettlementOffer(id, claim_id, creationDate, cancelContractAtExp
 
 -- actual coverages attached to a claim settlement offer
 INSERT INTO actualCoverage(id, settlementOffer_id, subscribedCoverage_id, applies, description, reimbursementFactor, deductible)
-    VALUES(1, 2, 101, true, 'coverage ABC applies', 0.80, 1000.0);
+    VALUES(1, 2, 101, true, 'WaterDamage due to a broken pipe - coverage applies to buildings', 0.80, 1000.0);
 INSERT INTO actualCoverage(id, settlementOffer_id, subscribedCoverage_id, applies, description, reimbursementFactor, deductible)
-    VALUES(2, 2, 102, false, 'coverage XYZ does not apply because of reason 1 & 2', 0.0, 0.0);
+    VALUES(2, 2, 102, false, 'WaterDamage coverage does not apply to the content of the building', 0.0, 0.0);
 ALTER SEQUENCE actualCoverage_seq RESTART WITH 3;

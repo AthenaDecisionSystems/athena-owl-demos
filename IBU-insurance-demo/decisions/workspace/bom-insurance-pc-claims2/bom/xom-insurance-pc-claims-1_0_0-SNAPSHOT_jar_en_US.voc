@@ -263,7 +263,7 @@ com.athena.insurance.nba.Response.appendResendTo(java.lang.String,com.athena.ins
 com.athena.insurance.nba.Response.appendResendTo(java.lang.String,com.athena.insurance.nba.RecipientType,java.lang.String)#phrase.action = forward to {1} as {2} with explanation {0}
 com.athena.insurance.nba.Response.appendTaskSequence(java.lang.String,com.athena.insurance.nba.TaskSequence)#phrase.action = add task sequence ({1}) with explanation {0}
 com.athena.insurance.nba.Response.appendUpsellProposal(java.lang.String,java.lang.String)#phrase.action = append upsell proposal {1} with explanation {0}
-com.athena.insurance.nba.Response.appendVoucher(java.lang.String,java.lang.String)#phrase.action = append voucher {1} with explanation {0}
+com.athena.insurance.nba.Response.appendVoucher(java.lang.String,double,java.lang.String)#phrase.action = append voucher of value {1}€ with description {2} and explanation code {0} 
 com.athena.insurance.nba.Response.missingInfoElements#phrase.action = set the missing info elements of {this} to {missing info element}
 com.athena.insurance.nba.Response.missingInfoElements#phrase.navigation = {missing info element} of {this}
 com.athena.insurance.nba.Response.outputTraces#phrase.action = set the output traces of {this} to {output trace}
