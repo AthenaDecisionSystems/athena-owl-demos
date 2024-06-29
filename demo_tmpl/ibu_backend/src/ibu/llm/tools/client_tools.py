@@ -1,8 +1,8 @@
 import logging, uuid, datetime
 from ibu.app_settings import get_config
 from importlib import import_module
-from typing import Optional, Any
-from langchain.tools import StructuredTool
+from typing import  Any
+
 from ibu.itg.ds.loanapp_borrower_repo_mock import LoanApplicationClientRepositoryInterface
 from ibu.itg.ds.pydantic_generated_model import Loan, Request
 from ibu.itg.decisions.next_best_action_ds_client import callRuleExecutionServer
@@ -62,10 +62,13 @@ def assess_loan_app_with_decision(loan_amount: int, duration: int,   first_name:
     return rep.text
 
     
-class IbuLoanToolInstanceFactory(ToolInstanceFactoryInterface):
-    methods = { "get_client_by_name": get_client_by_name, 
+methods = { "get_client_by_name": get_client_by_name, 
            "assess_loan_app_with_decision": assess_loan_app_with_decision}
-    arg_schemas = { "Loan": Loan}
+arg_schemas = { "Loan": Loan}
+
+
+    
+class IbuLoanToolInstanceFactory(ToolInstanceFactoryInterface):
     
     def build_tool_instances(self, tool_entities: list[OwlToolEntity]) -> list[Any]:
         tool_list=[]

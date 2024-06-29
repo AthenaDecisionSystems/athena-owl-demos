@@ -173,6 +173,11 @@ ibu_client_by_name:
 
 ???- Info "Behind the scene"
     The tool factory implementation 
+
+### Define prompt
+
+Prompts are defined in `prompts.json` file. 
+
 ### Define Assistant
 
 Add the following base declaration for the main Assistant of the solution. One Assistant per use case.
@@ -186,7 +191,7 @@ ibu_assistant:
   agent_id: ibu_agent
 ```
 
-The two important properties are the class_name and the agent_id.
+The two important properties are the `class_name` and the `agent_id`.
 
 The [BaseAssistant class]() name is coming from Owl Agent core library. 
 
@@ -199,7 +204,7 @@ This is the LangGraph flow with tool and LLM. The graph looks like in the follow
 
 
 
-### Define prompt
+
 
 ### Integration tests
 
