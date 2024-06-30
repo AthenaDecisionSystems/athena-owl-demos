@@ -397,7 +397,7 @@ public class Response
     public void appendResendTo(string explanation, com.athena.insurance.nba.RecipientType arg1, string arg2);
     public void appendTaskSequence(string explanation, com.athena.insurance.nba.TaskSequence arg);
     public void appendUpsellProposal(string explanation, string arg2);
-    public void appendVoucher(string explanation, string arg1);
+    public void appendVoucher(string explanation, double value, string arg1);
 }
 
 public class SimpleUpsellProposal

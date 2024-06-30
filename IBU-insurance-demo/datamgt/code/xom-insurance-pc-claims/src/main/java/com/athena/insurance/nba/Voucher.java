@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Voucher extends Action {
 	
 	String description;
+	double value;
 
 	public Voucher() {}
 
@@ -20,4 +21,7 @@ public class Voucher extends Action {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public double getValue() { return this.value; }
+	public void setValue(double value) { this.value = value; }
 }
