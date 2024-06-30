@@ -1,0 +1,469 @@
+---
+openapi: 3.0.3
+info:
+  title: apis-datamgt-insurance-pc-claims API
+  version: 1.0.0-SNAPSHOT
+paths:
+  /repository/claims:
+    get:
+      tags:
+      - Claim Repository Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Claim'
+    post:
+      tags:
+      - Claim Repository Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Claim'
+      responses:
+        "200":
+          description: OK
+  /repository/claims/{id}:
+    get:
+      tags:
+      - Claim Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+    delete:
+      tags:
+      - Claim Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+  /repository/clients:
+    get:
+      tags:
+      - Client Repository Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      tags:
+      - Client Repository Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        "200":
+          description: OK
+  /repository/clients/search/{name}:
+    get:
+      tags:
+      - Client Repository Resource
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+  /repository/clients/{id}:
+    get:
+      tags:
+      - Client Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      tags:
+      - Client Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    delete:
+      tags:
+      - Client Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+  /repository/policies:
+    get:
+      tags:
+      - Insurance Policy Repository Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsurancePolicy'
+    post:
+      tags:
+      - Insurance Policy Repository Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsurancePolicy'
+      responses:
+        "200":
+          description: OK
+  /repository/policies/{id}:
+    get:
+      tags:
+      - Insurance Policy Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsurancePolicy'
+    delete:
+      tags:
+      - Insurance Policy Repository Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    ActualCoverage:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        settlementOffer:
+          $ref: '#/components/schemas/ClaimSettlementOffer'
+        subscribedCoverage:
+          $ref: '#/components/schemas/SubscribedCoverage'
+        applies:
+          type: boolean
+        description:
+          type: string
+        reimbursementFactor:
+          format: double
+          type: number
+        deductible:
+          format: double
+          type: number
+    ChannelType:
+      enum:
+      - email
+      - mail
+      - SMS
+      - phone
+      type: string
+    Claim:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        status:
+          $ref: '#/components/schemas/ClaimStatusType'
+        creationDate:
+          $ref: '#/components/schemas/Date'
+        targetDurationInDays:
+          format: int32
+          type: integer
+        policy:
+          $ref: '#/components/schemas/InsurancePolicy'
+        damages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Damage'
+        settlementOffer:
+          $ref: '#/components/schemas/ClaimSettlementOffer'
+    ClaimSettlementOffer:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        claim:
+          $ref: '#/components/schemas/Claim'
+        creationDate:
+          $ref: '#/components/schemas/Date'
+        cancelContractAtExpiration:
+          type: boolean
+        cancelContractObjectCeased:
+          type: boolean
+        clientResponsibleForDamage:
+          type: boolean
+        actualCoverages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ActualCoverage'
+    ClaimStatusType:
+      enum:
+      - RECEIVED
+      - IN_PROCESS_VALIDATED
+      - IN_PROCESS_ASSESSED
+      - IN_PROCESS_VERIFIED
+      - IN_PROCESS_LOSS_ADJUSTER_REPORTED
+      - REJECTION_SENT
+      - REJECTION_COMPLAINT
+      - OFFER_SENT
+      - OFFER_ACCEPTED
+      - PAID
+      - CLOSED
+      type: string
+    Client:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          $ref: '#/components/schemas/Date'
+        firstContractDate:
+          $ref: '#/components/schemas/Date'
+        cltvPercentile:
+          format: int32
+          type: integer
+        propensityToUpgradePolicy:
+          format: double
+          type: number
+        policies:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePolicy'
+        preferredChannel:
+          $ref: '#/components/schemas/ChannelType'
+    Damage:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        claim:
+          $ref: '#/components/schemas/Claim'
+        insurableObject:
+          $ref: '#/components/schemas/InsurableObject'
+        type:
+          $ref: '#/components/schemas/DamageType'
+        isRepairable:
+          type: boolean
+        lossValue:
+          format: double
+          type: number
+        description:
+          type: string
+        date:
+          $ref: '#/components/schemas/Date'
+        repairable:
+          type: boolean
+    DamageType:
+      enum:
+      - Wind
+      - Hail
+      - Fire
+      - Lightning
+      - WaterDamage
+      - Freezing
+      - OtherDamage
+      - Theft
+      - CarAccident
+      type: string
+    Date:
+      format: date
+      type: string
+      example: 2022-03-10
+    InsurableObject:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        coverages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscribedCoverage'
+        type:
+          $ref: '#/components/schemas/InsurableObjectType'
+        description:
+          type: string
+        estimatedValue:
+          format: double
+          type: number
+    InsurableObjectType:
+      enum:
+      - Car
+      - Motorbike
+      - Truck
+      - Lorry
+      - Land
+      - MainResidencialBuilding
+      - AuxiliaryResidencialBuilding
+      - AuxiliaryNonResidencialBuilding
+      - Flat
+      - ParkingLot
+      - PersonalObject
+      type: string
+    InsurancePolicy:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        effectiveDate:
+          $ref: '#/components/schemas/Date'
+        expirationDate:
+          $ref: '#/components/schemas/Date'
+        policyType:
+          $ref: '#/components/schemas/PolicyType'
+        subType:
+          $ref: '#/components/schemas/PolicySubType'
+        client:
+          $ref: '#/components/schemas/Client'
+        claims:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Claim'
+        coverages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscribedCoverage'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionType'
+    OptionType:
+      enum:
+      - SubstitutionVehicle
+      - ContentIncluded
+      - NoDeductible
+      type: string
+    PolicySubType:
+      enum:
+      - AutoThirdParty
+      - AutoAllRisk
+      - HomeBuildingsOnly
+      - HomeBuildingsAndContent
+      type: string
+    PolicyType:
+      enum:
+      - Auto
+      - Motorcycle
+      - Home
+      - PersonalObject
+      - Life
+      - Health
+      type: string
+    SubscribedCoverage:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        policy:
+          $ref: '#/components/schemas/InsurancePolicy'
+        insurableObject:
+          $ref: '#/components/schemas/InsurableObject'
+        code:
+          $ref: '#/components/schemas/DamageType'
+        protectionAmount:
+          format: double
+          type: number
+        deductible:
+          format: double
+          type: number
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic

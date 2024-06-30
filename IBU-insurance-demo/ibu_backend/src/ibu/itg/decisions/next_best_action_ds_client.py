@@ -12,6 +12,8 @@ from string import Template
 
 LOGGER = logging.getLogger(__name__)
 
+
+    
 def _instantiate_claim_repo(config):
     """
     From the configuration loaded, instantiate the class for the claim repository

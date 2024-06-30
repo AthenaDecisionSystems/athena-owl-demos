@@ -10,30 +10,7 @@ openai_chain:
   top_k: 1
   top_p: 1
 
-openai_tool_chain:
-  agent_id: openai_tool_chain
-  name: openai_tool_chain
-  description: openai based agent with prompt coming from langchain hub  and tool
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
-  modelName: gpt-3.5-turbo-0125
-  modelClassName: langchain_openai.ChatOpenAI
-  prompt_ref: hwchase17/openai-functions-agent
-  temperature: 0
-  top_k: 1
-  top_p: 1
-  tools:
-  - tavily
 
-fake_agent:
-  agent_id: fake_agent
-  name: fake_agent
-  description: Fake agent for testing 
-  class_name: athena.llm.agents.fake_agent.FakeAgent
-  modelName: not_needed
-  prompt_ref: default_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
 
 ibu_agent:
   agent_id: ibu_agent
@@ -68,3 +45,15 @@ ibu_agent_limited:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
+
+ibu_classify_query_agent:
+  agent_id: ibu_classify_query_agent
+  name: ibu_classify_query_agent
+  description: openai based agent with simple prompt 
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  modelClassName: langchain_openai.ChatOpenAI
+  modelName: gpt-3.5-turbo-0125
+  prompt_ref: classify_query_prompt
+  temperature: 0
+  top_k: 1
+  top_p: 1

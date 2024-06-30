@@ -6,10 +6,8 @@ sys.path.append(os.path.abspath(module_path))
 from dotenv import load_dotenv
 load_dotenv()
 
-from athena.llm.assistants.assistant_mgr import get_assistant_manager
 from athena.llm.conversations.conversation_mgr import get_or_start_conversation
 from athena.routers.dto_models import ConversationControl, ResponseControl
-from importlib import import_module
 
 class TestIBUAssistant(unittest.TestCase):
     """

@@ -14,7 +14,7 @@ owl_glossary_path: /app/config/glossary.json
 owl_assistants_path: /app/config/assistants.yaml
 owl_agents_path: /app/config/agents.yaml
 owl_tools_path: /app/config/tools.yaml
-owl_prompts_path: /app/config/prompts.json
+owl_prompts_path: /app/config/prompts.yaml
 owl_prompts_key_name: openai_insurance_with_tool
 owl_agent_content_vstore_url: http://localhost:8005
 owl_agent_content_collection_name: ibu_insurance
