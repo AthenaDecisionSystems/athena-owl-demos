@@ -1,0 +1,473 @@
+openapi: 3.0.1
+info:
+  title: nextBestAction API
+  description: API to invoke the execution of the decision service operation nextBestAction.
+  version: 1.0.0
+servers:
+- url: http://localhost:9060/DecisionService/rest
+paths:
+  /ComplaintHandling/1.0/nextBestAction/1.3:
+    post:
+      summary: Invokes the execution of the decision service operation nextBestAction.
+      description: Executes the decision service operation nextBestAction with the
+        path /ComplaintHandling/1.0/nextBestAction/1.3.
+      operationId: callnextBestActionDecisionServiceOperation
+      requestBody:
+        description: Request for the execution of the decision service operation.
+          Contains notably the input parameters that are used for the execution.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+        required: true
+      responses:
+        "200":
+          description: Response for the execution of the decision service operation.
+            Contains notably the output parameters that are returned by the execution.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        default:
+          description: Error occurring when invoking the execution of the decision
+            service operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Request:
+      type: object
+      properties:
+        __DecisionID__:
+          type: string
+          description: "Unique identifier representing the execution of the decision\
+            \ service operation. If it is not specified, it will be computed automatically."
+        complaint:
+          $ref: '#/components/schemas/ComplaintOnClaim'
+      description: Request for the execution of the decision service operation. Contains
+        notably the input parameters that are used for the execution.
+    Response:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        missingInfoElements:
+          type: array
+          items:
+            $ref: '#/components/schemas/InfoElement'
+        outputTraces:
+          type: array
+          items:
+            type: string
+    ActualCoverage:
+      type: object
+      properties:
+        settlementOffer:
+          $ref: '#/components/schemas/ClaimSettlementOffer'
+        subscribedCoverage:
+          $ref: '#/components/schemas/SubscribedCoverage'
+        applies:
+          type: boolean
+        description:
+          type: string
+        reimbursementFactor:
+          type: number
+          format: double
+        deductible:
+          type: number
+          format: double
+    Claim:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+          - RECEIVED
+          - IN_PROCESS_VALIDATED
+          - IN_PROCESS_ASSESSED
+          - IN_PROCESS_VERIFIED
+          - IN_PROCESS_LOSS_ADJUSTER_REPORTED
+          - REJECTION_SENT
+          - REJECTION_COMPLAINT
+          - OFFER_SENT
+          - OFFER_ACCEPTED
+          - PAID
+          - CLOSED
+        creationDate:
+          type: string
+          format: date-time
+        targetDurationInDays:
+          type: integer
+          format: int32
+        policy:
+          $ref: '#/components/schemas/InsurancePolicy'
+        damages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Damage'
+        settlementOffer:
+          $ref: '#/components/schemas/ClaimSettlementOffer'
+    ClaimSettlementOffer:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/Claim'
+        creationDate:
+          type: string
+          format: date-time
+        cancelContractAtExpiration:
+          type: boolean
+        cancelContractObjectCeased:
+          type: boolean
+        clientResponsibleForDamage:
+          type: boolean
+        actualCoverages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ActualCoverage'
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        firstContractDate:
+          type: string
+          format: date-time
+        cltvPercentile:
+          type: integer
+          format: int32
+        propensityToUpgradePolicy:
+          type: number
+          format: double
+        preferredChannel:
+          type: string
+          enum:
+          - email
+          - mail
+          - SMS
+          - phone
+    ClientInteraction:
+      required:
+      - date
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        motive:
+          type: string
+          enum:
+          - UnsatisfiedWithDelay
+          - UnsatisfiedWithReimbursedAmount
+          - UnsatisfiedWithAppliedCoverages
+          - UnsatisfiedWithQualityOfCustomerService
+          - InformationInquiry
+          - OtherMotive
+        intentionToLeave:
+          type: boolean
+        competitorName:
+          type: string
+        competitorPolicyName:
+          type: string
+        competitorPrice:
+          type: number
+          format: double
+        desiredResolutionDate:
+          type: string
+          format: date-time
+        desiredReimbursementDate:
+          type: string
+          format: date-time
+        expectedAmount:
+          type: number
+          format: double
+        unsatisfiedWithDeductible:
+          type: boolean
+    ComplaintOnClaim:
+      type: object
+      properties:
+        claim:
+          $ref: '#/components/schemas/Claim'
+        interactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientInteraction'
+    Damage:
+      type: object
+      properties:
+        insurableObject:
+          $ref: '#/components/schemas/InsurableObject'
+        type:
+          type: string
+          enum:
+          - Wind
+          - Hail
+          - Fire
+          - Lightning
+          - WaterDamage
+          - Freezing
+          - OtherDamage
+          - Theft
+          - CarAccident
+        lossValue:
+          type: number
+          format: double
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+        repairable:
+          type: boolean
+    InsurableObject:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Car
+          - Motorbike
+          - Truck
+          - Lorry
+          - Land
+          - MainResidencialBuilding
+          - AuxiliaryResidencialBuilding
+          - AuxiliaryNonResidencialBuilding
+          - Flat
+          - ParkingLot
+          - PersonalObject
+        description:
+          type: string
+        estimatedValue:
+          type: number
+          format: double
+    InsurancePolicy:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        effectiveDate:
+          type: string
+          format: date-time
+        expirationDate:
+          type: string
+          format: date-time
+        policyType:
+          type: string
+          enum:
+          - Auto
+          - Motorcycle
+          - Home
+          - PersonalObject
+          - Life
+          - Health
+        subType:
+          type: string
+          enum:
+          - AutoThirdParty
+          - AutoAllRisk
+          - HomeBuildingsOnly
+          - HomeBuildingsAndContent
+        client:
+          $ref: '#/components/schemas/Client'
+        coverages:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscribedCoverage'
+        options:
+          type: array
+          items:
+            type: string
+            enum:
+            - SubstitutionVehicle
+            - ContentIncluded
+            - NoDeductible
+    SubscribedCoverage:
+      type: object
+      properties:
+        insurableObject:
+          $ref: '#/components/schemas/InsurableObject'
+        code:
+          type: string
+          enum:
+          - Wind
+          - Hail
+          - Fire
+          - Lightning
+          - WaterDamage
+          - Freezing
+          - OtherDamage
+          - Theft
+          - CarAccident
+        protectionAmount:
+          type: number
+          format: double
+        deductible:
+          type: number
+          format: double
+    Action:
+      required:
+      - typeDisc__
+      type: object
+      properties:
+        explanationCode:
+          type: string
+        typeDisc__:
+          type: string
+      discriminator:
+        propertyName: typeDisc__
+    Assign:
+      type: object
+      properties:
+        explanationCode:
+          type: string
+    CommunicateWithClient:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          channel:
+            type: string
+            enum:
+            - email
+            - mail
+            - SMS
+            - phone
+          messageType:
+            type: string
+            enum:
+            - ApologyOnly
+            - SorryAboutPerceptionButFair
+            - AcknowledgmentOfReceipt
+            - Proposal
+    Discount:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          description:
+            type: string
+          percentage:
+            type: number
+            format: double
+    DiscountOnNextRenewal:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          description:
+            type: string
+          percentage:
+            type: number
+            format: double
+    InfoElement:
+      type: object
+      properties:
+        path:
+          type: string
+        questionId:
+          type: string
+        type:
+          type: string
+    Reassign:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          recipient:
+            type: string
+            enum:
+            - CallCenterClientRepresentative
+            - SpecializedClientRepresentative
+            - ClaimsExpert
+            - QualitySpecialist
+          suggestion:
+            type: string
+    ReassignWithCallback:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          recipient:
+            type: string
+            enum:
+            - CallCenterClientRepresentative
+            - SpecializedClientRepresentative
+            - ClaimsExpert
+            - QualitySpecialist
+          suggestion:
+            type: string
+          callBackDeadline:
+            type: integer
+            format: int32
+    SimpleUpsellProposal:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          description:
+            type: string
+    TaskSequence:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          tasks:
+            type: array
+            items:
+              $ref: '#/components/schemas/Assign'
+    Voucher:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Action'
+      - type: object
+        properties:
+          description:
+            type: string
+          value:
+            type: number
+            format: double
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP error code.
+          format: int32
+        message:
+          type: string
+          description: Error message.
+        details:
+          type: string
+          description: Detailed error message.
+        errorCode:
+          type: string
+          description: Product error code.
+      description: Error occurring when invoking the execution of the decision service
+        operation.
