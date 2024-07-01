@@ -79,9 +79,9 @@
         "fr": "Envisager un effort commercial",
         "en": "Consider a commercial effort"
     },
-    "UpsellProposal": {
-        "fr": "Proposer une offre commerciale pour le produit $policyUpgrade pour le prix $price avec un offre supplémentaire $offer.  Le benefice pour le client est '$benefit'.",
-        "en": "Propose a commercial offer for the product $policyUpgrade for the price $price with an additional offer $offer.  The benefit for the client is '$benefit'."
+    "SimpleUpsellProposal": {
+        "fr": "Proposer une offre commerciale $description.",
+        "en": "Propose a commercial offer $description."
     },
     "UnknownAction": {
         "fr": "Action inconnue: $actionType",

@@ -3,16 +3,20 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 from typing_extensions import TypedDict
+from typing import Annotated, Literal, Any, Optional
+import json,logging
+
 from athena.app_settings import get_config
 from athena.llm.assistants.assistant_mgr import OwlAssistant
-from typing import Annotated, Literal, Any
+
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langchain_core.messages import AnyMessage, HumanMessage, ToolMessage
+from langchain_core.runnables.config import RunnableConfig
 from langgraph.pregel.types import StateSnapshot
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.sqlite import SqliteSaver
-import json,logging
+
 import langchain
 
 LOGGER = logging.getLogger(__name__)
@@ -65,9 +69,21 @@ class BasicToolNode:
     
 class IBUInsuranceAssistant(OwlAssistant):
     
+    def define_classifier_model(self):
+        # This method is temporary - need to get assistant supporting multiple agents
+        from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity
+        mgr = get_agent_manager()
+        oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
+        if oae is None:
+            raise ValueError("ibu_classify_query_agent agent not found")
+        return mgr.build_agent(oae.agent_id,"en")
+       
+        
+    
     def __init__(self,agent,assistantID):
         super().__init__(assistantID)
         self.memory = SqliteSaver.from_conn_string(":memory:")
+        self.classifier_model = self.define_classifier_model()
         self.model = agent.get_model()
         self.prompt = agent.get_prompt()
         tool_node=BasicToolNode(agent.get_tools())
@@ -80,7 +96,11 @@ class IBUInsuranceAssistant(OwlAssistant):
             self.route_tools,
             {"tools": "tools", END: END}
         )
-        graph.add_edge("classify", "llm")
+        graph.add_conditional_edges(
+            "classify",
+            self.route_tools,
+            {"COMPLAINT": "llm", END: END}
+        )
         graph.add_edge("tools", "llm")
         graph.set_entry_point("classify")
         self.graph = graph.compile(checkpointer=self.memory)
@@ -116,6 +136,12 @@ class IBUInsuranceAssistant(OwlAssistant):
         if hasattr(ai_message, "tool_calls") and len(ai_message.tool_calls) > 0:
             return "tools"
         return END
+    
+    def invoke(self, request, thread_id: Optional[str]) -> dict[str, Any] | Any:
+        self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
+        resp= self.graph.invoke(request, self.config)
+        msg=resp["messages"][-1].content
+        return msg
     
     def get_state(self) -> StateSnapshot:
         return self.graph.get_state(self.config)

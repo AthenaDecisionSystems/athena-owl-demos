@@ -10,6 +10,10 @@ from fastapi.encoders import jsonable_encoder
 from athena.glossary.glossary_mgr import build_get_glossary
 from string import Template
 
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.DEBUG,
+    datefmt='%Y-%m-%d %H:%M:%S')
 LOGGER = logging.getLogger(__name__)
 
 
@@ -41,6 +45,7 @@ def _prepare_odm_payload(claim, motive: Motive, intentionToLeave: bool):
             ]
         }
     }
+    LOGGER.debug(f"@@@>  {data}")
     return data
 
 def _format_action(g: build_get_glossary, action: dict, locale: str = "en") -> str:
@@ -68,14 +73,11 @@ def _format_action(g: build_get_glossary, action: dict, locale: str = "en") -> s
         return t.substitute(recipient=g.get_phrase(action["recipient"], locale))
     elif action_type == "CommercialEffort":
         return g.get_phrase("CommercialEffort", locale)
-    elif action_type == "UpsellProposal":
-        t = Template(g.get_phrase("UpsellProposal", locale))
-        return t.substitute(
-            policyUpgrade=g.get_phrase(action["policyUpgrade"], locale),
-            price=g.get_phrase(action["price"], locale),
-            offer=g.get_phrase(action["offer"], locale),
-            benefit=g.get_phrase(action["benefit"], locale),
-        )
+    elif action_type == "SimpleUpsellProposal":
+        t = Template(g.get_phrase("SimpleUpsellProposal", locale))
+        return t.substitute(description=action["description"])
+    elif action_type == "Voucher":
+        return g.get_phrase(action["explanationCode"], locale)
     else:
         t = Template(g.get_phrase("UnknownAction", locale))
         return t.substitute(actionType=action_type)
@@ -98,7 +100,8 @@ def _process_odm_response(resp_json, g: build_get_glossary, locale: str):
             'outputTraces': []}}
 
     """
-    LOGGER.debug(resp_json)
+
+    LOGGER.debug(f"@@@> ODM response:  {resp_json}")
     if len(resp_json) == 0:
         return g.get_phrase("NoAction", locale)
     else:

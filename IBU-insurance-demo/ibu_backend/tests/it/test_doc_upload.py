@@ -44,4 +44,14 @@ class TestDocumentMgt(unittest.TestCase):
 
         rep=self.client.post('/api/v1/a/documents',json = fd.model_dump(),files=files) 
         print(rep.text)
+        
+    def test_upload_docx(self):
+        fd= FileDescription(name="claim_complaint_rules", 
+                            description="a set of rules to manage complaints", 
+                            type="html",
+                            file_name="IBU_policies_2.html")
+        files = {'myFile': (fd.file_name, open(self.PATH_TO_DOCS + "/" +  fd.file_name, 'rb'))}
+
+        rep=self.client.post('/api/v1/a/documents',json = fd.model_dump(),files=files) 
+        print(rep.text)
 

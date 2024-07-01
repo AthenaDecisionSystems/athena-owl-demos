@@ -1,5 +1,5 @@
 logging_level: DEBUG
-version: 0.0.2
+version: 0.0.3
 owl_env_path: /app/.env
 owl_agent_llm_client_class: ibu.llm.agent_openai.OpenAIClient
 owl_agent_llm_model: gpt-3.5-turbo-0125

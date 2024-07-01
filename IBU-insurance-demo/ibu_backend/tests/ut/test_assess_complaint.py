@@ -19,9 +19,9 @@ class TestIBUAssistant(unittest.TestCase):
         oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
         if oae is None:
             raise ValueError("ibu_classify_query_agent agent not found")
-        assistant = mgr.build_agent(oae.agent_id,"en")
-        assert assistant
-        rep = assistant.invoke({"input": query, "chat_history": []} )
+        agent = mgr.build_agent(oae.agent_id,"en")
+        assert agent
+        rep = agent.invoke({"input": query, "chat_history": []} )
         print(rep)
         assert "INFORMATION" in rep
     
@@ -31,9 +31,9 @@ class TestIBUAssistant(unittest.TestCase):
         oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
         if oae is None:
             raise ValueError("ibu_classify_query_agent agent not found")
-        assistant = mgr.build_agent(oae.agent_id,"en")
-        assert assistant
-        rep = assistant.invoke({"input": query, "chat_history": []} )
+        agent = mgr.build_agent(oae.agent_id,"en")
+        assert agent
+        rep = agent.invoke({"input": query, "chat_history": []} )
         print(rep)
         assert "COMPLAINT" in rep
          
