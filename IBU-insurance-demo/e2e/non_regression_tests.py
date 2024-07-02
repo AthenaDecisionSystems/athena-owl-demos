@@ -94,6 +94,7 @@ def get_best_action_using_LLM(base_url):
   rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
   print(f"\n@@@> {rep}")
   
+
 if __name__ == "__main__":
   print("################ Non Regression Tests ##############")
   verify_health(IBU_BASE_URL)
