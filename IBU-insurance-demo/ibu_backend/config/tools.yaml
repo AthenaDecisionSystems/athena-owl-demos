@@ -33,5 +33,8 @@ ibu_claim_by_id:
 ibu_best_action:
   tool_id: ibu_best_action
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'perform the next best action given the current state of the insurance claim knowing\nits unique claim_id and the current client motivation.\nextract the  client motive and if he has the intention to leave'
+  tool_description: |
+    "perform the next best action given the current state of the insurance claim 
+    knowing its unique claim_id and the current client's motivation.
+    Extract the client motive and whether he has the intention to churn"
   tool_fct_name: define_next_best_action_with_decision

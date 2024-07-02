@@ -8,7 +8,7 @@ owl_agent_llm_model: gpt-3.5-turbo-0125
 # owl_agent_llm_client_class: athena.llm.agent_anthropic.AnthropicClient
 
 # NOT used owl_agent_decision_service_fct_name: athena.itg.decisions.next_best_action_ds_client.callDecisionService
-owl_best_action_ds_url: http://decisionsvc:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction
+owl_best_action_ds_url: http://decisionsvc:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
 owl_glossary_path: /app/config/glossary.json
 
 owl_assistants_path: /app/config/assistants.yaml
