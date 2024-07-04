@@ -13,8 +13,8 @@
             "console": "integratedTerminal",
             //"env": { "PYTHONPATH": "${workspaceRoot}/owl-agent-backend/src"},
             "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
-            "cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
-            //"cwd": "${workspaceRoot}/athena-owl-demos/IBU-insurance-demo/src/ibu_backend"
+            //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
+            "cwd": "${workspaceRoot}/IBU-insurance-demo/ibu_backend"
             //"cwd": "${workspaceRoot}/IBM-MiniLoan-demo/ibu_backend"
         }
     ]

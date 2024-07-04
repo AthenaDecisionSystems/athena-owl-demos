@@ -27,17 +27,11 @@ def verify_health(base_url):
 
 def perform_general_knowledge_query_legacy(base_url):
   print("\n--> Validate Basic Query to LLM\n")
-  data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
-    "query": "can you give me some information about langchain",\
+  data='{  "locale": "en",\
+    "query": "can you give me some information about langchain?",\
     "type": "chat",\
-    "modelParameters": { \
-      "modelName": "gpt-3.5-turbo-0125",\
-      "modelClass": "agent_openai",\
-      "prompt_ref": "default_prompt",\
-      "temperature": 0,\
-      "top_k": 1,\
-      "top_p": 1\
-    },\
+    "assistant_id":"ibu_assistant",  \
+    "user_id" : "remote_test", \
     "chat_history": ""\
   }'
   rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
@@ -46,21 +40,20 @@ def perform_general_knowledge_query_legacy(base_url):
 
 def validate_access_to_data_mgr():
   print("\n--> Call to get a user to validate data management works\n")
-
   rep = requests.get("http://localhost:8080/repository/clients/search/Smith").content.decode()
   print(f"\n@@@> {rep}")
   assert "Sonya" in rep
 
 def upload_pdf_insurance_doc(base_url):
   print("\n--> Upload pdf document to vector store\n")
-  f = open("../scenarios/ibu-claims-complaint-rules.pdf", "rb")
+  f = open("../scenarios/IBU_policies_2.html", "rb")
   files = {'myFile' :  f }
-  rep = requests.post(base_url + "/a/documents?name=ibu-claims-complaint-rules&description=The%20rules%20about%20claim%20complaint%20management&type=pdf", files=files).content.decode()
+  rep = requests.post(base_url + "/a/documents?name=IBU_policies-complaint&description=The%20rules%20about%20claim%20complaint%20management&type=html", files=files).content.decode()
   print(f"\n@@@> {rep}")
  
 def validate_access_to_ibu_prompt(base_url):
-  print("\n--> Get IBU default prompt\n")
-  rep = requests.get(base_url + "/a/prompts/openai_insurance_with_tool").content.decode()
+  print("\n--> Get IBU openai_insurance_with_tool prompt\n")
+  rep = requests.get(base_url + "/a/prompts/openai_insurance_with_tool/en").content.decode()
   print(f"\n@@@> {rep}")
   assert "customer service representative" in rep
   
@@ -89,28 +82,11 @@ def validate_ibu_tools(base_url, tool_id):
   return rep
 
 
-def get_client_using_LLM_legacy_mode(base_url):
-  print("\n--> Get client description using tool and llm - legacy mode\n")
-  data='{ "callWithVectorStore": false, "callWithDecisionService": false, "locale": "en",\
-            "query": "who is the client with id 1?",\
-            "type": "chat",\
-            "modelParameters": { \
-                "modelName": "gpt-3.5-turbo-0125",\
-                "modelClass": "agent_openai",\
-                "prompt_ref": "default_prompt",\
-                "temperature": 0,\
-                "top_k": 1,\
-                "top_p": 1\
-            },\
-            "chat_history": []\
-        }'
-  rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
-  print(f"\n@@@> {rep}")
  
 def get_best_action_using_LLM(base_url):
   print("\n--> Get claim - client best actin using assistant with langgraph\n")
   data='{ "locale": "en",\
-            "query": "David Martin is not happy with the settlement of his claim with a claim_id 1. He thinks the amount reimbursed is far too low. He is threatening to leave to the competition.",\
+            "query": "One of our client, Sonya Smith, has a problem with her claim with the id=2 for water damage, her carpet is expensive, she is surprise by the current coverage, very disappointed?",\
             "chat_history": [],\
             "assistant_id":"ibu_assistant",  \
             "user_id" : "remote_test" \
@@ -118,6 +94,7 @@ def get_best_action_using_LLM(base_url):
   rep = requests.post(base_url + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
   print(f"\n@@@> {rep}")
   
+
 if __name__ == "__main__":
   print("################ Non Regression Tests ##############")
   verify_health(IBU_BASE_URL)
@@ -127,7 +104,6 @@ if __name__ == "__main__":
   ae=validate_ibu_assistant(IBU_BASE_URL)
   validate_ibu_agent(IBU_BASE_URL,ae.agent_id)
   validate_ibu_tools(IBU_BASE_URL,"ibu_claim_by_id")
-  get_client_using_LLM_legacy_mode(IBU_BASE_URL)
   get_best_action_using_LLM(IBU_BASE_URL)
 
 

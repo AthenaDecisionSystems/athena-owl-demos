@@ -8,7 +8,7 @@ owl_agent_llm_model: gpt-3.5-turbo-0125
 # owl_agent_llm_client_class: athena.llm.agent_anthropic.AnthropicClient
 
 # NOT used owl_agent_decision_service_fct_name: athena.itg.decisions.next_best_action_ds_client.callDecisionService
-owl_best_action_ds_url: http://decisionsvc:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction
+owl_best_action_ds_url: http://localhost:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction
 owl_glossary_path: ./config/glossary.json
 
 owl_assistants_path: ./config/assistants.yaml
@@ -24,6 +24,6 @@ owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_llm_history_length: 5
 app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
 app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
-app_insurance_backend_url: http://datamgr:8080/repository
+app_insurance_backend_url: http://localhost:8080/repository
 owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService
 owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory

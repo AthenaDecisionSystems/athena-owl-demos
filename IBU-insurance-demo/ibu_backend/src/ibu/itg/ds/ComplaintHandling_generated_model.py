@@ -242,7 +242,7 @@ class InsurancePolicy(BaseModel):
     policyType: Optional[PolicyType] = None
     subType: Optional[SubType] = None
     client: Optional[Client] = None
-    coverages: Optional[List[SubscribedCoverage]] = Field(None, unique_items=True)
+    coverages: Optional[List[SubscribedCoverage]] = Field(None)
     options: Optional[List[Option]] = None
 
 
@@ -270,7 +270,7 @@ class Claim(BaseModel):
     creationDate: Optional[datetime] = None
     targetDurationInDays: Optional[int] = None
     policy: Optional[InsurancePolicy] = None
-    damages: Optional[List[Damage]] = Field(None, unique_items=True)
+    damages: Optional[List[Damage]] = Field(None)
     settlementOffer: Optional[ClaimSettlementOffer] = None
 
 
@@ -280,7 +280,7 @@ class ClaimSettlementOffer(BaseModel):
     cancelContractAtExpiration: Optional[bool] = None
     cancelContractObjectCeased: Optional[bool] = None
     clientResponsibleForDamage: Optional[bool] = None
-    actualCoverages: Optional[List[ActualCoverage]] = Field(None, unique_items=True)
+    actualCoverages: Optional[List[ActualCoverage]] = Field(None)
 
 
 class ComplaintOnClaim(BaseModel):

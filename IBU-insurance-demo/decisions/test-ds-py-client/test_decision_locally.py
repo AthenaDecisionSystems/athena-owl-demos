@@ -40,15 +40,12 @@ def test_decision_service_with_predefined_payload():
     payload: str = getInputPayload("scenario - leger retard")
     response = callDecisionService(payload)
     assert response.status_code == 200
-
     details = response.json()["response"]
     # print(details)
-
     actions = details['actions']
     assert len(actions) == 3
     assert actions[0]["typeDisc__"] == "Discount"
     assert actions[0]["explanationCode"] == "AC-AUTO-SUBV-DISC"
-
     missingInfoElements = details['missingInfoElements']
     assert len(missingInfoElements) == 0
 
@@ -102,7 +99,7 @@ def test_decision_service_with_pydantic():
     missingInfoElements = details['missingInfoElements']
     assert len(missingInfoElements) == 0
 
-def test_decision_service_with_claim_1():
+def test_decision_service_with_claim_2():
     # in this test, we call the ODM decision service by passing a payload with two parts:
     # - a claim obtained from our data API that loads it from Postgres
     # - a list of interactions that we create programmatically
@@ -111,14 +108,10 @@ def test_decision_service_with_claim_1():
     claim_id = 2
     motive = Motive.UnsatisfiedWithAppliedCoverages
     intentionToLeave = False
-
     intentionToLeaveStr = str(intentionToLeave).lower()
-
     response = callDataAPI(f'claims/{claim_id}')
     assert response.status_code == 200
-
     claim_json = response.json()
-
 #    claim_json_str = """{"id":1,"status":"IN_PROCESS_VERIFIED","creationDate":"2024-02-21T23:00:00.000+00:00","targetDurationInDays":21,"policy":{"id":1,"effectiveDate":"2023-06-05T22:00:00.000+00:00","expirationDate":"2024-06-05T22:00:00.000+00:00","policyType":"Standard","client":{"id":1,"firstName":"Jane","lastName":"Dupont","dateOfBirth":"1967-02-21T23:00:00.000+00:00","paymentScore":3,"claimsScore":3,"preferredChannel":"email","vip":true},"coverages":[]},"damages":[],"settlementOffer":null}"""
 #    assert claim_json_str == json.dumps(claim_json, separators=(',', ':'))
 
@@ -144,7 +137,7 @@ def test_decision_service_with_claim_1():
     assert response.status_code == 200
 
     details = response.json()["response"]
-    # print(details)
+    print(details)
 
     actions = details['actions']
     assert len(actions) == 2
@@ -157,28 +150,24 @@ def test_decision_service_with_claim_1():
 def test_get_claims_1():
     response = callDataAPI('claims/1')
     assert response.status_code == 200
-
     claim_json = response.json()
-
     policy = claim_json['policy']
     assert policy != None
-
     damages = claim_json['damages']
     assert len(damages) == 1
-
     assert claim_json['status'] == 'IN_PROCESS_VERIFIED'
 
 def test_get_claims_2():
     response = callDataAPI('claims/2')
     assert response.status_code == 200
-
     claim_json = response.json()
-
+    print(claim_json)
     policy = claim_json['policy']
     assert policy != None
-
     damages = claim_json['damages']
     assert len(damages) == 2
-
     assert claim_json['status'] == 'IN_PROCESS_VERIFIED'
 
+if __name__ == '__main__':
+    # test_get_claims_2()
+    test_decision_service_with_claim_2()

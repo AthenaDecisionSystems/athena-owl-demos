@@ -5,7 +5,7 @@
 
 ## Goals
 
-The Miniloan application is part of the IBM Operational Decision Management product and [tutorial](https://www.ibm.com/docs/en/odm/8.12.0?topic=rules-tutorials). The goal of this hybrid AI demonstration is to illustrate how unstructured query in natural language can be decomposed using a LLM to identify parameters to call the loan application decision serviceand how to do it with the Owl Framework.
+The Miniloan application is part of the IBM Operational Decision Management product and [tutorial](https://www.ibm.com/docs/en/odm/8.12.0?topic=rules-tutorials). The goal of this hybrid AI demonstration is to illustrate how unstructured query in natural language can be decomposed using a LLM to identify parameters to call the loan application decision service and how to do it with the Owl Framework.
 
 The end-user's questions that are tested and validated are:
 
