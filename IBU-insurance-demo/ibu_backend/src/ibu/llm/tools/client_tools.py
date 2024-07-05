@@ -1,8 +1,9 @@
 import logging
-
+from typing import Optional, Any
 from importlib import import_module
 from langchain.tools import StructuredTool
-from typing import Optional, Any
+from langchain_community.tools.tavily_search import TavilySearchResults
+
 
 from athena.app_settings import get_config
 from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity

@@ -5,10 +5,12 @@ Copyright 2024 Athena Decision Systems
 from typing_extensions import TypedDict
 from typing import Annotated, Literal, Any, Optional
 import json,logging
-
+from typing import Optional
 from athena.app_settings import get_config
 from athena.llm.assistants.assistant_mgr import OwlAssistant
-
+from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity, OwlAgentInterface
+from athena.itg.store.content_mgr import get_content_mgr
+ 
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langchain_core.messages import AnyMessage, HumanMessage, ToolMessage
@@ -23,6 +25,7 @@ LOGGER = logging.getLogger(__name__)
 
 if get_config().logging_level == "DEBUG":
     langchain.debug=True
+    
 """
 An assistance to support the contact center agents from IBU insurance for the complaint management process
 """
@@ -66,35 +69,54 @@ class BasicToolNode:
             )
         return {"messages": outputs}
 
+def get_or_build_classifier_model() -> OwlAgentInterface | None:
+    # This method is temporary - need to get assistant supporting multiple agents
     
+    mgr = get_agent_manager()
+    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
+    if oae is None:
+        raise ValueError("ibu_classify_query_agent agent not found")
+    return mgr.build_agent(oae.agent_id,"en")
+ 
+def define_information_q_model() ->OwlAgentInterface | None:
+    # This method is temporary - need to get assistant supporting multiple agents
+    
+    mgr = get_agent_manager()
+    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("openai_tool_chain")
+    if oae is None:
+        raise ValueError("openai_tool_chain agent not found")
+    return mgr.build_agent(oae.agent_id,"en")
+
+
+     
 class IBUInsuranceAssistant(OwlAssistant):
-    
-    def define_classifier_model(self):
-        # This method is temporary - need to get assistant supporting multiple agents
-        from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity
-        mgr = get_agent_manager()
-        oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
-        if oae is None:
-            raise ValueError("ibu_classify_query_agent agent not found")
-        return mgr.build_agent(oae.agent_id,"en")
-       
-        
     
     def __init__(self,agent,assistantID):
         super().__init__(assistantID)
         self.memory = SqliteSaver.from_conn_string(":memory:")
-        self.classifier_model = self.define_classifier_model()
+        self.classifier_model: Optional[OwlAgentInterface] = get_or_build_classifier_model()
+        self.information_q_model: Optional[OwlAgentInterface] = define_information_q_model()
         self.model = agent.get_model()
         self.prompt = agent.get_prompt()
-        tool_node=BasicToolNode(agent.get_tools())
+        self.rag_retriever = get_content_mgr().get_retriever()
+        
+        tools = agent.get_tools() + self.information_q_model.get_tools()
+        tool_node=BasicToolNode(tools) 
         graph = StateGraph(AgentState)
-        graph.add_node("classify", self.classify_query)
+        graph.add_node("classify", self.process_classify_query)
+        graph.set_entry_point("classify")
+        graph.set_finish_point("classify")
+        """
+        graph.add_node("information", self.process_information_query)
         graph.add_node("llm", self.call_llm)
         graph.add_node("tools", tool_node)
+        
         graph.add_conditional_edges(
             "llm",
             self.route_tools,
-            {"tools": "tools", END: END}
+            { 
+             "tools": "tools", 
+             END: END}
         )
         graph.add_conditional_edges(
             "classify",
@@ -102,15 +124,30 @@ class IBUInsuranceAssistant(OwlAssistant):
             {"COMPLAINT": "llm", END: END}
         )
         graph.add_edge("tools", "llm")
-        graph.set_entry_point("classify")
+
+        """
         self.graph = graph.compile(checkpointer=self.memory)
 
 
-    def classify_query(self, state: AgentState):
+    def process_classify_query(self, state: AgentState):
         messages = state['messages']
+        print(messages)
         #messages= [convert_message_to_dict(m) for m in messages]
         LOGGER.debug(f"\n@@@> {messages}")
         message = self.classifier_model.invoke(messages)
+        return {'messages': [message]}
+    
+    def retrieve(self, state):
+        print("---RETRIEVE---")
+        question = state["question"]
+        documents = self.rag_retriever.invoke(question)
+        return {"documents": documents, "question": question}
+
+    def process_information_query(self, state: AgentState):
+        messages = state['messages']
+        #messages= [convert_message_to_dict(m) for m in messages]
+        LOGGER.debug(f"\n@@@> {messages}")
+        message = self.information_q_model.invoke(messages)
         return {'messages': [message]}
     
     def call_llm(self, state: AgentState):  
@@ -137,9 +174,10 @@ class IBUInsuranceAssistant(OwlAssistant):
             return "tools"
         return END
     
-    def invoke(self, request, thread_id: Optional[str]) -> dict[str, Any] | Any:
+    def invoke(self, request, thread_id: Optional[str], **kwargs) -> dict[str, Any] | Any:
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-        resp= self.graph.invoke(request, self.config)
+        messages=[HumanMessage(content=request["input"])]
+        resp= self.graph.invoke(messages, self.config)
         msg=resp["messages"][-1].content
         return msg
     
