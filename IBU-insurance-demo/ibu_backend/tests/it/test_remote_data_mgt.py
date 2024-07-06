@@ -16,10 +16,9 @@ class TestRemoteDataManager(unittest.TestCase):
     
     @classmethod
     def setUpClass(self):
-        config = get_config()
-        config.app_insurance_backend_url = "http://localhost:8080/repository"
-        self.client_repo: InsuranceClientRepositoryInterface = InsuranceClientFromDataMgr(config)
-        self.claim_repo: InsuranceClaimRepositoryInterface = InsuranceClaimFromDataMgr(config)
+
+        self.client_repo: InsuranceClientRepositoryInterface = InsuranceClientFromDataMgr()
+        self.claim_repo: InsuranceClaimRepositoryInterface = InsuranceClaimFromDataMgr()
 
     def test_client_data_remote_access(self):
         """
@@ -34,8 +33,9 @@ class TestRemoteDataManager(unittest.TestCase):
         self.assertEqual("Smith",client["lastName"])
 
     def test_claim_data_remote_access(self):
-        claim: Claim = self.claim_repo.get_claim(1)
+        claim: Claim = self.claim_repo.get_claim(2)
         assert claim.policy is not None
+        print(claim)
     
     def test_claim_json_remote_access(self):
         claim_str=self.claim_repo.get_claim_json(2)

@@ -63,7 +63,7 @@ ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
   name: ibu_classify_query_agent
   description: openai based agent with simple prompt 
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  class_name: ibu.llm.agents.ClassifyQueryAgent.IBUClassifyQueryAgent
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: classify_query_prompt

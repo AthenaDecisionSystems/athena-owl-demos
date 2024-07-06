@@ -20,66 +20,57 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         return self.CLIENTDB.get(id, None)
 
     def initialize_client_db(self):
-        self.add_client(Client(id=1,firstName = "Robert",
-                            lastName = "Dupont",
+        self.add_client(Client(id=1,
+                            firstName = "David",
+                            lastName = "Martin",
+                            dateOfBirth = "1967-02-22T00:00:00.000+00:00",
+                            firstContractDate = "2005-10-31T00:00:00.000+00:00",
+                            cltvPercentile = 56,
+                            propensityToUpgradePolicy= 0.55,
 
                             preferredChannel= PreferredChannel.mail
                             ))
         self.add_client(Client(id=2,
-                            firstName = "Marie",
-                            lastName = "Durand",
-
-                            preferredChannel= PreferredChannel.mail
-                            ))
-        self.add_client(Client(id=3,
-                            firstName = "Jean",
-                            lastName = "Martin",
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=4,
-                            firstName = "Sophie",
-                            lastName = "Lefevre",
-     
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=5,
-                            firstName = "Pierre",
-                            lastName = "Moreau",
-       
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=6,
-                            firstName = "Isabelle",
-                            lastName = "Girard",
-             
+                            firstName = "Sonya",
+                            lastName = "Smith",
+                            dateOfBirth = "1999-03-12T00:00:00.000+00:00",
+                            firstContractDate = "2023-11-12T00:00:00.000+00:00",
+                            cltvPercentile = 62,
+                            propensityToUpgradePolicy= 0.61,
                             preferredChannel= PreferredChannel.phone
                             ))
-        self.add_client(Client(id=7,
-                            firstName = "Roberto",
-                            lastName = "de la Fuente",
-                  
-                            preferredChannel= PreferredChannel.mail
+        self.add_client(Client(id=3,
+                            firstName = "Zoe",
+                            lastName = "Durand",
+                            dateOfBirth = "2001-10-31T00:00:00.000+00:00",
+                            firstContractDate = "2024-01-15T00:00:00.000+00:00",
+                            cltvPercentile = 44,
+                            propensityToUpgradePolicy= 0.19,
+                            preferredChannel= PreferredChannel.email
                             ))
-        self.add_client(Client(id=8,
+        self.add_client(Client(id=4,
                             firstName = "Robert",
                             lastName = "Smith",
-           
-                            preferredChannel= PreferredChannel.mail
+                            dateOfBirth = "1660-08-26T00:00:00.000+00:00",
+                            firstContractDate = "2014-01-15T00:00:00.000+00:00",
+                            cltvPercentile = 44,
+                            propensityToUpgradePolicy= 0.19,
+                            preferredChannel= PreferredChannel.SMS
                             ))
 
 
-    def get_client_by_name(self, lastName: str) -> Client:
+    def get_client_by_name(self, firstname: str, lastname: str) -> Client:
         for client in self.CLIENTDB.values():
-            if client.lastName == lastName:
+            if client.lastName == lastname and client.firstname == firstname:
                 return client
         return None
 
 
-    def get_client_by_name_json(self, lastName: str) -> str:
+    def get_client_by_name_json(self, firstname: str, lastname: str) -> str:
         for client in self.CLIENTDB.values():
-            if client.lastName == lastName:
+            if client.lastName == lastname and client.firstname == firstname:
                 return client.model_dump_json()
-        return f"No client found with name '{lastName}'"
+        return f"No client found with name '{lastname}'"
 
     def get_client_json(self, id: int) -> str:
         client = self.get_client(id)

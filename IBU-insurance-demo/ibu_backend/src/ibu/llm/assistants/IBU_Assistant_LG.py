@@ -3,9 +3,10 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 from typing_extensions import TypedDict
-from typing import Annotated, Literal, Any, Optional
+from typing import Annotated, Literal, Any, Optional, List
+from langchain_core.pydantic_v1 import BaseModel, Field
 import json,logging
-from typing import Optional
+
 from athena.app_settings import get_config
 from athena.llm.assistants.assistant_mgr import OwlAssistant
 from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity, OwlAgentInterface
@@ -15,17 +16,28 @@ from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langchain_core.messages import AnyMessage, HumanMessage, ToolMessage
 from langchain_core.runnables.config import RunnableConfig
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.prompts import ChatPromptTemplate
+from langchain.schema import Document
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langgraph.pregel.types import StateSnapshot
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.graph import StateGraph, START, END
 
 import langchain
 
 LOGGER = logging.getLogger(__name__)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
 
 if get_config().logging_level == "DEBUG":
     langchain.debug=True
-    
+
+LLM_MODEL="gpt-3.5-turbo-0125"
+  
 """
 An assistance to support the contact center agents from IBU insurance for the complaint management process
 """
@@ -36,11 +48,15 @@ for gathering information. Once in the complaint branch, the LLM should be able 
 for tool calling and then let one of the Tool node performing the function execution.
 Use memory to keep state of the conversation
 """  
+
 class AgentState(TypedDict):
     """
-    Keep messages as chat history
+    Keep messages as chat history, question asked by user, and documents retrieved from vector store
     """
+    question: str
     messages: Annotated[list[AnyMessage], add_messages]
+    documents: List[str]
+    
 
 class BasicToolNode:
     """A node that runs the tools requested in the last AIMessage."""
@@ -69,14 +85,16 @@ class BasicToolNode:
             )
         return {"messages": outputs}
 
-def get_or_build_classifier_model() -> OwlAgentInterface | None:
-    # This method is temporary - need to get assistant supporting multiple agents
+
     
+def get_or_build_classifier_agent() -> OwlAgentInterface | None:
+    # This method is temporary - need to get assistant supporting multiple agents
     mgr = get_agent_manager()
     oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
     if oae is None:
         raise ValueError("ibu_classify_query_agent agent not found")
     return mgr.build_agent(oae.agent_id,"en")
+
  
 def define_information_q_model() ->OwlAgentInterface | None:
     # This method is temporary - need to get assistant supporting multiple agents
@@ -87,27 +105,53 @@ def define_information_q_model() ->OwlAgentInterface | None:
         raise ValueError("openai_tool_chain agent not found")
     return mgr.build_agent(oae.agent_id,"en")
 
-
+def web_search(state):
+    print("---WEB SEARCH---")
+    question = state["question"]
+    web_search_tool = TavilySearchResults(k=3)
+    docs = web_search_tool.invoke({"query": question})
+    web_results = "\n".join([d["content"] for d in docs])
+    web_results = Document(page_content=web_results)
+    return {"documents": web_results, "question": question}
      
 class IBUInsuranceAssistant(OwlAssistant):
     
     def __init__(self,agent,assistantID):
         super().__init__(assistantID)
         self.memory = SqliteSaver.from_conn_string(":memory:")
-        self.classifier_model: Optional[OwlAgentInterface] = get_or_build_classifier_model()
+        self.classifier_model: Optional[OwlAgentInterface] = get_or_build_classifier_agent()
         self.information_q_model: Optional[OwlAgentInterface] = define_information_q_model()
         self.model = agent.get_model()
+        self.use_vector_store = False
         self.prompt = agent.get_prompt()
         self.rag_retriever = get_content_mgr().get_retriever()
         
         tools = agent.get_tools() + self.information_q_model.get_tools()
         tool_node=BasicToolNode(tools) 
+        # ================= DEFINE GRAPH ====================
         graph = StateGraph(AgentState)
-        graph.add_node("classify", self.process_classify_query)
-        graph.set_entry_point("classify")
-        graph.set_finish_point("classify")
+        graph.add_node("information_node", self.process_information_query)
+        #graph.add_node("complaint", END)
+        graph.add_node("tools", tool_node)
+        graph.add_conditional_edges(
+            START,
+            self.process_classify_query,
+            {
+                "information": "information_node",
+                "complaint": END,
+            },
+        )
+        
+        graph.add_conditional_edges(
+            "information_node",
+            self.route_tools,
+            { 
+             "tools": "tools", 
+             END: END}
+        )
+        graph.add_edge("tools", "information_node")
         """
-        graph.add_node("information", self.process_information_query)
+        
         graph.add_node("llm", self.call_llm)
         graph.add_node("tools", tool_node)
         
@@ -123,7 +167,7 @@ class IBUInsuranceAssistant(OwlAssistant):
             self.route_tools,
             {"COMPLAINT": "llm", END: END}
         )
-        graph.add_edge("tools", "llm")
+        
 
         """
         self.graph = graph.compile(checkpointer=self.memory)
@@ -131,23 +175,32 @@ class IBUInsuranceAssistant(OwlAssistant):
 
     def process_classify_query(self, state: AgentState):
         messages = state['messages']
-        print(messages)
+        question = state["question"]
         #messages= [convert_message_to_dict(m) for m in messages]
         LOGGER.debug(f"\n@@@> {messages}")
-        message = self.classifier_model.invoke(messages)
-        return {'messages': [message]}
+        message = self.classifier_model.invoke({"question": question})
+        if message.next_task == "information":
+            print("---ROUTE QUESTION TO INFORMATION---")
+            return "information"
+        elif message.next_task == "complaint":
+            print("---ROUTE QUESTION TO Complaint---")
+            return "complaint"
+
     
     def retrieve(self, state):
         print("---RETRIEVE---")
         question = state["question"]
-        documents = self.rag_retriever.invoke(question)
-        return {"documents": documents, "question": question}
+        documents = self.rag_retriever.invoke(question.content)
+        return {"documents": documents, "question": question.content}
 
     def process_information_query(self, state: AgentState):
+        if self.use_vector_store:
+            self.retrieve(state)
         messages = state['messages']
-        #messages= [convert_message_to_dict(m) for m in messages]
-        LOGGER.debug(f"\n@@@> {messages}")
-        message = self.information_q_model.invoke(messages)
+        question = state["question"]
+        documents = state["documents"]
+
+        message = self.information_q_model.invoke({"question": question.content, "context": documents})
         return {'messages': [message]}
     
     def call_llm(self, state: AgentState):  
@@ -175,9 +228,11 @@ class IBUInsuranceAssistant(OwlAssistant):
         return END
     
     def invoke(self, request, thread_id: Optional[str], **kwargs) -> dict[str, Any] | Any:
+        if kwargs["vector_store"]:
+            self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-        messages=[HumanMessage(content=request["input"])]
-        resp= self.graph.invoke(messages, self.config)
+        message=HumanMessage(content=request["input"])
+        resp= self.graph.invoke({"question" : message}, self.config)
         msg=resp["messages"][-1].content
         return msg
     

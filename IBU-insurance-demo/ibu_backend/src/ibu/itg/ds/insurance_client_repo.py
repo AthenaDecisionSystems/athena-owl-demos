@@ -15,10 +15,10 @@ class InsuranceClientRepositoryInterface:
     def get_client(self,id: int) -> Client:
         return None
     
-    def get_client_by_name(self,name: str) -> Client:
+    def get_client_by_name(self, firstname: str, lastname: str) -> Client:
         return None
     
-    def get_client_by_name_json(self, name: str) -> str:
+    def get_client_by_name_json(self,firstname: str, lastname: str) -> str:
         return None
     
     def get_client_json(self, id: int) -> str:

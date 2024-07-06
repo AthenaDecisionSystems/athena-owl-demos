@@ -47,9 +47,9 @@ def get_client_by_id(id: int) -> dict:
     """get insurance client information given its unique client identifier id"""
     return build_or_get_insurance_client_repo().get_client_json(id)
 
-def get_client_by_name(name: str) -> dict:
+def get_client_by_name(firstname: str, lastname: str) -> dict:
     """get client information given his or her name"""
-    return build_or_get_insurance_client_repo().get_client_by_name(name)
+    return build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
 
 def get_claim_by_id(id: int) -> dict:
     """get insurance claim information given its unique claim identifier id"""
@@ -96,6 +96,4 @@ class IbuInsuranceToolInstanceFactory(ToolInstanceFactoryInterface):
                 tool_list.append(TavilySearchResults(max_results=2))
             elif tool_entity.tool_fct_name in methods.keys():
                 tool_list.append(define_tool( tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class))# type: ignore
-            else:
-                raise Exception(f"{tool_entity.tool_id} Not yet implemented")
         return tool_list
