@@ -5,6 +5,7 @@ Copyright 2024 Athena Decision Systems
 import json, logging
 from ibu.itg.ds.insurance_client_repo import InsuranceClientRepositoryInterface
 from ibu.itg.ds.ComplaintHandling_generated_model import *
+from datetime import datetime
 
 class InsuranceClientInMem(InsuranceClientRepositoryInterface):
 
@@ -23,8 +24,8 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         self.add_client(Client(id=1,
                             firstName = "David",
                             lastName = "Martin",
-                            dateOfBirth = "1967-02-22T00:00:00.000+00:00",
-                            firstContractDate = "2005-10-31T00:00:00.000+00:00",
+                            dateOfBirth = datetime.fromisoformat("1967-02-22"),
+                            firstContractDate = datetime.fromisoformat("2005-10-31"),
                             cltvPercentile = 56,
                             propensityToUpgradePolicy= 0.55,
 
@@ -33,8 +34,8 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         self.add_client(Client(id=2,
                             firstName = "Sonya",
                             lastName = "Smith",
-                            dateOfBirth = "1999-03-12T00:00:00.000+00:00",
-                            firstContractDate = "2023-11-12T00:00:00.000+00:00",
+                            dateOfBirth = "1999-03-12",
+                            firstContractDate = "2023-11-12",
                             cltvPercentile = 62,
                             propensityToUpgradePolicy= 0.61,
                             preferredChannel= PreferredChannel.phone
@@ -42,8 +43,8 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         self.add_client(Client(id=3,
                             firstName = "Zoe",
                             lastName = "Durand",
-                            dateOfBirth = "2001-10-31T00:00:00.000+00:00",
-                            firstContractDate = "2024-01-15T00:00:00.000+00:00",
+                            dateOfBirth = "2001-10-31",
+                            firstContractDate = "2024-01-15",
                             cltvPercentile = 44,
                             propensityToUpgradePolicy= 0.19,
                             preferredChannel= PreferredChannel.email
@@ -51,8 +52,8 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         self.add_client(Client(id=4,
                             firstName = "Robert",
                             lastName = "Smith",
-                            dateOfBirth = "1660-08-26T00:00:00.000+00:00",
-                            firstContractDate = "2014-01-15T00:00:00.000+00:00",
+                            dateOfBirth = datetime.fromisoformat("1660-08-26"),
+                            firstContractDate = "2014-01-15",
                             cltvPercentile = 44,
                             propensityToUpgradePolicy= 0.19,
                             preferredChannel= PreferredChannel.SMS
@@ -61,7 +62,7 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
 
     def get_client_by_name(self, firstname: str, lastname: str) -> Client:
         for client in self.CLIENTDB.values():
-            if client.lastName == lastname and client.firstname == firstname:
+            if client.lastName == lastname and client.firstName == firstname:
                 return client
         return None
 
@@ -79,7 +80,7 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         return client.model_dump_json()
 
     def get_all_clients_json(self) -> str:
-        return json.dumps([client.model_dump() for client in self.CLIENTDB.values()], indent=4)
+        return json.dumps([client.model_dump() for client in self.CLIENTDB.values()], indent=4, default=str)
 
 
     def get_all_clients(self) -> list[Client]:

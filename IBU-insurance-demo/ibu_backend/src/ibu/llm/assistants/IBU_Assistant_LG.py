@@ -10,11 +10,12 @@ import json,logging
 from athena.app_settings import get_config
 from athena.llm.assistants.assistant_mgr import OwlAssistant
 from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity, OwlAgentInterface
+from athena.routers.dto_models import ConversationControl, ResponseControl
 from athena.itg.store.content_mgr import get_content_mgr
  
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
-from langchain_core.messages import AnyMessage, HumanMessage, ToolMessage
+from langchain_core.messages import AnyMessage, HumanMessage, AIMessage, ToolMessage
 from langchain_core.runnables.config import RunnableConfig
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.prompts import ChatPromptTemplate
@@ -35,27 +36,26 @@ logging.basicConfig(
 
 if get_config().logging_level == "DEBUG":
     langchain.debug=True
-
-LLM_MODEL="gpt-3.5-turbo-0125"
   
 """
-An assistance to support the contact center agents from IBU insurance for the complaint management process
-"""
+An assistance to support the contact center agents from IBU insurance for the complaint management process.
 
-"""
-The graph needs to do a query classification and routing to assess if the query is for complaint or
+The graph needs to do a query classification and routing to assess if the query is for complaint management or
 for gathering information. Once in the complaint branch, the LLM should be able to identify the need
 for tool calling and then let one of the Tool node performing the function execution.
+
 Use memory to keep state of the conversation
 """  
 
 class AgentState(TypedDict):
     """
-    Keep messages as chat history, question asked by user, and documents retrieved from vector store
+    Keep messages as chat history: message can be human, ai or tool messages.
+    question asked by user, and documents retrieved from vector store
     """
-    question: str
     messages: Annotated[list[AnyMessage], add_messages]
     documents: List[str]
+    question: str
+
     
 
 class BasicToolNode:
@@ -100,9 +100,9 @@ def define_information_q_model() ->OwlAgentInterface | None:
     # This method is temporary - need to get assistant supporting multiple agents
     
     mgr = get_agent_manager()
-    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("openai_tool_chain")
+    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_tool_rag_agent_limited")
     if oae is None:
-        raise ValueError("openai_tool_chain agent not found")
+        raise ValueError("ibu_tool_rag_agent_limited agent not found")
     return mgr.build_agent(oae.agent_id,"en")
 
 def web_search(state):
@@ -121,7 +121,7 @@ class IBUInsuranceAssistant(OwlAssistant):
         self.memory = SqliteSaver.from_conn_string(":memory:")
         self.classifier_model: Optional[OwlAgentInterface] = get_or_build_classifier_agent()
         self.information_q_model: Optional[OwlAgentInterface] = define_information_q_model()
-        self.model = agent.get_model()
+        self.model = agent.get_runnable()
         self.use_vector_store = False
         self.prompt = agent.get_prompt()
         self.rag_retriever = get_content_mgr().get_retriever()
@@ -131,14 +131,13 @@ class IBUInsuranceAssistant(OwlAssistant):
         # ================= DEFINE GRAPH ====================
         graph = StateGraph(AgentState)
         graph.add_node("information_node", self.process_information_query)
-        #graph.add_node("complaint", END)
+        graph.add_node("complaint", self.process_complaint)
         graph.add_node("tools", tool_node)
-        graph.add_conditional_edges(
-            START,
+        graph.set_conditional_entry_point(
             self.process_classify_query,
             {
                 "information": "information_node",
-                "complaint": END,
+                "complaint": "complaint",
             },
         )
         
@@ -150,26 +149,15 @@ class IBUInsuranceAssistant(OwlAssistant):
              END: END}
         )
         graph.add_edge("tools", "information_node")
-        """
-        
-        graph.add_node("llm", self.call_llm)
-        graph.add_node("tools", tool_node)
-        
         graph.add_conditional_edges(
-            "llm",
+            "complaint",
             self.route_tools,
             { 
              "tools": "tools", 
              END: END}
         )
-        graph.add_conditional_edges(
-            "classify",
-            self.route_tools,
-            {"COMPLAINT": "llm", END: END}
-        )
-        
+        graph.add_edge("tools", "complaint")
 
-        """
         self.graph = graph.compile(checkpointer=self.memory)
 
 
@@ -186,29 +174,27 @@ class IBUInsuranceAssistant(OwlAssistant):
             print("---ROUTE QUESTION TO Complaint---")
             return "complaint"
 
-    
-    def retrieve(self, state):
-        print("---RETRIEVE---")
-        question = state["question"]
-        documents = self.rag_retriever.invoke(question.content)
-        return {"documents": documents, "question": question.content}
 
-    def process_information_query(self, state: AgentState):
-        if self.use_vector_store:
-            self.retrieve(state)
-        messages = state['messages']
+    def process_information_query(self, state):
         question = state["question"]
+        if self.use_vector_store:
+            state["documents"] = self.rag_retriever.invoke(question)
         documents = state["documents"]
 
-        message = self.information_q_model.invoke({"question": question.content, "context": documents})
-        return {'messages': [message]}
+        message = self.information_q_model.invoke({"question": question, "context": documents}) # dict
+        return {'messages': [AIMessage(content=message["output"])], "question" : message["question"]}
     
-    def call_llm(self, state: AgentState):  
+    def process_complaint(self, state):  
         messages = state['messages']
-        #messages= [convert_message_to_dict(m) for m in messages]
+        question = state["question"]
+        if self.use_vector_store:
+            state["documents"] = self.rag_retriever.invoke(question)
+        else:
+            state["documents"] = []
+        documents = state["documents"]
         LOGGER.debug(f"\n@@@> {messages}")
-        message = self.model.invoke(messages)
-        return {'messages': [message]}
+        message = self.model.invoke({"question": question, "context": documents})
+        return {'messages': [AIMessage(content=message["output"])]}
     
    
     def route_tools(self,
@@ -216,13 +202,12 @@ class IBUInsuranceAssistant(OwlAssistant):
     ) -> Literal["tools", END]:
         """Use in the conditional_edge to route to the ToolNode if the last message
         has tool calls. Otherwise, route to the end."""
-        if isinstance(state, list):
-            ai_message = state[-1]
-        elif messages := state.get("messages", []):
+        if messages := state.get("messages", []):
             ai_message = messages[-1]
+            LOGGER.debug(f"\n@@@> {ai_message}")
         else:
             raise ValueError(f"No messages found in input state to tool_edge: {state}")
-        LOGGER.debug(f"\n@@@> {ai_message}")
+        
         if hasattr(ai_message, "tool_calls") and len(ai_message.tool_calls) > 0:
             return "tools"
         return END
@@ -231,8 +216,8 @@ class IBUInsuranceAssistant(OwlAssistant):
         if kwargs["vector_store"]:
             self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-        message=HumanMessage(content=request["input"])
-        resp= self.graph.invoke({"question" : message}, self.config)
+
+        resp= self.graph.invoke(request, self.config)
         msg=resp["messages"][-1].content
         return msg
     
@@ -240,3 +225,10 @@ class IBUInsuranceAssistant(OwlAssistant):
         return self.graph.get_state(self.config)
 
     
+    def send_conversation(self, controller: ConversationControl) -> ResponseControl | Any:
+         # overwrite the default. 
+        request = { "question": controller.query }
+        agent_resp= self.invoke(request, controller.thread_id, vector_store = controller.callWithVectorStore)   # AIMessage
+        resp = self._build_response(controller)
+        resp.message=agent_resp
+        return resp

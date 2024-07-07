@@ -148,7 +148,7 @@ class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
         claim = self.get_claim(id)
         if claim == None:
             return f"No claim with id '{id}' found"
-        return claim.to_json()
+        return claim.model_dump_json()
 
     def get_all_claims_json(self) -> str:
         return json.dumps([claim.to_dict() for claim in self.CLAIMSDB.values()], indent=4)

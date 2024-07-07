@@ -93,3 +93,13 @@ classify_query_prompt:
         The information contains documents related to insurance policies, claim, coverages.
         Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint."
    
+ibu_rag_prompt:
+  name: ibu_rag_prompt
+  locales:
+  - locale: en
+    text: >
+      "You assist a customer service representative working in a call center in their work. Use the following pieces of retrieved context to answer the question. 
+      If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+      Question: {question} 
+      Context: {context} 
+      Answer:"

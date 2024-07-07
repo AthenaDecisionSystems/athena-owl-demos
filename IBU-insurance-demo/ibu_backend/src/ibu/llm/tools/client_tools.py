@@ -5,7 +5,7 @@ from langchain.tools import StructuredTool
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 
-from athena.app_settings import get_config
+from ibu.app_settings import get_config
 from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity
 
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService
@@ -61,7 +61,8 @@ def define_next_best_action_with_decision(claim_id : int, client_motive: Motive,
     extract the  client motive and if he has the intention to leave
     """
     config = get_config()
-    return callDecisionService(config, build_or_get_instantiate_claim_repo(), claim_id, client_motive, intentionToLeave, "en")
+    result = globals()[config.owl_agent_decision_service_fct_name](config, build_or_get_instantiate_claim_repo(), claim_id, client_motive, intentionToLeave, "en")
+    return result
 
 
 
