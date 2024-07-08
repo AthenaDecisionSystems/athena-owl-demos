@@ -28,17 +28,18 @@ class InsuranceClientFromDataMgr(InsuranceClientRepositoryInterface):
         return client
 
 
-    def get_client_by_name(self, name: str) -> Client:
+    def get_client_by_name(self, firstname: str, lastname: str) -> Client:
         client = None
         try:
+            name = firstname + " " + lastname
             resp=requests.get(self.data_mgr_url + "/clients/search/" + name)
             client = Client(**json.loads(resp.text))
         except:
             LOGGER.error("Issue contacting the client repository backend")
         return client
 
-    def get_client_by_name_json(self, name: str) -> str:
-        client = self.get_client_by_name(name)
+    def get_client_by_name_json(self, firstname: str, lastname: str) -> str:
+        client = self.get_client_by_name(firstname, lastname)
         if client != None:
             return  jsonable_encoder(client)
         return ""

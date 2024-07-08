@@ -10,11 +10,11 @@ class TestClientRepository(unittest.TestCase):
 
     @classmethod
     def setUp(self):
-        self.repo = insurance_client_repo_mock.InsuranceClientInMem(None)
+        self.repo = insurance_client_repo_mock.InsuranceClientInMem()
 
     def test_create_client_repo(self):
-        self.repo = insurance_client_repo_mock.InsuranceClientInMem(None)
-        client = self.repo.get_client_by_name("Martin")
+        self.repo = insurance_client_repo_mock.InsuranceClientInMem()
+        client = self.repo.get_client_by_name("David", "Martin")
         print(client)
         self.assertIsNotNone(client)
 
@@ -29,8 +29,8 @@ class TestClientRepository(unittest.TestCase):
         class_name = "InsuranceClientInMem"
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
-        repo= klass(None)
-        client=repo.get_client_by_name("Martin")
+        repo= klass()
+        client=repo.get_client_by_name("David", "Martin")
         print(client)
         self.assertIsNotNone(client)
 
@@ -39,8 +39,8 @@ class TestClientRepository(unittest.TestCase):
         class_name = "InsuranceClaimInMem"
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
-        repo= klass(None)
-        claim=repo.get_claim(1)
+        repo= klass()
+        claim=repo.get_claim(2)
         print(claim)
         self.assertIsNotNone(claim)
 

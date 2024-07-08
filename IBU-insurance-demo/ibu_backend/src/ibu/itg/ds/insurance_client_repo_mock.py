@@ -5,6 +5,7 @@ Copyright 2024 Athena Decision Systems
 import json, logging
 from ibu.itg.ds.insurance_client_repo import InsuranceClientRepositoryInterface
 from ibu.itg.ds.ComplaintHandling_generated_model import *
+from datetime import datetime
 
 class InsuranceClientInMem(InsuranceClientRepositoryInterface):
 
@@ -20,66 +21,57 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         return self.CLIENTDB.get(id, None)
 
     def initialize_client_db(self):
-        self.add_client(Client(id=1,firstName = "Robert",
-                            lastName = "Dupont",
+        self.add_client(Client(id=1,
+                            firstName = "David",
+                            lastName = "Martin",
+                            dateOfBirth = datetime.fromisoformat("1967-02-22"),
+                            firstContractDate = datetime.fromisoformat("2005-10-31"),
+                            cltvPercentile = 56,
+                            propensityToUpgradePolicy= 0.55,
 
                             preferredChannel= PreferredChannel.mail
                             ))
         self.add_client(Client(id=2,
-                            firstName = "Marie",
-                            lastName = "Durand",
-
-                            preferredChannel= PreferredChannel.mail
-                            ))
-        self.add_client(Client(id=3,
-                            firstName = "Jean",
-                            lastName = "Martin",
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=4,
-                            firstName = "Sophie",
-                            lastName = "Lefevre",
-     
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=5,
-                            firstName = "Pierre",
-                            lastName = "Moreau",
-       
-                            preferredChannel= PreferredChannel.SMS
-                            ))
-        self.add_client(Client(id=6,
-                            firstName = "Isabelle",
-                            lastName = "Girard",
-             
+                            firstName = "Sonya",
+                            lastName = "Smith",
+                            dateOfBirth = "1999-03-12",
+                            firstContractDate = "2023-11-12",
+                            cltvPercentile = 62,
+                            propensityToUpgradePolicy= 0.61,
                             preferredChannel= PreferredChannel.phone
                             ))
-        self.add_client(Client(id=7,
-                            firstName = "Roberto",
-                            lastName = "de la Fuente",
-                  
-                            preferredChannel= PreferredChannel.mail
+        self.add_client(Client(id=3,
+                            firstName = "Zoe",
+                            lastName = "Durand",
+                            dateOfBirth = "2001-10-31",
+                            firstContractDate = "2024-01-15",
+                            cltvPercentile = 44,
+                            propensityToUpgradePolicy= 0.19,
+                            preferredChannel= PreferredChannel.email
                             ))
-        self.add_client(Client(id=8,
+        self.add_client(Client(id=4,
                             firstName = "Robert",
                             lastName = "Smith",
-           
-                            preferredChannel= PreferredChannel.mail
+                            dateOfBirth = datetime.fromisoformat("1660-08-26"),
+                            firstContractDate = "2014-01-15",
+                            cltvPercentile = 44,
+                            propensityToUpgradePolicy= 0.19,
+                            preferredChannel= PreferredChannel.SMS
                             ))
 
 
-    def get_client_by_name(self, lastName: str) -> Client:
+    def get_client_by_name(self, firstname: str, lastname: str) -> Client:
         for client in self.CLIENTDB.values():
-            if client.lastName == lastName:
+            if client.lastName == lastname and client.firstName == firstname:
                 return client
         return None
 
 
-    def get_client_by_name_json(self, lastName: str) -> str:
+    def get_client_by_name_json(self, firstname: str, lastname: str) -> str:
         for client in self.CLIENTDB.values():
-            if client.lastName == lastName:
+            if client.lastName == lastname and client.firstname == firstname:
                 return client.model_dump_json()
-        return f"No client found with name '{lastName}'"
+        return f"No client found with name '{lastname}'"
 
     def get_client_json(self, id: int) -> str:
         client = self.get_client(id)
@@ -88,7 +80,7 @@ class InsuranceClientInMem(InsuranceClientRepositoryInterface):
         return client.model_dump_json()
 
     def get_all_clients_json(self) -> str:
-        return json.dumps([client.model_dump() for client in self.CLIENTDB.values()], indent=4)
+        return json.dumps([client.model_dump() for client in self.CLIENTDB.values()], indent=4, default=str)
 
 
     def get_all_clients(self) -> list[Client]:

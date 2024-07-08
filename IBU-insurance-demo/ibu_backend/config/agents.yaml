@@ -10,6 +10,19 @@ openai_chain:
   top_k: 1
   top_p: 1
 
+openai_tool_chain:
+  agent_id: openai_tool_chain
+  name: open_ai_gpt35
+  description: openai based agent with prompt coming from langchain hub  and tool
+  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  modelName: gpt-3.5-turbo-0125
+  modelClassName: langchain_openai.ChatOpenAI
+  prompt_ref: hwchase17/openai-functions-agent
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+  - tavily
 
 
 ibu_agent:
@@ -24,10 +37,10 @@ ibu_agent:
   top_k: 1
   top_p: 1
   tools:
-  - ibu_client_by_id
-  - ibu_client_by_name
-  - ibu_claim_by_id
-  - ibu_best_action
+    - ibu_client_by_id
+    - ibu_client_by_name
+    - ibu_claim_by_id
+    - ibu_best_action
 
 ibu_agent_limited:
   agent_id: ibu_agent_limited
@@ -50,10 +63,40 @@ ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
   name: ibu_classify_query_agent
   description: openai based agent with simple prompt 
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  class_name: ibu.llm.agents.ClassifyQueryAgent.IBUClassifyQueryAgent
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: classify_query_prompt
   temperature: 0
   top_k: 1
   top_p: 1
+
+ibu_tool_rag_agent_limited:
+  agent_id: ibu_tool_rag_agent_limited
+  name: ibu_tool_rag_agent
+  description: openai based agent with prompt with query and context
+  class_name: ibu.llm.agents.tool_rag_agent.IbuToolRagAgent
+  modelClassName: langchain_openai.ChatOpenAI
+  modelName: gpt-3.5-turbo-0125
+  prompt_ref: ibu_rag_prompt
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+    - ibu_client_by_id
+    - ibu_client_by_name
+    - ibu_claim_by_id
+
+ibu_tool_rag_agent:
+  agent_id: ibu_tool_rag_agent
+  name: ibu_tool_rag_agent
+  description: openai based agent with prompt with query and context
+  class_name: ibu.llm.agents.tool_rag_agent.IbuToolRagAgent
+  modelClassName: langchain_openai.ChatOpenAI
+  modelName: gpt-3.5-turbo-0125
+  prompt_ref: ibu_rag_prompt
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+    - ibu_best_action

@@ -1,13 +1,9 @@
 logging_level: DEBUG
 version: 0.0.3
 owl_env_path: /app/.env
-owl_agent_llm_client_class: ibu.llm.agent_openai.OpenAIClient
-owl_agent_llm_model: gpt-3.5-turbo-0125
+#owl_agent_llm_client_class: ibu.llm.agent_openai.OpenAIClient
+#owl_agent_llm_model: gpt-3.5-turbo-0125
 
-
-# owl_agent_llm_client_class: athena.llm.agent_anthropic.AnthropicClient
-
-# NOT used owl_agent_decision_service_fct_name: athena.itg.decisions.next_best_action_ds_client.callDecisionService
 owl_best_action_ds_url: http://decisionsvc:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
 owl_glossary_path: /app/config/glossary.json
 
@@ -16,12 +12,14 @@ owl_agents_path: /app/config/agents.yaml
 owl_tools_path: /app/config/tools.yaml
 owl_prompts_path: /app/config/prompts.yaml
 owl_prompts_key_name: openai_insurance_with_tool
-owl_agent_content_vstore_url: http://localhost:8005
+
 owl_agent_content_collection_name: ibu_insurance
 owl_agent_content_file_path: /app/file_content
 owl_agent_vs_path: /app/chromadb
+#owl_agent_content_vstore_url: http://localhost:8005
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_llm_history_length: 5
+
 app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
 app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
 app_insurance_backend_url: http://datamgr:8080/repository

@@ -5,7 +5,7 @@
 
 The IBU insurance demonstration illustrates the integration with data manager service, a decision service, a vector store and a LLM as shown in the figure below:
 
-![](./diagrams/ibu_ins_sys_ctx.drawio.png){ width=800 }
+![](./diagrams/insurance/ibu_ins_sys_ctx.drawio.png){ width=800 }
 
 ## Goals
 
@@ -119,6 +119,7 @@ The high level the architecture for this demonstration looks like in the figure 
 
 ### Define Assistant
 
+![](./diagrams/insurance/assistant_lg_tool_flow.drawio.png)
 
 ### Define Agent
 

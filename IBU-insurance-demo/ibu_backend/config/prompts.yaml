@@ -85,10 +85,21 @@ default_prompt:
     text: "Responda las preguntas del usuario según el historial de conversaciones  {chat_history} \n\n question: {input}"
 
 classify_query_prompt:
-  name:  default_prompt
+  name:  classify_query_prompt
   locales:
   - locale: en
     text: >
-      "You are an expert of extracting intent from user question. From the user input can you assess if this is a complaint or an information gathering query.
-       Only return the value COMPLAINT or INFORMATION"
+      "You are an expert at extracting intent from user question. Assess if this is a complaint or an information gathering query.
+        The information contains documents related to insurance policies, claim, coverages.
+        Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint."
    
+ibu_rag_prompt:
+  name: ibu_rag_prompt
+  locales:
+  - locale: en
+    text: >
+      "You assist a customer service representative working in a call center in their work. Use the following pieces of retrieved context to answer the question. 
+      If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+      Question: {question} 
+      Context: {context} 
+      Answer:"

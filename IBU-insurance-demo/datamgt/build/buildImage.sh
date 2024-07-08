@@ -11,6 +11,6 @@ else
 fi
 
 cd $scriptDir/../code/apis-datamgt-insurance-pc-claims
-sh ./mvnw clean package -DskipTests
+sh ./mvnw clean package -DskipTests -Dnet.bytebuddy.experimental
 docker build -f src/main/docker/Dockerfile.jvm -t  ${IMAGE_NAME}:${TAG} .
 docker tag  ${IMAGE_NAME}:${TAG}   ${IMAGE_NAME}:latest

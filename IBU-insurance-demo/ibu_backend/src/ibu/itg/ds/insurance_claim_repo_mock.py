@@ -3,8 +3,11 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 import json,logging
+from datetime import datetime
 from ibu.itg.ds.insurance_claim_repo import InsuranceClaimRepositoryInterface
 from ibu.itg.ds.ComplaintHandling_generated_model import *
+
+
 class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
 
     def __init__(self):
@@ -17,58 +20,124 @@ class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
 
 
     def initialize_claims_db(self):
-        c1 = Client(id=1,firstName = "Jane",
-                            lastName = "Dupont",
-                            paymentScore=3,
-                            claimsScore=2,
-                            vip=False)
-        p1 = InsurancePolicy()
-        p1.client =c1
-        claim1 = Claim(id=2, 
-                       status= Status.RECEIVED,
-                       policy= p1,
-                       targetDurationInDays=30, 
-                       damages=[Damage( insurableObject= InsurableObject(type=Type1.Car,estimatedValue=10000))])
-
-        self.add_claim(claim1)
-        claim2=Claim(id=2,
-                     policy=InsurancePolicy(
-                        client = Client(
-                            firstName = "Joe",
-                            lastName = "Smith",
-                            paymentScore=3,
-                            claimsScore=2,
-                            vip=False
-                        ),
-                        coverages = None
-                    ),
+        claim2=Claim(id = 2,
+                    policy=InsurancePolicy(id = 2,
+                                        effectiveDate = datetime(2023, 6, 6, 0, 0),
+                                        expirationDate = datetime(2024, 6, 6, 0, 0),
+                                        policyType = 'Home', 
+                                        subType = 'HomeBuildingsOnly', 
+                                        client = Client(id = 2, 
+                                                        firstName = 'Sonya',
+                                                        lastName = 'Smith', 
+                                                        dateOfBirth = datetime(1999, 3, 12, 0, 0),
+                                                        firstContractDate = datetime(2023, 11, 12, 0, 0),
+                                                        cltvPercentile=62, 
+                                                        propensityToUpgradePolicy=0.61,
+                                                        preferredChannel = PreferredChannel.phone), 
+                                        coverages=[ 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                                         description='House', 
+                                                                                                         estimatedValue=5000000.0), 
+                                                                         code=Code.Wind, 
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding,
+                                                                                                         description='House', 
+                                                                                                         estimatedValue=5000000.0), 
+                                                                         code=Code.Fire, 
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding,
+                                                                                                         description='House',
+                                                                                                         estimatedValue=5000000.0),
+                                                                         code=Code.OtherDamage,
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                                         description='House', 
+                                                                                                         estimatedValue=5000000.0), 
+                                                                         code=Code.Hail, 
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                                         description='House', 
+                                                                                                         estimatedValue=5000000.0), 
+                                                                         code=Code.Lightning,
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                                         description='House', 
+                                                                                                         estimatedValue=5000000.0), 
+                                                                         code=Code.WaterDamage,
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.AuxiliaryNonResidencialBuilding,
+                                                                                                         description='Wooden cabin', 
+                                                                                                         estimatedValue=10000.0), 
+                                                                         code=Code.Fire, 
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0), 
+                                                      SubscribedCoverage(insurableObject=InsurableObject(type=Type1.Land,
+                                                                                                         description='Land', 
+                                                                                                         estimatedValue=600000.0), 
+                                                                         code=Code.WaterDamage, 
+                                                                         protectionAmount=100000.0, 
+                                                                         deductible=3000.0)
+                                                      ], 
+                                        options=[]), 
+                    damages=[Damage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                        description='House', 
+                                                                                        estimatedValue=5000000.0), 
+                                                        type=Type.WaterDamage,
+                                                        lossValue=300.0, 
+                                                        description='A carpet is damaged by water', 
+                                                        date=datetime(2024, 4, 19, 0, 0),
+                                                        repairable=True), 
+                            Damage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding,
+                                                                    description='House', 
+                                                                    estimatedValue=5000000.0), 
+                                    type=Type.WaterDamage,
+                                    lossValue=1000.0, 
+                                    description='Wooden flooring in living room has been damaged by water', 
+                                    date=datetime(2024, 4, 19, 0, 0), 
+                                    repairable=True)
+                            ],
+                    settlementOffer=ClaimSettlementOffer(claim=None, 
+                                                         creationDate=datetime(2024, 4, 26, 0, 0), 
+                                                         cancelContractAtExpiration=False, 
+                                                         cancelContractObjectCeased=False, 
+                                                         clientResponsibleForDamage=False, 
+                                                         actualCoverages=[ActualCoverage(settlementOffer=None, 
+                                                                                         subscribedCoverage=SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding,
+                                                                                                                                                               description='House', 
+                                                                                                                                                               estimatedValue=5000000.0),
+                                                                                                                               code=Code.Wind,
+                                                                                                                               protectionAmount=100000.0, 
+                                                                                                                               deductible=3000.0), 
+                                                                                         applies=False, 
+                                                                                         description='WaterDamage coverage does not apply to the content of the building', 
+                                                                                         reimbursementFactor=0.0, 
+                                                                                         deductible=0.0), 
+                                                                          ActualCoverage(settlementOffer=None, 
+                                                                                         subscribedCoverage=SubscribedCoverage(insurableObject=InsurableObject(type=Type1.MainResidencialBuilding, 
+                                                                                                                                                                                     description='House', 
+                                                                                                                                                                                     estimatedValue=5000000.0), 
+                                                                                                                                code=Code.Fire, 
+                                                                                                                                protectionAmount=100000.0, 
+                                                                                                                                deductible=3000.0), 
+                                                                                         applies=True, 
+                                                                                         description='WaterDamage due to a broken pipe - coverage applies to buildings', 
+                                                                                         reimbursementFactor=0.8, 
+                                                                                         deductible=1000.0)
+                                                                          ]
+                                                         ),
                     status=Status.IN_PROCESS_VERIFIED,
-                    targetDurationInDays=40,
-                    creationDate="2024-04-15"
+                    creationDate=datetime(2024, 2, 22, 0, 0),
+                    targetDurationInDays=21,
                 )
+        
         self.add_claim(claim2)
-        """
-        value: int
-    standard_handling_time: int
-    actual_handling_time: int
-    reimbursement_amount: int = 0
-    deductible: int = 0
-    , 1000, 30, 35, 900, 100)
-    """
-        """
         
-        sinistre2 = Claim("S2", "Client6", 2000, 30, 28, 1500, 500)
-        sinistre3 = Claim("S3", "Client1", 3000, 40, 60, 2700, 300)
-        sinistre4 = Claim("S4", "Client2", 4000, 40, 59, 3800, 200)
-        sinistre101 = Claim("S101", "Client10", 3000, 40, 60, 2700, 300)
-        sinistre201 = Claim("S201", "Client20", 3000, 40, 60, 2700, 300)
-        
-        self.add_claim(sinistre2)
-        self.add_claim(sinistre3)
-        self.add_claim(sinistre4)
-        self.add_claim(sinistre101)
-        self.add_claim(sinistre201)
-    """
 
     def get_claim(self, id: int) -> Claim:
         logging.info(f"---> In claim mock get with id: {id}")
@@ -79,7 +148,7 @@ class InsuranceClaimInMem(InsuranceClaimRepositoryInterface):
         claim = self.get_claim(id)
         if claim == None:
             return f"No claim with id '{id}' found"
-        return claim.to_json()
+        return claim.model_dump_json()
 
     def get_all_claims_json(self) -> str:
         return json.dumps([claim.to_dict() for claim in self.CLAIMSDB.values()], indent=4)
