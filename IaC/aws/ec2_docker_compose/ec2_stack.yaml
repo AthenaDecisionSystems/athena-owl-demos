@@ -1,0 +1,91 @@
+---
+Parameters:
+
+  AvailabilityZone:
+    Type: String
+    Default: us-west-2a
+  AmazonLinux2AMI:
+    Type: String
+    Default: ami-0604d81f2fd264c7b
+
+Resources:
+  DockerComposeInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      ImageId: !Ref AmazonLinux2AMI
+      InstanceType: t2.micro
+      UserData: 
+        Fn::Base64:
+          | 
+          #!/bin/bash
+          yum update -y
+
+          # Install Docker
+          yum install docker -y
+          service docker start
+          systemctl enable docker
+          usermod -a -G docker ec2-user
+          chmod 666 /var/run/docker.sock
+
+          # Install Docker Compose
+          curl -L https://github.com/docker/compose/releases/download/2.28.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+
+          # Mount Drive
+          mkdir /data
+          mkfs -t xfs /dev/xvdh
+          mount /dev/xvdh /data
+
+          # Install git in your EC2 instance
+          yum install git -y
+
+          # Clone and run a sample application
+          cd ~
+          git clone https://github.com/jbcodeforce/athena-owl-demos.git
+          git clone https://github.com/jbcodeforce/athena-owl-core.git
+          cd athena-owl-demos/IBU-insurance-demo/deployment/local
+          docker-compose --file docker-compose.yaml up
+
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+        - !Ref HTTPSecurityGroup
+
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        ToPort: 22
+        IpProtocol: tcp
+
+  HTTPSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Enable standard web access
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+
+  ExternalVolume:
+    Type: AWS::EC2::Volume
+    Properties: 
+      AvailabilityZone: !Ref AvailabilityZone
+      Size: 4
+      VolumeType: gp2
+
+  MountPoint:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref DockerComposeInstance
+      VolumeId: !Ref ExternalVolume
+      Device: /dev/xvdh
+
+  ElasticIp:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref DockerComposeInstance

@@ -24,7 +24,7 @@ app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.Insura
 app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
 app_insurance_backend_url: http://datamgr:8080/repository
 
-owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService
+owl_agent_decision_service_fct_name: callDecisionService
 owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory
 
 watsonx_ai_url: https://us-south.ml.cloud.ibm.com

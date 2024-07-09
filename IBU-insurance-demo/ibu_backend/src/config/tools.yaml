@@ -18,7 +18,7 @@ ibu_client_by_id:
 ibu_client_by_name:
   tool_id: ibu_client_by_name
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get client information given his or her name'
+  tool_description: 'get client information given his or her lastname and firstname'
   tool_fct_name: get_client_by_name
 
 
@@ -32,9 +32,16 @@ ibu_claim_by_id:
 
 ibu_best_action:
   tool_id: ibu_best_action
-  tool_class_name: 'ibu.llm.tools.client_tools'
+  tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
     "perform the next best action given the current state of the insurance claim 
     knowing its unique claim_id and the current client's motivation.
     Extract the client motive and whether he has the intention to churn"
   tool_fct_name: define_next_best_action_with_decision
+
+ibu_claim_status_by_user_name:
+  tool_id: ibu_claim_status_by_user_name
+  tool_class_name: ibu.llm.tools.client_tools
+   tool_description: |
+    "get the last status for the claim of an insured person giving her/his lastname and firstname."
+  tool_fct_name: get_claim_status_by_user_name

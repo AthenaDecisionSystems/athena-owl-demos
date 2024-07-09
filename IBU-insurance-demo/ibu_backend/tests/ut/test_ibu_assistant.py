@@ -35,7 +35,7 @@ class TestIBUAssistant(unittest.TestCase):
         cc = ConversationControl()
         cc.query="My name is Sonya Smith, I have problem with my claim 2 for my water damage, my carpet is expensive, I'm surprise of the current coverage, very disappointing"
         cc.thread_id="thread_test"
-        cc.assistant_id="ibu_assistant_LG"
+        cc.assistant_id="ibu_assistant"
         cc.user_id="test_user"
         rep = get_or_start_conversation(cc)
         print(rep)

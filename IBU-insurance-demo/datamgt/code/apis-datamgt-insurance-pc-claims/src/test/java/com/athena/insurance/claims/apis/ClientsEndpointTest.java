@@ -17,7 +17,7 @@ public class ClientsEndpointTest {
     }
 
     private void performTest(String path) {
-        //List all, should have all 3 fruits the database has initially:
+        //List all, :
         given()
                 .when().get(path)
                 .then()
@@ -27,13 +27,13 @@ public class ClientsEndpointTest {
                         containsString("Smith"),
                         containsString("Durand"));
 
-        //Delete the Cherry:
+        //Delete the first client
         given()
                 .when().delete(path + "/1")
                 .then()
                 .statusCode(204);
 
-        //List all, cherry should be missing now:
+        //List all, first one is missing now:
         given()
                 .when().get(path)
                 .then()

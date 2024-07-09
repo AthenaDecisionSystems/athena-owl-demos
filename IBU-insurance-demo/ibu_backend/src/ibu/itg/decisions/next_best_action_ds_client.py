@@ -142,3 +142,9 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
         LOGGER.error("** Error during decision service call:", response)
         return "Error during decision service call"
     
+
+def callDecisionServiceMock(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool, locale: str = "en"):
+    """Mock function to support unit tests. This is injected via config.yaml with the parameter: owl_agent_decision_service_fct_name"""
+    rep = Response()
+    rep.actions=[Action(explanationCode="Propose a Vousher for 100$", typeDisc__= "")]
+    return rep

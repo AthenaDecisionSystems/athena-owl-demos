@@ -1,5 +1,6 @@
 ibu_loan_prompt:
-  name:  ibu_loan_prompt
+  name:  IBU Loan Main Prompt
+  prompt_id: ibu_loan_prompt
   locales:
   - locale: en
     text : |

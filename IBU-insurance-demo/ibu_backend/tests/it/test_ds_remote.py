@@ -1,12 +1,12 @@
 
 import unittest
 
-import sys, json
+import sys
 sys.path.append('./src')
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService
 from ibu.itg.ds.ComplaintHandling_generated_model import Motive 
 from ibu.itg.ds.insurance_claim_repo_datamgr import InsuranceClaimFromDataMgr
-from athena.app_settings import AppSettings
+from ibu.app_settings import AppSettings
 
 
 class TestDecisionServiceRemote(unittest.TestCase):

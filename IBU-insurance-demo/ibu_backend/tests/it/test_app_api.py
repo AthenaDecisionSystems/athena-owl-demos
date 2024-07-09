@@ -25,7 +25,7 @@ class TestAppApi(unittest.TestCase):
         data='{ "locale": "en",\
             "query": "who is the client with id 1?",\
             "chat_history": [],\
-            "assistant_id":"ibu_assistant",  \
+            "assistant_id":"ibu_assistant_LG",  \
             "user_id" : "remote_test", \
             "thread_id" : "1" \
         }'
@@ -41,7 +41,7 @@ class TestAppApi(unittest.TestCase):
         data='{ "locale": "en",\
             "query": "My name is Sonya Smith, I want to know the status of my current claim?",\
             "chat_history": [],\
-            "assistant_id":"ibu_assistant",  \
+            "assistant_id":"ibu_assistant_LG",  \
             "user_id" : "remote_test", \
             "thread_id" : "2" \
         }'
@@ -57,7 +57,7 @@ class TestAppApi(unittest.TestCase):
         data='{ "locale": "en",\
             "query": "My name is Sonya Smith, I have problem with my claim 2 for my water damage, my carpet is expensive, I m surprise of the current coverage, very disappointing?",\
             "chat_history": [],\
-            "assistant_id":"ibu_assistant",  \
+            "assistant_id":"ibu_assistant_LG",  \
             "user_id" : "remote_test", \
             "thread_id" : "2" \
         }'

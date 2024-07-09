@@ -51,6 +51,16 @@ public class ClientRepositoryResource {
         return entity;
     }
 
+    @GET
+    @Path("/search/{firstname}/{lastname}")
+    public Client searchByFullsName(@PathParam("firstname") String firstname, @PathParam("lastname") String lastname) {
+        Client entity = clientRepository.findByFullName(firstname, lastname);
+        if (entity == null) {
+            throw new WebApplicationException("Client with name of " + firstname + " " + lastname + " does not exist.", 404);
+        }
+        return entity;
+    }
+
     @POST
     @Transactional
     public Response create(Client client) {

@@ -28,5 +28,5 @@ app_insurance_backend_url: http://localhost:8080/repository
 #app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
 #app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
 #owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService
-owl_agent_decision_service_fct_name: ibu.itg.decisions.ds_mockup.callDecisionService
+owl_agent_decision_service_fct_name: callDecisionServiceMock
 owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory

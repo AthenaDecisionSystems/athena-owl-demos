@@ -8,7 +8,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from ibu.app_settings import get_config
 from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity
 
-from ibu.itg.decisions.next_best_action_ds_client import callDecisionService
+from ibu.itg.decisions.next_best_action_ds_client import callDecisionService, callDecisionServiceMock
 from ibu.itg.ds.ComplaintHandling_generated_model import Motive
 
 
@@ -43,6 +43,8 @@ def build_or_get_instantiate_claim_repo():
         LOGGER.debug("Created repository for claim")
     return _insurance_claim
 
+# ============================================= Function / Tool  Definitions ======================== 
+
 def get_client_by_id(id: int) -> dict:
     """get insurance client information given its unique client identifier id"""
     return build_or_get_insurance_client_repo().get_client_json(id)
@@ -65,11 +67,18 @@ def define_next_best_action_with_decision(claim_id : int, client_motive: Motive,
     return result
 
 
+def get_claim_status_by_user_name(firstname: str, lastname: str):
+    client = build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
+    return client
 
-methods = {"get_client_by_id" : get_client_by_id, 
-           "get_client_by_name": get_client_by_name, 
-            "get_claim_by_id" : get_claim_by_id, 
-            "define_next_best_action_with_decision": define_next_best_action_with_decision}
+methods = {
+        "get_client_by_id" : get_client_by_id, 
+        "get_client_by_name": get_client_by_name, 
+        "get_claim_by_id" : get_claim_by_id, 
+        "get_claim_status_by_user_name": get_claim_status_by_user_name,
+        "define_next_best_action_with_decision": define_next_best_action_with_decision
+        }
+
 
 def define_tool(description: str, funct_name, args: Optional[str]):
     if args:

@@ -1,5 +1,6 @@
 openai_insurance_with_tool:
   name: openai_insurance_with_tool
+  prompt_id: openai_insurance_with_tool
   locales:
   - locale: en
     text: | 
@@ -75,7 +76,8 @@ openai_insurance_with_tool:
     
 
 default_prompt:
-  name:  default_prompt
+  name:  Default prompt
+  prompt_id: default_prompt
   locales:
   - locale: en
     text: "Answer the user's question based on the conversation history: {chat_history} \n\n question: {input}"
@@ -85,7 +87,8 @@ default_prompt:
     text: "Responda las preguntas del usuario según el historial de conversaciones  {chat_history} \n\n question: {input}"
 
 classify_query_prompt:
-  name:  classify_query_prompt
+  prompt_id:  classify_query_prompt
+  name: Classify the query prompt
   locales:
   - locale: en
     text: >
@@ -94,7 +97,8 @@ classify_query_prompt:
         Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint."
    
 ibu_rag_prompt:
-  name: ibu_rag_prompt
+  prompt_id: ibu_rag_prompt
+  name: IBU insurance prompt for context
   locales:
   - locale: en
     text: >

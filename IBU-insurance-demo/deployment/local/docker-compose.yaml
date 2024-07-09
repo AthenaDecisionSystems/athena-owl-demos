@@ -11,7 +11,7 @@ services:
     env_file:
       - ../../.env
     volumes:
-      - ../../ibu_backend/config:/app/config
+      - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
       - ./data/chromadb:/app/chromadb
@@ -71,12 +71,3 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
-  chroma-db:
-    image: ghcr.io/chroma-core/chroma:latest
-    hostname: chroma-db
-    container_name: chroma-db
-    volumes:
-      - ./chromadb:/.chroma/index
-    ports:
-      - 8005:8000
-  

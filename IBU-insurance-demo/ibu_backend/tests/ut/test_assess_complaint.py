@@ -14,7 +14,7 @@ from athena.itg.store.content_mgr import get_content_mgr, FileDescription
 
 class TestIBUAssistant(unittest.TestCase):
     
-    def _test_upload_policy_document(self):
+    def test_upload_policy_document(self):
         service = get_content_mgr()
         fd=FileDescription()
         fd.name="Claims-complaint-rules"
@@ -25,7 +25,7 @@ class TestIBUAssistant(unittest.TestCase):
         print(rep)
         assert rep
         
-    def _test_get_info_query(self):
+    def test_get_info_query(self):
         print("test_get_info_query to classify the query")
         query="My name is Sonya Smith, I want to get information about my insurance policy. "
         mgr = get_agent_manager()
@@ -38,7 +38,7 @@ class TestIBUAssistant(unittest.TestCase):
         print(rep)
         assert "information" in rep.next_task
     
-    def _test_a_complaint_query(self):
+    def test_a_complaint_query(self):
         print("test_a_complaint_query to classify the query")
         query="My name is Sonya Smith, I have problem with my claim 2 for my water damage, I still did not get a status from you since 2 months  "
         mgr = get_agent_manager()
@@ -51,7 +51,7 @@ class TestIBUAssistant(unittest.TestCase):
         print(rep)
         assert "complaint" in rep.next_task
          
-    def _test_verify_get_client_tool(self):
+    def test_verify_get_client_tool(self):
         print("test_verify_get_client_tool to verify tool calling")
         cc = ConversationControl()
         cc.query="who is client with id 1?"
@@ -61,7 +61,7 @@ class TestIBUAssistant(unittest.TestCase):
         print(rep)
         assert "Martin" in rep.message # type: ignore
     
-    def _test_verify_get_claim_tool(self):
+    def test_verify_get_claim_tool(self):
         print("test_verify_get_claim_tool to verify tool calling")
         cc = ConversationControl()
         cc.query="what is the claim with id 2?"
@@ -71,7 +71,7 @@ class TestIBUAssistant(unittest.TestCase):
         print(rep)
         assert "water damage" in rep.message # type: ignore
     
-    def _test_information_about_insurance(self):
+    def test_information_about_insurance(self):
         print("test_information_about_insurance to verify tool calling")
         cc = ConversationControl()
         cc.callWithVectorStore= True
