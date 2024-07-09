@@ -18,9 +18,7 @@ from langgraph.graph.message import add_messages
 from langchain_core.messages import AnyMessage, HumanMessage, AIMessage, ToolMessage
 from langchain_core.runnables.config import RunnableConfig
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema import Document
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langgraph.pregel.types import StateSnapshot
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.sqlite import SqliteSaver

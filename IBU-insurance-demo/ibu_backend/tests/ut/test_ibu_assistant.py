@@ -14,7 +14,7 @@ class TestIBUAssistant(unittest.TestCase):
     Simulate a conversation flow using the ibu assistant
     """
     
-    def _test_calling_ibu_agent_tool_client(self):
+    def test_calling_ibu_agent_tool_client(self):
         cc = ConversationControl()
         cc.query="who is client with id 1?"
         cc.thread_id="thread_test"
@@ -22,9 +22,9 @@ class TestIBUAssistant(unittest.TestCase):
         rep = get_or_start_conversation(cc)
         print(rep)
         
-    def _test_calling_ibu_assistant_claim_id_tool(self):
+    def test_calling_ibu_assistant_claim_id_tool(self):
         cc = ConversationControl()
-        cc.query="what is the state of the claim with id 1?"
+        cc.query="what is the state of the claim with id 2?"
         cc.thread_id="thread_test"
         cc.assistant_id="ibu_assistant"
         cc.user_id="test_user"

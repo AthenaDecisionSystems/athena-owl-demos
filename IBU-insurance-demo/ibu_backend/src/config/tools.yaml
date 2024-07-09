@@ -3,13 +3,13 @@ tavily:
   tool_class_name: langchain_community.tools.tavily_search.TavilySearchResults
   tool_description: 'A search engine optimized for comprehensive, accurate, and trusted results'
   tool_fct_name: ''
-  tool_id: tavily
   tool_name: "tavily search"
 
 
 
 ibu_client_by_id:
   tool_id: ibu_client_by_id
+  tool_name: "Client by ID"
   tool_class_name: 'ibu.llm.tools.client_tools'
   tool_description: 'get insurance client information given its unique client identifier id'
   tool_fct_name: get_client_by_id
@@ -17,6 +17,7 @@ ibu_client_by_id:
 
 ibu_client_by_name:
   tool_id: ibu_client_by_name
+  tool_name: "Client by lastname and firstname"
   tool_class_name: 'ibu.llm.tools.client_tools'
   tool_description: 'get client information given his or her lastname and firstname'
   tool_fct_name: get_client_by_name
@@ -24,6 +25,7 @@ ibu_client_by_name:
 
 ibu_claim_by_id:
   tool_id: ibu_claim_by_id
+  tool_name: "claim by id"
   tool_class_name: 'ibu.llm.tools.client_tools'
   tool_description: 'get insurance claim information given its unique claim identifier id'
   tool_fct_name: get_claim_by_id
@@ -32,6 +34,7 @@ ibu_claim_by_id:
 
 ibu_best_action:
   tool_id: ibu_best_action
+  tool_name: "Best action for claim processing"
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
     "perform the next best action given the current state of the insurance claim 
@@ -40,8 +43,9 @@ ibu_best_action:
   tool_fct_name: define_next_best_action_with_decision
 
 ibu_claim_status_by_user_name:
+  tool_name: "Claim status for a give client name"
   tool_id: ibu_claim_status_by_user_name
   tool_class_name: ibu.llm.tools.client_tools
-   tool_description: |
+  tool_description: |
     "get the last status for the claim of an insured person giving her/his lastname and firstname."
   tool_fct_name: get_claim_status_by_user_name
