@@ -100,3 +100,6 @@ ibu_tool_rag_agent:
   top_p: 1
   tools:
     - ibu_best_action
+    - ibu_client_by_id
+    - ibu_client_by_name
+    - ibu_claim_by_id

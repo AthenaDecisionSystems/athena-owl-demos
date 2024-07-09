@@ -41,11 +41,11 @@ Resources:
           yum install git -y
 
           # Clone and run a sample application
-          cd ~
+          cd /home/ec2-user
           git clone https://github.com/jbcodeforce/athena-owl-demos.git
           git clone https://github.com/jbcodeforce/athena-owl-core.git
           cd athena-owl-demos/IBU-insurance-demo/deployment/local
-          docker-compose --file docker-compose.yaml up
+          docker-compose --file docker-compose.yaml up -d
 
       SecurityGroups:
         - !Ref SSHSecurityGroup
@@ -70,7 +70,14 @@ Resources:
           FromPort: 80
           ToPort: 80
           IpProtocol: tcp
-
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 8000
+          ToPort: 8000
+          IpProtocol: tcp
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 5000
+          ToPort: 5000
+          IpProtocol: tcp
   ExternalVolume:
     Type: AWS::EC2::Volume
     Properties: 

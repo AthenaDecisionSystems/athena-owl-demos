@@ -28,3 +28,9 @@ ibu_assistant_LG:
   name: IBU_assistant_LG
   agent_id: ibu_tool_rag_agent
 
+ibu_assistant_LG_limited:
+  assistant_id: ibu_assistant_LG_limited
+  class_name: ibu.llm.assistants.IBU_Assistant_LG.IBUInsuranceAssistant
+  description: The IBU insurance complaint processing assistant
+  name: IBU_assistant_LG
+  agent_id: ibu_tool_rag_agent_limited
