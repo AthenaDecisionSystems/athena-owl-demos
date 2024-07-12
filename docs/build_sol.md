@@ -1,41 +1,49 @@
 # Build solution
 
 ???+ Info "Version"
-    Created 06.2024
+    Created 06.2024 - Updated 07/10/24
 
-Creating a new solution using this framework should be straightforward, but the potential complexity will depend on the level of integration required. 
+Creating a new solution using the owl framework should be straightforward at it uses yaml manifests at its core, but potential complexity may depend on the level of the requirements to integrate with external services. 
 
 To get started consider the scope of the demonstration and assess if you need to:
 
 - Use a specific LLM backend
-- Have an existing decision service available to be used or if you need to develop a new one. A new decision service means new rules but also a new execution model.
+- Have an existing decision service available to be used or if you need to develop a new one. A new decision service means new rules and a new data model for the rule processing. Rule discovery and analysis may take some time as the approach is to model knowledge from workers with rules and data model.
+- The design of the tool calling may become more complex when the number of tool grow, and when some potential user's query may not be easy to map to tool.
 
 Recall that an Hybrid-AI solution includes as set of components working together to deliver more reliable results, higher accuracy with stateful persistence:
 
 ![](./diagrams/hybrid_ai_comp.drawio.png){ width=800 }
 
-## Develop your own demonstration
+## Jump start your own solution
 
-As a first tutorial, we will use an existing decision service deployed to the ODM decision server.
+As a first tutorial, we will use an existing decision service deployed to the IBM ODM decision server.
 
 ### Git repositories
 
-We encourage you to fork the OWL core repository [https://github.com/AthenaDecisionSystems/athena-owl-core](https://github.com/AthenaDecisionSystems/athena-owl-core)
+We encourage you, to fork the OWL core repository [https://github.com/AthenaDecisionSystems/athena-owl-core](https://github.com/AthenaDecisionSystems/athena-owl-core)
 
 ![](./images/fork-core.PNG)
 
-And the demonstration one: [https://github.com/AthenaDecisionSystems/athena-owl-demos](https://github.com/AthenaDecisionSystems/athena-owl-demos)
+And the demonstration repository: [https://github.com/AthenaDecisionSystems/athena-owl-demos](https://github.com/AthenaDecisionSystems/athena-owl-demos)
+
+### Pre-requisites
+
+The following tools and environments are needed:
+
+* Python 3.11 or 3.12, using a virtual environment
+* 
 
 ### Create project
 
-The following will soon be automatized with scripts and tools, but as of now, it is manual (sorry):
+The following steps will soon be automatized with scripts and tools, but as of now, they are manual (sorry):
 
 * Create a folder for your project: `IBM-MiniLoan-demo` in the athena-owl-demos folder. 
 * Copy the project template to the new folder:
 
 ```sh
-cp -r demo_tmpl/ IBM-MiniLoan-demo
-cd IBM-MiniLoan-demo
+cp -r demo_tmpl/ My-MiniLoan-demo
+cd My-MiniLoan-demo
 ```
 
 * Create and Start a Python virtual environment

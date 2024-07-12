@@ -1,6 +1,6 @@
-# Demonstrations repository
+# Demonstration repository
 
-This repository includes pre-defined demonstrations that can be used with different decision services and different use cases.
+This repository includes pre-defined demonstrations that can be used with different decision services and different use cases, and instructions and tools to jump start your own solution.
 
 
 | Name | Goal |
@@ -15,7 +15,7 @@ To watch the **IBU Insurance demonstration video**  on YouTube.
 
 For a [PowerPoint deck](https://github.com/AthenaDecisionSystems/athena-owl-core/blob/main/docs/assets/athena-shorter%202024-05-14.pptx) to present the solution and approach.
 
-If you need to develop your own demonstration see [these instructions](./build_sol.md)
+If you need to develop your own demonstration or jump start your own solution see [these instructions](./build_sol.md).
 
 ## Contact us
 
