@@ -4,14 +4,16 @@ ibu_assistant:
   class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
   description: The IBU insurance claim processing assistant
   name: IBU_assistant
-  agent_id: ibu_agent
+  agents: 
+    - ibu_agent
 
 ibu_assistant_limited:
   assistant_id: ibu_assistant_limited
   class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
   description: A default assistant that uses LLM, and local defined tools like get borrower, without decision service
   name: IBU Loan App assistant
-  agent_id: ibu_agent_limited
+  agents: 
+    - ibu_agent_limited
 
 
 base_tool_assistant:
@@ -19,18 +21,25 @@ base_tool_assistant:
   class_name: athena.llm.assistants.BaseAssistant.BaseAssistant
   description: A default assistant that uses LLM and search tool to do web search
   name: Default tool assistant
-  agent_id: open_ai_tool
+  agents: 
+    - open_ai_tool
 
-ibu_assistant_LG:
-  assistant_id: ibu_assistant_LG
+ibu_assistant_lg:
+  assistant_id: ibu_assistant_lg
   class_name: ibu.llm.assistants.IBU_Assistant_LG.IBUInsuranceAssistant
   description: The IBU insurance complaint processing assistant
-  name: IBU_assistant_LG
-  agent_id: ibu_tool_rag_agent
+  name: IBU Stateful Assistant Limited
+  agents: 
+    - ibu_classify_query_agent
+    - ibu_tool_rag_agent_limited
+    - ibu_tool_rag_agent
 
-ibu_assistant_LG_limited:
-  assistant_id: ibu_assistant_LG_limited
+ibu_assistant_lg_limited:
+  assistant_id: ibu_assistant_lg_limited
   class_name: ibu.llm.assistants.IBU_Assistant_LG.IBUInsuranceAssistant
-  description: The IBU insurance complaint processing assistant
-  name: IBU_assistant_LG
-  agent_id: ibu_tool_rag_agent_limited
+  description: The IBU insurance complaint processing assistant with no decision service
+  name: IBU Assistant Limited
+  agents:
+    - ibu_classify_query_agent
+    - ibu_tool_rag_agent_limited
+    - ibu_tool_rag_agent_limited
