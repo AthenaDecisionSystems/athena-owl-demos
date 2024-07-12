@@ -40,6 +40,7 @@ ibu_agent:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
+    - get_claim_status_by_user_name
     - ibu_best_action
 
 ibu_agent_limited:
@@ -57,11 +58,12 @@ ibu_agent_limited:
   tools:
     - ibu_client_by_id
     - ibu_client_by_name
+    - get_claim_status_by_user_name
     - ibu_claim_by_id
 
 ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
-  name: ibu_classify_query_agent
+  name: IBU Classify Query Agent
   description: openai based agent with simple prompt 
   class_name: ibu.llm.agents.ClassifyQueryAgent.IBUClassifyQueryAgent
   modelClassName: langchain_openai.ChatOpenAI
@@ -73,8 +75,8 @@ ibu_classify_query_agent:
 
 ibu_tool_rag_agent_limited:
   agent_id: ibu_tool_rag_agent_limited
-  name: ibu_tool_rag_agent
-  description: openai based agent with prompt with query and context
+  name: OpenAI IBU agent with RAG Limited
+  description: OpenAI IBU agent with RAG and insurance tool without decision service
   class_name: ibu.llm.agents.tool_rag_agent.IbuToolRagAgent
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
@@ -86,6 +88,8 @@ ibu_tool_rag_agent_limited:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
+    - get_claim_status_by_user_name
+    - tavily
 
 ibu_tool_rag_agent:
   agent_id: ibu_tool_rag_agent
@@ -102,4 +106,5 @@ ibu_tool_rag_agent:
     - ibu_best_action
     - ibu_client_by_id
     - ibu_client_by_name
+    - get_claim_status_by_user_name
     - ibu_claim_by_id

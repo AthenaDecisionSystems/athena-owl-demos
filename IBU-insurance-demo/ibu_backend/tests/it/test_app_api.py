@@ -29,7 +29,7 @@ class TestAppApi(unittest.TestCase):
             "user_id" : "remote_test", \
             "thread_id" : "1" \
         }'
-        rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+        rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
         print(f"\n@@@> {rep}")
         self.assertTrue(rep.find("David Martin") > 0 )
 

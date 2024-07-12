@@ -70,7 +70,7 @@ class BasicToolNode:
         else:
             raise ValueError("No message found in input")
         outputs = []   # keep outputs of all the tool calls
-        for tool_call in last_message.tool_calls:
+        for tool_call in set(last_message.tool_calls):  # use a set to void calling same tool multiple time
             tool_result = self.tools_by_name[tool_call["name"]].invoke(
                 tool_call["args"]
             )
@@ -83,26 +83,6 @@ class BasicToolNode:
             )
         return {"messages": outputs}
 
-
-    
-def get_or_build_classifier_agent() -> OwlAgentInterface | None:
-    # This method is temporary - need to get assistant supporting multiple agents
-    mgr = get_agent_manager()
-    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_classify_query_agent")
-    if oae is None:
-        raise ValueError("ibu_classify_query_agent agent not found")
-    return mgr.build_agent(oae.agent_id,"en")
-
- 
-def define_information_q_model() ->OwlAgentInterface | None:
-    # This method is temporary - need to get assistant supporting multiple agents
-    
-    mgr = get_agent_manager()
-    oae: Optional[OwlAgentEntity] = mgr.get_agent_by_id("ibu_tool_rag_agent_limited")
-    if oae is None:
-        raise ValueError("ibu_tool_rag_agent_limited agent not found")
-    return mgr.build_agent(oae.agent_id,"en")
-
 def web_search(state):
     print("---WEB SEARCH---")
     question = state["question"]
@@ -114,47 +94,50 @@ def web_search(state):
      
 class IBUInsuranceAssistant(OwlAssistant):
     
-    def __init__(self,agent,assistantID):
-        super().__init__(assistantID)
+    def __init__(self, assistantID, agents):
+        super().__init__(assistantID, agents)
         self.memory = SqliteSaver.from_conn_string(":memory:")
-        self.classifier_model: Optional[OwlAgentInterface] = get_or_build_classifier_agent()
-        self.information_q_model: Optional[OwlAgentInterface] = define_information_q_model()
-        self.model = agent.get_runnable()
+        # As of now the order of declaration of the agent is important, so 0 match the classification agent
+        self.classifier_model: Optional[OwlAgentInterface] = agents[0]
+        self.information_q_model: Optional[OwlAgentInterface] = agents[1]
+        self.complaint_model = agents[2].get_runnable()
         self.use_vector_store = False
-        self.prompt = agent.get_prompt()
+        self.prompt = agents[2].get_prompt()
+        # the following may change when retriever will be tool
         self.rag_retriever = get_content_mgr().get_retriever()
+        tool_node_1=BasicToolNode(self.information_q_model.get_tools())
+        tool_node_2=BasicToolNode(agents[2].get_tools())
         
-        tools = agent.get_tools() + self.information_q_model.get_tools()
-        tool_node=BasicToolNode(tools) 
         # ================= DEFINE GRAPH ====================
         graph = StateGraph(AgentState)
-        graph.add_node("information_node", self.process_information_query)
-        graph.add_node("complaint", self.process_complaint)
-        graph.add_node("tools", tool_node)
+        graph.add_node("gather_information", self.process_information_query)
+        graph.add_node("process_complaint", self.process_complaint)
+        graph.add_node("activate_tools_for_info", tool_node_1)
+        graph.add_node("activate_tools_for_complaint", tool_node_2)
         graph.set_conditional_entry_point(
             self.process_classify_query,
             {
-                "information": "information_node",
-                "complaint": "complaint",
+                "information": "gather_information",
+                "complaint": "process_complaint",
             },
         )
         
         graph.add_conditional_edges(
-            "information_node",
+            "gather_information",
             self.route_tools,
             { 
-             "tools": "tools", 
+             "tools": "activate_tools_for_info", 
              END: END}
         )
-        graph.add_edge("tools", "information_node")
+        graph.add_edge("activate_tools_for_info", "gather_information")
         graph.add_conditional_edges(
-            "complaint",
+            "process_complaint",
             self.route_tools,
             { 
-             "tools": "tools", 
+             "tools": "activate_tools_for_complaint", 
              END: END}
         )
-        graph.add_edge("tools", "complaint")
+        graph.add_edge("activate_tools_for_complaint", "process_complaint")
 
         self.graph = graph.compile(checkpointer=self.memory)
 
@@ -191,7 +174,7 @@ class IBUInsuranceAssistant(OwlAssistant):
             state["documents"] = []
         documents = state["documents"]
         LOGGER.debug(f"\n@@@> {messages}")
-        message = self.model.invoke({"question": question, "context": documents})
+        message = self.complaint_model.invoke({"question": question, "context": documents})
         return {'messages': [AIMessage(content=message["output"])]}
     
    
