@@ -32,7 +32,12 @@ And the demonstration repository: [https://github.com/AthenaDecisionSystems/athe
 The following tools and environments are needed:
 
 * Python 3.11 or 3.12, using a virtual environment
-* 
+* Get a the API keys for the different LLM you want to use in your solution: WatsonX.AI , OpenAI Anthropic, Mistral, ... and use the `/demo_tmpl/.env_tmpl` file to persist those API KEYS, rename the file as `.env` and move it into the demonstration folder you want to use or the new folder for your solution.
+
+```sh
+cp ../demo_tmpl/.env_tmpl .env
+```
+
 
 ### Create project
 

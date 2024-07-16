@@ -56,6 +56,13 @@ For production deployment the owl-backend code and the specific logic may be pac
 
 ## Demonstration Flows
 
+* Get a the API keys for the different LLM you want to use in your solution: WatsonX.AI , OpenAI Anthropic, Mistral, ... and use the `/demo_tmpl/.env_tmpl` file to persist those API KEYS, rename the file as `.env` and move it the miniloan demonstration folder.
+
+```sh
+# under IBM-miniloan-demo
+cp ../demo_tmpl/.env_tmpl .env
+```
+
 * Start the docker compose with all the components of the above architecture.
 
 ```sh
