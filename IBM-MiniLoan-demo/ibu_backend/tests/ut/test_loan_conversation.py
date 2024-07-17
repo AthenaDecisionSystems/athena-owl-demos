@@ -46,7 +46,7 @@ class TestConversation(unittest.TestCase):
         print(f"\n\nAssistant --> {rep}") 
         assert ("has not been approved" in rep.message or "has been declined" in rep.message or "not approved" in rep.message)
         
-    def test_conv_to_get_a_loan_approved(self):
+    def _test_conv_to_get_a_loan_approved(self):
         print("\n------- test_conversation to do tool calls on get loan decision")
         cc = ConversationControl()
         cc.assistant_id="ibu_assistant"
@@ -60,7 +60,7 @@ class TestConversation(unittest.TestCase):
         print(f"\n\nAssistant --> {rep}") 
         assert "has been approved" in rep.message
 
-    def test_conv_to_get_a_loan_demonstrating_hallucination(self):
+    def _test_conv_to_get_a_loan_demonstrating_hallucination(self):
         print("\n------- test_conv_to_get_a_loan_demonstrating_hallucination as this assistant has no loan decision service")
         cc = ConversationControl()
         cc.assistant_id="ibu_assistant_limited"

@@ -24,7 +24,6 @@ class TestAssistantsAPIs(unittest.TestCase):
         ctl = ConversationControl()
         ctl.callWithVectorStore = False
         ctl.callWithDecisionService = False
-        ctl.type="chat"
         ctl.assistant_id="ibu_assistant"
         ctl.user_id="test_user"
         ctl.thread_id="1"

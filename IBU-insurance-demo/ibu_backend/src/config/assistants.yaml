@@ -22,7 +22,7 @@ base_tool_assistant:
   description: A default assistant that uses LLM and search tool to do web search
   name: Default tool assistant
   agents: 
-    - open_ai_tool
+    - openai_tool_chain
 
 ibu_assistant_lg:
   assistant_id: ibu_assistant_lg

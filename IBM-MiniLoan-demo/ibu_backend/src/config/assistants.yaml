@@ -25,4 +25,4 @@ base_openai_assistant:
   description: A default assistant that uses LLM using chain
   name: Base openai assistant
   agents: 
-    - openai_chain
+    - openai_chain_tool
