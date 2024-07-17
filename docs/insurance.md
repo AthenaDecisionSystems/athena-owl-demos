@@ -74,7 +74,16 @@ The docker compose starts by downloading docker images from Docker Hub. Those im
 
 ## Run locally
 
+* Get a the API keys for the different LLM you want to use in your solution: WatsonX.AI , OpenAI Anthropic, Mistral, ... and use the `/demo_tmpl/.env_tmpl` file to persist those API KEYS, rename the file as `.env` and move it the miniloan demonstration folder.
+
+```sh
+# under IBU-insurance-demo
+cp ../demo_tmpl/.env_tmpl .env
+```
+
 To start all the components of the solution like the owl_backend, the owl_frontend, the data manager, postgresql database, and the ODM decision service, use the docker compose file locally under the `IBU-insurance-demo/deployment/local/` folder. 
+
+* Start all the services:
 
 ```sh title="IBU-insurance-demo/deployment/local/ folder."
 docker-compose up -d 
@@ -82,7 +91,7 @@ docker-compose up -d
 
 The first time you launch it, it may take some time as it downloads the needed docker images from docker hub.
 
-Verify that the six containers are running:
+* Verify that the six containers are running:
 
 ```sh
 docker ps
@@ -97,7 +106,7 @@ docker ps
 86052092cfe7   ghcr.io/chroma-core/chroma:latest          0.0.0.0:8005->8000/tcp                   chroma-db
 ```
 
-To look at the *owl-backend* logs
+* To look at the *owl-backend* logs
 
 ```sh
 docker logs owl-backend
