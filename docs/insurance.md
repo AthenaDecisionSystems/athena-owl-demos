@@ -13,9 +13,10 @@ The IBU insurance demonstration illustrates the integration with data manager se
 -   :material-clock-fast:{ .lg .middle } __Set up in 5 minutes__
 
     ---
+    create a `.env` file under IBU-insurance-demo with the API key for the LLM you want to use. See the file template in `demo_tmpl/.env_tmpl`. Then
     cd IBU-insurance-demo/deployment/local && docker-compose up -d 
 
-     and get up and running in minutes
+    and get up and running in minutes. 
 
     [:octicons-arrow-right-24: Demonstration Script](#demonstration-flows)
 

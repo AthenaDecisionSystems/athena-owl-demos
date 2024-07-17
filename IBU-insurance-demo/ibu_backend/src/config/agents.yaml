@@ -40,7 +40,7 @@ ibu_agent:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
-    - get_claim_status_by_user_name
+    - ibu_claim_status_by_user_name
     - ibu_best_action
 
 ibu_agent_limited:
@@ -58,7 +58,7 @@ ibu_agent_limited:
   tools:
     - ibu_client_by_id
     - ibu_client_by_name
-    - get_claim_status_by_user_name
+    - ibu_claim_status_by_user_name
     - ibu_claim_by_id
 
 ibu_classify_query_agent:
@@ -88,7 +88,7 @@ ibu_tool_rag_agent_limited:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
-    - get_claim_status_by_user_name
+    - ibu_claim_status_by_user_name
     - tavily
 
 ibu_tool_rag_agent:
@@ -106,5 +106,5 @@ ibu_tool_rag_agent:
     - ibu_best_action
     - ibu_client_by_id
     - ibu_client_by_name
-    - get_claim_status_by_user_name
+    - ibu_claim_status_by_user_name
     - ibu_claim_by_id

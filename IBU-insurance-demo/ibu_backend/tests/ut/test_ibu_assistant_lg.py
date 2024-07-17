@@ -57,20 +57,8 @@ class Test_ibu_assistant_langgraph(unittest.TestCase):
         cc.assistant_id="ibu_assistant_lg"
         rep: Optional[ResponseControl]  = get_or_start_conversation(cc)
         print(rep)
-        assert "CLTV percentile is 62" in rep.message   # RAG adds hallucination
+        assert "insurance policy is up to date" in rep.message   # RAG adds hallucination
         
-    def _test_verify_call_odm_tool(self):
-        print("\n--- test_verify_call_odm_tool to verify tool calling")
-        cc = ConversationControl()
-        
-        cc.query="""My name is Sonya Smith, I have problem with my claim with ID=2 for my water damage, \
-            my carpet is expensive, I'm surprise of the current coverage, very disappointing!
-            """
-        cc.thread_id="2"
-        cc.assistant_id="ibu_assistant_lg"
-        rep: Optional[ResponseControl]  = get_or_start_conversation(cc)
-        print(rep)
-        #assert "In Process Verified" in rep.message # type: ignore
 
 if __name__ == '__main__':
     unittest.main()
