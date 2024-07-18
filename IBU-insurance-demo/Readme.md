@@ -5,7 +5,7 @@
 
 [See the documentation in mkdocs format]()
 
-See the IBU backend readme.md for development activities and how to build the image used in the demonstration. The docker compose to run locally is under `deployment\local`.
+See the IBU backend readme.md for development activities and how to build the image used in the demonstration. The docker compose file to run locally is under `deployment/local`.
 
 ## Component explanation
 
@@ -13,7 +13,7 @@ See the IBU backend readme.md for development activities and how to build the im
 
 For end-to-end testing and demonstration purpose, it is better to have the docker engine with the docker compose cli installed. If you are not able to use Docker Desktop, you can use minikube and then specify the docker engine (see minikube section below).
 
-Be sure to have docker engine to build image and be able to run docker-compose. 
+Be sure to have the docker engine running to build the image and be able to run docker-compose. 
 
 
 

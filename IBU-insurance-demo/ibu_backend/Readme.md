@@ -1,39 +1,39 @@
 # IBU Insurance Demonstration OWL Backend
 
-This folder includes the specific for the demonstration of IBU insurance demonstration using tools and configuration to adapt the owl-agent-backend.
+This folder includes the specifics for the IBU Insurance demonstration with tools and a configuration to use the owl-agent-backend.
 
-05/22 integrate owl-agent-backend
-06/06: integrate new document management into ibu_backend component
+* 05/22 integrate owl-agent-backend
+* 06/06: integrate new document management into ibu_backend component
 
 
-* [Optional] The glossary and the prompts may be initiated with the following command, under the ibu_backend/bootstrap folder. As of now those files are committed in github so no need to be run. This is for future updates.
+[Optional] The glossary and the prompts may be initiated with the following command, under the `ibu_backend/bootstrap` folder. These files are committed in github so no need to be run. This is for future updates.
 
-    ```sh
-    # under ibu_backend/bootstrap
-    python ibu_setup.py
-    ```
+```sh
+# in the folder ibu_backend/bootstrap
+python ibu_setup.py
+```
 
-    This will create two json files under the config folder: `glossary.json` and `prompts.json`.
+This will create two json files under the config folder: `glossary.json` and `prompts.json`.
 
 
 ## IBU Development practices
 
-The IBU insurance backend specific code is under `src/ibu`. 
+The IBU insurance backend specific code is under `src/ibu`.
 
-As most of the agent work is about integration, so there is a docker file for integration tests to start the external components like (ODM RES, Data Manager, Postgresql). If you do not have docker desktop tool, you can use minikube and deploy those components.
+Most of the agent development work is around integration with external databases, decision service, and so on, so there is a docker file for integration tests to start the external components like (ODM RES, Data Manager, Postgresql). If you do not have the docker desktop tool, you can use minikube and deploy those components.
 
 ```sh
  docker-compose -f tests/data-backend-dc.yaml up -d
 ```
 
-To start the backend in development mode, where code update is propagated, run:
+To start the backend in development mode, where code updates are propagated, run:
 
 ```sh
 # under src
 ./start_backend.sh
 ```
 
-As the backend uses Fast API there is a swagger UI for the backend:
+The backend uses [Fast API](https://fastapi.tiangolo.com/) which means you can access an OpenAPI (Swagger) UI to understand all the available endpoints:
 
 [http://localhost:8000/docs](http://localhost:8000/docs)
 
@@ -42,25 +42,25 @@ As the backend uses Fast API there is a swagger UI for the backend:
 
 ## Build
 
-Be sure to have docker engine to build image.
+Be sure to have a docker engine running to build the image.
 
-Use docker build to package the ibu-backend image.
+Use `docker build` to package the ibu-backend image.
 
 ```sh
-# under ibu_backend folder
+# in ibu_backend folder
 ./build/buildImage.sh
 ```
 
 
 ## Integration tests
 
-All the integration tests are in tests/it folder. To run them use:
+All the integration tests are in the `tests/it` folder. To run them use:
 
 ```sh
 # all tests executed
 pytest -s tests/it/
-# a specific tests
-pytest -s tests/it/test_app_api.py
+# run a specific test
+pytest -s tests/it/test_app_api.py # or other test file
 ```
 
 The configuration file used by the tests is `tests/it/config/config.yaml`
