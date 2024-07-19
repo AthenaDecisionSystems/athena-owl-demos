@@ -15,6 +15,8 @@ Recall that an Hybrid-AI solution includes as set of components working together
 
 ![](./diagrams/hybrid_ai_comp.drawio.png){ width=800 }
 
+We recommend reading the [design document](https://athenadecisionsystems.github.io/athena-owl-core/design/), the [architecture presentation](https://athenadecisionsystems.github.io/athena-owl-core/arch/) and some [tutorials](https://athenadecisionsystems.github.io/athena-owl-core/tutorials/new_mistral_agent/) to create agent.
+
 ## Jump start your own solution
 
 As a first tutorial, we will use an existing decision service deployed to the IBM ODM decision server.
