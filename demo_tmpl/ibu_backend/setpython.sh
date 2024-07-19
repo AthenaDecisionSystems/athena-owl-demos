@@ -1,1 +1,0 @@
-export PYTHONPATH=$(pwd)/../../../athena-owl-core/owl-agent-backend/src
