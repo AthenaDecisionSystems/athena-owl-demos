@@ -14,8 +14,7 @@
             //"env": { "PYTHONPATH": "${workspaceRoot}/owl-agent-backend/src"},
             "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
             //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
-            "cwd": "${workspaceRoot}/IBU-insurance-demo/ibu_backend"
-            //"cwd": "${workspaceRoot}/IBM-MiniLoan-demo/ibu_backend"
+            "cwd": "${workspaceRoot}/APAVE-demo/ibu_backend"
         }
     ]
 }
