@@ -10,7 +10,7 @@ services:
     env_file:
       - ../../.env
     volumes:
-      - ../../ibu_backend/config:/app/config
+      - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
       - ./data/chromadb:/app/chromadb
@@ -35,10 +35,11 @@ services:
     ports:
       - 9443:9443
       - 9060:9060
+    user: "1001:0"
     environment:
       - SAMPLE=true
       - LICENSE=accept
     volumes:
-      - ../../decisions/persistence:/config/dbdata/
+      - ./data/res:/config/dbdata
 
   

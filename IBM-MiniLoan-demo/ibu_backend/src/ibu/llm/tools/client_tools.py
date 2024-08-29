@@ -2,7 +2,7 @@ import logging, uuid, datetime
 from ibu.app_settings import get_config
 from importlib import import_module
 from typing import Optional, Any
-from langchain.tools import StructuredTool
+
 from ibu.itg.ds.loanapp_borrower_repo_mock import LoanApplicationClientRepositoryInterface
 from ibu.itg.ds.pydantic_generated_model import Loan, Request
 from ibu.itg.decisions.next_best_action_ds_client import callRuleExecutionServer

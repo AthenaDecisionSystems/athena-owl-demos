@@ -27,3 +27,6 @@ class TestClientRepository(unittest.TestCase):
         assert client
         assert type(client) == str
         print(client)
+
+if __name__ == '__main__':
+    unittest.main()
