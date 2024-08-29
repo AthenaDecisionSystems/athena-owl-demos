@@ -60,7 +60,7 @@ class TestMiniLoanIntegration(unittest.TestCase):
         rep = assess_loan_app_with_decision(loan_amount=300000, duration=120,   first_name="robert", last_name= "smith", yearlyRepayment=100000)
 
         print(f"\n\n-> {rep}")
-        odm_rep : Response = Response.model_validate_json(rep.text)
+        odm_rep : Response = Response.model_validate_json(rep)
         print(f"\n\n-> {odm_rep.loan.messages}")
         assert not odm_rep.loan.approved
         
@@ -89,6 +89,9 @@ class TestMiniLoanIntegration(unittest.TestCase):
        
         rep = assess_loan_app_with_decision(loan_amount=20000, duration=60,   first_name="robert", last_name= "dupont", yearlyRepayment=4000)
         print(f"\n\n-> {rep}")
-        odm_rep : Response = Response.model_validate_json(rep.text)
+        odm_rep : Response = Response.model_validate_json(rep)
         print(f"\n\n-> {odm_rep.loan.messages}")
         assert odm_rep.loan.approved
+
+if __name__ == '__main__':
+    unittest.main()

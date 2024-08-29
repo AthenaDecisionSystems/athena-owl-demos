@@ -10,13 +10,16 @@ load_dotenv()
 os.environ["CONFIG_FILE"] = "./tests/ut/config/config.yaml"
 module_path = "./src"
 sys.path.append(os.path.abspath(module_path))
-from athena.llm.assistants.assistant_mgr import get_assistant_manager
+from athena.llm.agents.agent_mgr import get_agent_manager
 
 class TestValidateConfiguration(unittest.TestCase):
     
-    def test_load_all_assistants(self):
-        assistant_mgr = get_assistant_manager()
-        for assistant_entity in assistant_mgr.get_assistants():
-            print(f"Create instance for {assistant_entity}")
-            assistant = assistant_mgr.build_assistant(assistant_entity,"en")
-            assert assistant
+    def test_load_all_agents(self):
+        mgr = get_agent_manager()
+        for agent_entity in mgr.get_agents():
+            print(f"Create instance for {agent_entity}")
+            agent_runner = mgr.build_agent_runner(agent_entity,"en")
+            assert agent_runner
+
+if __name__ == '__main__':
+    unittest.main()

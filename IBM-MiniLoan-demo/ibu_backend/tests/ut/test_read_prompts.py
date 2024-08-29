@@ -12,8 +12,8 @@ class TestPrompts(unittest.TestCase):
         p_mgr=get_prompt_manager()
         prompt = p_mgr.build_prompt("ibu_loan_prompt","en")
         assert isinstance(prompt, ChatPromptTemplate)
-        
-        assert prompt.input_variables[0] == "input"
+        print(prompt)
+        assert "input" in prompt.optional_variables 
         assert "bank assistant" in prompt.messages[0].prompt.template
       
 
