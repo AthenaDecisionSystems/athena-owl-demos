@@ -7,9 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from typing import Optional
-from athena.routers.dto_models import ConversationControl, ResponseControl
-from athena.llm.conversations.conversation_mgr import get_or_start_conversation
-from athena.llm.agents.agent_mgr import get_agent_manager, OwlAgentEntity
 from athena.itg.store.content_mgr import get_content_mgr, FileDescription
 
 class TestIBUAssistant(unittest.TestCase):

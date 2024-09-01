@@ -1,13 +1,12 @@
 import unittest
 import psycopg2
+import sys,os
+sys.path.append('./src')
 
 from ibu.app_settings import get_config
 
 class TestCustomQuery(unittest.TestCase):
     
-
-  
-        
     def test_get_client(self):
         conn = psycopg2.connect(
             host="localhost",
@@ -54,4 +53,5 @@ class TestCustomQuery(unittest.TestCase):
         conn.close()
    
         
-        
+if __name__ == '__main__':
+    unittest.main() 

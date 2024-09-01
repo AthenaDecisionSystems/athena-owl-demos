@@ -1,7 +1,7 @@
 version: '3'
 services:
   insurance-data-mgr:
-    image: athena/ibu-insurance-data-mgr
+    image: jbcodeforce/ibu-insurance-data-mgr
     hostname: datamgr
     container_name: datamgr
     depends_on:
@@ -33,6 +33,7 @@ services:
     image: icr.io/cpopen/odm-k8s/odm:8.12
     hostname: decisionsvc
     container_name: decisionsvc
+    user: "1001:0"
     ports:
       - 9443:9443
       - 9060:9060

@@ -1,3 +1,7 @@
+"""
+Copyright 2024 Athena Decision Systems
+@author Jerome Boyer
+"""
 import logging
 from typing import Optional, Any
 from importlib import import_module
@@ -103,13 +107,10 @@ class IbuInsuranceToolInstanceFactory(ToolInstanceFactoryInterface):
         tool_list=[]
         for tool_entity in tool_entities:
             if tool_entity.tool_id == "tavily":
-                search = TavilySearchResults(max_results=2)
-                search_tool = Tool(
-                    name=tool_entity.tool_fct_name,
-                    func=search.run,
-                    description=tool_entity.tool_description,
-                )
+                search_tool= TavilySearchResults(max_results=2)
                 tool_list.append(search_tool)
             elif tool_entity.tool_fct_name in methods.keys():
-                tool_list.append(define_tool( tool_entity.tool_description, tool_entity.tool_fct_name, tool_entity.tool_arg_schema_class))# type: ignore
+                tool_list.append(define_tool( tool_entity.tool_description, 
+                                              tool_entity.tool_fct_name, 
+                                              tool_entity.tool_arg_schema_class))# type: ignore
         return tool_list

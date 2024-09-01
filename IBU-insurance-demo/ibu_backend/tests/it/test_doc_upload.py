@@ -3,7 +3,7 @@ sys.path.append('./src')
 
 os.environ["CONFIG_FILE"] = "./tests/it/config/config.yaml"
 from dotenv import load_dotenv
-load_dotenv("./.env")
+load_dotenv("../.env")
 from athena.routers.documents import FileDescription
 from fastapi.testclient import TestClient
 import unittest
@@ -16,6 +16,7 @@ class TestDocumentMgt(unittest.TestCase):
         self.client = TestClient(app)
 
     def test_upload_pdf(self):
+        print("\n\t--- test_upload_pdf")
         fd= FileDescription(name="claim_complaint_rules", 
                             description="a set of rules to manage complaints", 
                             type="pdf",
@@ -23,9 +24,12 @@ class TestDocumentMgt(unittest.TestCase):
         files = {'myFile': (fd.file_name, open(self.PATH_TO_DOCS + "/" +  fd.file_name, 'rb'), "application/pdf")}
 
         rep=self.client.post('/api/v1/a/documents',json = fd.model_dump(),files=files) 
-        print(rep.text)
+        assert rep
+        assert rep.text
+        print(rep)
         
     def test_upload_md(self):
+        print("\n\t--- test_upload_md")
         fd= FileDescription(name="claim_complaint_rules", 
                             description="a set of rules to manage complaints", 
                             type="md",
@@ -33,9 +37,12 @@ class TestDocumentMgt(unittest.TestCase):
         files = {'myFile': (fd.file_name, open(self.PATH_TO_DOCS + "/" +  fd.file_name, 'rb'))}
 
         rep=self.client.post('/api/v1/a/documents',json = fd.model_dump(),files=files) 
+        assert rep
+        assert rep.text
         print(rep.text)
         
     def test_upload_html(self):
+        print("\n\t--- test_upload_md")
         fd= FileDescription(name="claim_complaint_rules", 
                             description="a set of rules to manage complaints", 
                             type="html",
@@ -43,7 +50,10 @@ class TestDocumentMgt(unittest.TestCase):
         files = {'myFile': (fd.file_name, open(self.PATH_TO_DOCS + "/" +  fd.file_name, 'rb'))}
 
         rep=self.client.post('/api/v1/a/documents',json = fd.model_dump(),files=files) 
+        assert rep
+        assert rep.text
         print(rep.text)
         
-    
+if __name__ == '__main__':
+    unittest.main()
 
