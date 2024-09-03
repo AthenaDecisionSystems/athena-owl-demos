@@ -3,7 +3,7 @@
 # IBU Loan Application Demo
 # ------------------------------------------------------------------
 logging_level: DEBUG
-version: 0.0.2
+version: v0.0.5
 owl_env_path: /app/.env
 
 
