@@ -7,6 +7,7 @@ services:
       - 8000:8000
     environment:
       - CONFIG_FILE=/app/config/config.yaml
+      - PYTHONPATH=/app/ibu
     env_file:
       - ../../.env
     volumes:

@@ -163,8 +163,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         if kwargs["vector_store"]:
             self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-
-        resp= self.graph.invoke(request, self.config)
+        m=HumanMessage(content=request["input"])
+        resp= self.graph.invoke({"messages": [m]}, self.config)
         msg=resp["messages"][-1].content
         return msg
     
