@@ -9,7 +9,7 @@ services:
       CONFIG_FILE: /app/config/config.yaml
       #OPENAI_API_KEY: $OPENAI_API_KEY
     env_file:
-      - ../../.env
+      - .env
     volumes:
       - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env

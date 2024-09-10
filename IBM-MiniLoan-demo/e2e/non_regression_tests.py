@@ -4,9 +4,9 @@ a bunch of calls to the backend servers to validate the major functions
 from pydantic import BaseModel
 from typing import Optional
 import requests
+import subprocess
 
 
-IBU_BASE_URL="http://localhost:8000/api/v1"
 PROMPT_REFERENCE="ibu_loan_prompt"
 AGENT_REF="ibu_agent"
 
@@ -101,9 +101,13 @@ def validate_approve_a__good_loan(base_url, fn: str, ln: str):
   return rep
 
 
+def get_container_ip():
+  r=subprocess.run(["docker", "inspect", "-f", "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}", "owl-backend"], capture_output=True)
+  return  r.stdout.decode().strip()
 
 if __name__ == "__main__":
   print("################ Non Regression Tests ##############") 
+  IBU_BASE_URL=f"http://{get_container_ip()}:8000/api/v1"
   verify_health(IBU_BASE_URL)
   validate_access_to_ibu_prompt(IBU_BASE_URL)
   ae=validate_ibu_agent(IBU_BASE_URL)
