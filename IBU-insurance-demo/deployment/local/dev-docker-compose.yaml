@@ -1,7 +1,7 @@
 services:
   owl-backend:
     hostname: owl-backend
-    image: athena/owl-backend
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
     container_name: owl-backend
     ports:
       - 8000:8000
@@ -15,7 +15,7 @@ services:
       - ./data/chromadb:/app/chromadb
       - ../../ibu_backend/src/ibu:/app/ibu
   insurance-data-mgr:
-    image: athena/ibu-insurance-data-mgr
+    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
     hostname: datamgr
     container_name: datamgr
     depends_on:

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.volumeMounts.name }}
+  name: {{ .Values.volumeMounts[0].name }}
   labels:
     app: {{ .Release.Name }}
 spec:

@@ -1,7 +1,7 @@
 services:
   owl-backend:
     hostname: owl-backend
-    image: jbcodeforce/athena-owl-backend:latest
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
     container_name: owl-backend
     ports:
       - 8000:8000
@@ -18,13 +18,13 @@ services:
       - ../../ibu_backend/src/ibu:/app/ibu
   owl-frontend:
     hostname: owl-frontend
-    image: jbcodeforce/athena-owl-frontend:latest
+    image: athenadecisionsystems/athena-owl-frontend:1.0.0
     container_name: owl-frontend
     ports:
-      - 3000:80
+      - 3000:3000
     environment:
       - REACT_APP_OWL_AGENT_NAME="MiniLoan Management Agent"
-      - REACT_APP_BACKEND_URL=http://localhost:8000/api/v1/
+      - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8000/api/v1/
       - REACT_APP_AGENT_ID_WITH_RULES='ibu_agent'
       - REACT_APP_AGENT_ID_WITHOUT_RULES='ibu_agent_limited'
       - REACT_APP_DEMO_TEXT="One of our client Robert Smith wants a loan for \$500,000 for a duration of 60 months and a yearly repayment of $60,000 do we approve it?"
