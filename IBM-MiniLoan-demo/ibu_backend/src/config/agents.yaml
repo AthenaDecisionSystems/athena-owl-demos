@@ -2,26 +2,11 @@
 # @author Jerome Boyer
 # IBU Loan Application Demo
 # ------------------------------------------------------------------
-openai_chain_tool:
-  agent_id: openai_chain_tool
-  name: open_ai_gpt35
-  description: openai based agent with prompt coming from langchain hub  and tool
-  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentAbstractRunner
-  modelName: gpt-3.5-turbo
-  modelClassName: langchain_openai.ChatOpenAI
-  prompt_ref: openai_functions_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
-  tools:
-  - tavily
-
-
 ibu_agent:
   agent_id: ibu_agent
-  name: ibu_agent
-  description: openai based agent with IBU loan app prompt and tools
-  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentAbstractRunner
+  name: IBU Loan Agent with Decision Engine
+  description: OpenAI based agent with IBU loan app prompt and tools
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelName: gpt-3.5-turbo
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: ibu_loan_prompt
@@ -34,9 +19,9 @@ ibu_agent:
 
 ibu_agent_limited:
   agent_id: ibu_agent_limited
-  name: ibu_agent_limited
-  description: openai based agent with IBU loan app prompt without decision service
-  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentAbstractRunner
+  name: IBU Loan Agent without Decision
+  description: OpenAI based agent with IBU loan app prompt without decision service
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelName: gpt-3.5-turbo
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: ibu_loan_prompt

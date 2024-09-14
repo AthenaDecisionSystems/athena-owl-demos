@@ -116,6 +116,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
     def process_information_query(self, state):
         question = state["input"]
         messages = state['messages']
+        q#uestion= messages[-1]
         if self.use_vector_store:
             state["documents"] = self.rag_retriever.invoke(question)
         else:
@@ -164,7 +165,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
         m=HumanMessage(content=request["input"])
-        resp= self.graph.invoke({"messages": [m]}, self.config)
+        resp= self.graph.invoke({"messages": [m], "input": m}, self.config)
         msg=resp["messages"][-1].content
         return msg
     

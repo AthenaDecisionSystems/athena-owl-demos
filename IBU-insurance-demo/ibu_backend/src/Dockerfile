@@ -5,8 +5,8 @@ RUN export HNSWLIB_NO_NATIVE=1
 RUN apt-get update --fix-missing && apt-get install -y --fix-missing build-essential
 
 ENV CONFIG_FILE=/app/config/config.yaml
-COPY ./athena-owl-core/owl-agent-backend/src/ /app/
-COPY ./athena-owl-demos/IBU-insurance-demo/ibu_backend/src/ /app/
+
+COPY . /app/
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 EXPOSE 8000

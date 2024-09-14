@@ -71,11 +71,6 @@ The configuration file used by the tests is `tests/it/config/config.yaml`
 
 If you run with minikube as a docker engine, be sure to set the docker env:
 
-* Set docker env
-
-```sh
-eval  $(minikube docker-env)
-```
 
 #### Running the more complete solution
 
