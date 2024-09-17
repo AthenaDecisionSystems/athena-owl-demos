@@ -1,10 +1,11 @@
-openai_chain:
-  agent_id: openai_chain
-  name: openai_chain
+openai_chain_agent:
+  agent_id: openai_chain_agent
+  name: open_ai_gpt35
   description: openai based agent with simple prompt 
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  #class_name: athena.llm.agents.agent_openai.OpenAIAgent
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
-  modelName: gpt-3.5-turbo-0125
+  modelName: gpt-3.5-turbo
   prompt_ref: default_prompt
   temperature: 0
   top_k: 1
@@ -14,10 +15,10 @@ openai_tool_chain:
   agent_id: openai_tool_chain
   name: open_ai_gpt35
   description: openai based agent with prompt coming from langchain hub  and tool
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
-  modelName: gpt-3.5-turbo-0125
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  modelName: gpt-3.5-turbo
   modelClassName: langchain_openai.ChatOpenAI
-  prompt_ref: hwchase17/openai-functions-agent
+  prompt_ref: openai_functions_prompt
   temperature: 0
   top_k: 1
   top_p: 1
@@ -25,11 +26,12 @@ openai_tool_chain:
   - tavily
 
 
+
 ibu_agent:
   agent_id: ibu_agent
   name: ibu_agent
-  description:  openai based agent with tool to support ibu insurance demo and variable model 
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
+  description:  OpenAI based agent with tool to support the IBU insurance demo and variable model 
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelName: gpt-3.5-turbo-0125
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: openai_insurance_with_tool
@@ -46,26 +48,16 @@ ibu_agent:
 ibu_agent_limited:
   agent_id: ibu_agent_limited
   name: ibu_agent
-  description: openai based agent with IBU loan app prompt without decision service
-  class_name: athena.llm.agents.base_chain_agent.OwlAgent
-  modelName: gpt-3.5-turbo-0125
-  modelClassName: langchain_openai.ChatOpenAI
+  description: OpenAI based agent with tool IBU loan app prompt without decision service
+  runner_class_name: ibu.llm.agents.ibu_agent_lg.IBUInsuranceAgent
   prompt_ref: openai_insurance_with_tool
   # hwchase17/react-chat-json 
-  temperature: 0
-  top_k: 1
-  top_p: 1
-  tools:
-    - ibu_client_by_id
-    - ibu_client_by_name
-    - ibu_claim_status_by_user_name
-    - ibu_claim_by_id
 
 ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
   name: IBU Classify Query Agent
-  description: openai based agent with simple prompt 
-  class_name: ibu.llm.agents.ClassifyQueryAgent.IBUClassifyQueryAgent
+  description: OpenAI Agent to classify a query as Information or Complaint
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: classify_query_prompt
@@ -76,8 +68,8 @@ ibu_classify_query_agent:
 ibu_tool_rag_agent_limited:
   agent_id: ibu_tool_rag_agent_limited
   name: OpenAI IBU agent with RAG Limited
-  description: OpenAI IBU agent with RAG and insurance tool without decision service
-  class_name: ibu.llm.agents.tool_rag_agent.IbuToolRagAgent
+  description: OpenAI IBU agent with RAG and insurance tools without decision service
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: ibu_rag_prompt
@@ -91,11 +83,11 @@ ibu_tool_rag_agent_limited:
     - ibu_claim_status_by_user_name
     - tavily
 
-ibu_tool_rag_agent:
-  agent_id: ibu_tool_rag_agent
-  name: ibu_tool_rag_agent
-  description: openai based agent with prompt with query and context
-  class_name: ibu.llm.agents.tool_rag_agent.IbuToolRagAgent
+ibu_tool_rag_ds_agent:
+  agent_id: ibu_tool_rag_ds_agent
+  name: RAG with Decision Agent
+  description: OpenAI IBU agent with RAG and insurance tools with decision service
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-3.5-turbo-0125
   prompt_ref: ibu_rag_prompt

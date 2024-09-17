@@ -23,8 +23,7 @@ class TestAssistantsAPIs(unittest.TestCase):
     def build_ConversationControl(self):
         ctl = ConversationControl()
         ctl.callWithVectorStore = False
-        ctl.callWithDecisionService = False
-        ctl.assistant_id="ibu_assistant"
+        ctl.agent_id="ibu_agent"
         ctl.user_id="test_user"
         ctl.thread_id="1"
         return ctl

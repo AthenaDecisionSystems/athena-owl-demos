@@ -8,7 +8,7 @@ from ibu.itg.ds.ComplaintHandling_generated_model import Motive
 from importlib import import_module
 from typing import Sequence, Any
 import logging
-from athena.app_settings import get_config
+from ibu.app_settings import get_config
 from athena.routers.dto_models import ConversationControl
 from athena.itg.store.content_mgr import get_content_mgr
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService

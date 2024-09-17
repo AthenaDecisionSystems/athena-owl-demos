@@ -6,7 +6,18 @@
     "configurations": [
         
         {
-            "name": "Python Debugger: Current File Demos",
+            "name": "APAVE Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            //"env": { "PYTHONPATH": "${workspaceRoot}/owl-agent-backend/src"},
+            "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
+            //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
+            "cwd": "${workspaceRoot}/APAVE-demo/ibu_backend"
+        },
+        {
+            "name": "IBU_insurance - Python Debugger",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
@@ -15,7 +26,17 @@
             "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
             //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
             "cwd": "${workspaceRoot}/IBU-insurance-demo/ibu_backend"
-            //"cwd": "${workspaceRoot}/IBM-MiniLoan-demo/ibu_backend"
+        },
+        {
+            "name": "Dutch- Python Debugger",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            //"env": { "PYTHONPATH": "${workspaceRoot}/owl-agent-backend/src"},
+            "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
+            //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
+            "cwd": "${workspaceRoot}/../athena-db/DutchTax-demo/ibu_backend"
         }
     ]
 }

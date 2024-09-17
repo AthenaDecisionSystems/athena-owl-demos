@@ -4,19 +4,25 @@ a bunch of calls to the backend servers to validate the major functions
 from pydantic import BaseModel
 import unittest
 import requests
-
+from typing import Optional
 IBU_BASE_URL="http://localhost:8000/api/v1"
-ASSISTANT_REF="ibu_assistant_lg"
+AGENT_REF="ibu_agent_limited"
 
-class OwlAssistantEntity(BaseModel):
+class OwlAgent(BaseModel):
     """
-    Entity to persist data about a OwlAssistant
+    Entity definition to persist data about a OwlAgent
     """
-    assistant_id: str = "default_assistant"
-    name: str = "default_assistant"
-    description: str = "A default assistant to do simple LLM calls"
-    class_name : str = "athena.llm.assistants.BaseAssistant.BaseAssistant"
     agent_id: str = ""
+    name: str = ""
+    description: Optional[str] = None
+    modelName: str = ""
+    modelClassName: Optional[str] = None
+    runner_class_name: Optional[str] = "athena.llm.agents.agent_mgr.OwlAgentAbstractRunner"
+    prompt_ref:  Optional[str] = None
+    temperature: int = 0  # between 0 to 100 and will be converted depending of te LLM
+    top_k: int = 1
+    top_p: int = 1
+    tools: list[str] = []
   
 class TestHappyPathScenario(unittest.TestCase):
 
@@ -31,7 +37,7 @@ class TestHappyPathScenario(unittest.TestCase):
         print("\n--> Validate Basic Query to LLM\n")
         data='{  "locale": "en",\
           "query": "can you give me some information about Athena Decision Systems?",\
-          "assistant_id": "' + ASSISTANT_REF + '",  \
+          "agent_id": "' + AGENT_REF + '",  \
           "user_id" : "remote_test", \
           "chat_history": [],\
           "thread_id" : "1" \
@@ -64,12 +70,12 @@ class TestHappyPathScenario(unittest.TestCase):
         assert "customer service representative" in rep
     
     
-    def test_validate_ibu_assistant(self):
-        print("\n--> Get IBU assistant entity\n")
-        resp = requests.get(IBU_BASE_URL + "/a/assistants/" + ASSISTANT_REF, timeout=10)
+    def test_validate_ibu_agent(self):
+        print("\n--> Get IBU agent entity\n")
+        resp = requests.get(IBU_BASE_URL + "/a/agents/" + AGENT_REF, timeout=10)
         a_str= resp.content.decode()
         print(f"@@@> {a_str}")
-        ae = OwlAssistantEntity.model_validate_json(json_data=a_str)
+        ae = OwlAgent.model_validate_json(json_data=a_str)
         print(f"@@@> {ae}")
         assert ae
 
@@ -92,11 +98,11 @@ class TestHappyPathScenario(unittest.TestCase):
 
   
     def test_get_best_action_using_LLM(self):
-        print("\n--> Get claim - client best action using assistant with langgraph\n")
+        print("\n--> Get claim - client best action using agent with langgraph\n")
         data='{ "locale": "en",\
                   "query": "One of our client, Sonya Smith, has a problem with her claim with the id=2 for water damage, her carpet is expensive, she is surprise by the current coverage, very disappointed?",\
                   "chat_history": [],\
-                  "assistant_id": "' + ASSISTANT_REF + '",  \
+                  "agent_id": "' + AGENT_REF + '",  \
                   "user_id" : "remote_test", \
                   "thread_id" : "1" \
               }'

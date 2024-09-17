@@ -1,14 +1,14 @@
 #!/bin/bash
 scriptDir=$(dirname $0)
 
-IMAGE_NAME=jbcodeforce/ibu-insurance-data-mgr
-
+#IMAGE_NAME=jbcodeforce/ibu-insurance-data-mgr
+IMAGE_NAME=athenadecisionsystems/ibu-insurance-data-mgr
 if [[ $# -eq 2 ]]
 then
   TAG=$1
   OS=$2
 else
-  TAG=latest
+  TAG=1.0.0
   OS=linux
 fi
 

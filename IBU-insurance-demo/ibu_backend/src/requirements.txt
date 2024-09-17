@@ -12,4 +12,5 @@ python-multipart
 python-dotenv
 chromadb
 pymupdf==1.24.3
-psycopg2
+langchain_chroma
+

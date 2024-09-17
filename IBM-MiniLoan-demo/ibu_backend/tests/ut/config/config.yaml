@@ -15,8 +15,6 @@ owl_agent_llm_model: gpt-3.5-turbo-0125
 app_loanapp_decision_service_url: http://localhost:9060/DecisionService/rest/v1/mydeployment/1.0/Miniloan_ServiceRuleset/1.0
 
 owl_glossary_path: ./src/config/glossary.json
-
-owl_assistants_path: ./src/config/assistants.yaml
 owl_agents_path: ./src/config/agents.yaml
 owl_tools_path: ./src/config/tools.yaml
 owl_prompts_path: ./src/config/prompts.yaml

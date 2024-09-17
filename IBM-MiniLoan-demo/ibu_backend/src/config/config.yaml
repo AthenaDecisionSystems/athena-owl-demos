@@ -3,7 +3,7 @@
 # IBU Loan Application Demo
 # ------------------------------------------------------------------
 logging_level: DEBUG
-version: 0.0.2
+version: v0.0.5
 owl_env_path: /app/.env
 
 
@@ -12,12 +12,10 @@ owl_env_path: /app/.env
 app_loanapp_decision_service_url: http://decisionsvc:9060/DecisionService/rest/v1/mydeployment/1.0/Miniloan_ServiceRuleset/1.0
 owl_glossary_path: /app/config/glossary.json
 
-owl_assistants_path: /app/config/assistants.yaml
 owl_agents_path: /app/config/agents.yaml
 owl_tools_path: /app/config/tools.yaml
 owl_prompts_path: /app/config/prompts.yaml
 owl_prompts_key_name: defaut_prompt
-owl_agent_default_assistant: ibu_assistant
 owl_agent_content_vstore_url: http://localhost:8005
 owl_agent_content_collection_name: ibu_loan
 owl_agent_content_file_path: /app/file_content
