@@ -7,7 +7,7 @@ ibu_agent:
   name: IBU Loan Agent with Decision Engine
   description: OpenAI based agent with IBU loan app prompt and tools
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
-  modelName: gpt-3.5-turbo
+  modelName: gpt-4o
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: ibu_loan_prompt
   temperature: 0
@@ -22,7 +22,7 @@ ibu_agent_limited:
   name: IBU Loan Agent without Decision
   description: OpenAI based agent with IBU loan app prompt without decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
-  modelName: gpt-3.5-turbo
+  modelName: gpt-4o
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: ibu_loan_prompt
   temperature: 0
