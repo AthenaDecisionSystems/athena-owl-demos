@@ -10,7 +10,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 
 
 from ibu.app_settings import get_config
-from athena.llm.tools.tool_factory import ToolInstanceFactoryInterface, OwlToolEntity
+from athena.llm.tools.tool_mgr import DefaultToolInstanceFactory, OwlToolEntity
 
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService, callDecisionServiceMock
 from ibu.itg.ds.ComplaintHandling_generated_model import Motive
@@ -75,42 +75,15 @@ def get_claim_status_by_user_name(firstname: str, lastname: str):
     client = build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
     return client
 
-methods = {
+
+
+
+        
+class IbuInsuranceToolInstanceFactory(DefaultToolInstanceFactory):
+    methods = {
         "get_client_by_id" : get_client_by_id, 
         "get_client_by_name": get_client_by_name, 
         "get_claim_by_id" : get_claim_by_id, 
         "get_claim_status_by_user_name": get_claim_status_by_user_name,
         "define_next_best_action_with_decision": define_next_best_action_with_decision
         }
-
-
-def define_tool(description: str, funct_name, args: Optional[str]):
-    if args:
-        return StructuredTool.from_function(
-            func=methods[funct_name],
-            name=funct_name,
-            description=description,
-            args_schema= arg_schemas[args], # type: ignore
-            return_direct=False,
-        )
-    else:
-        return StructuredTool.from_function(
-            func=methods[funct_name],
-            name=funct_name,
-            description=description,
-            return_direct=False,
-        )
-        
-class IbuInsuranceToolInstanceFactory(ToolInstanceFactoryInterface):
-    
-    def build_tool_instances(self, tool_entities: list[OwlToolEntity]) -> list[Any]:
-        tool_list=[]
-        for tool_entity in tool_entities:
-            if tool_entity.tool_id == "tavily":
-                search_tool= TavilySearchResults(max_results=2)
-                tool_list.append(search_tool)
-            elif tool_entity.tool_fct_name in methods.keys():
-                tool_list.append(define_tool( tool_entity.tool_description, 
-                                              tool_entity.tool_fct_name, 
-                                              tool_entity.tool_arg_schema_class))# type: ignore
-        return tool_list

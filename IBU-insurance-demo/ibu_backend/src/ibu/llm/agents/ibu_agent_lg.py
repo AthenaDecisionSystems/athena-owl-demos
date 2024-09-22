@@ -21,6 +21,7 @@ from ibu.app_settings import get_config
 from athena.itg.store.content_mgr import get_content_mgr
 from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.routers.dto_models import ConversationControl, ResponseControl
+from langgraph.prebuilt import ToolNode, tools_condition
 
 """
 An assistance to support the contact center agents from IBU insurance for the complaint management process.
@@ -59,32 +60,6 @@ def define_ibu_tool_rag_agent_limited():
 def define_ibu_tool_rag_agent():
     return get_agent_manager().build_agent_runner("ibu_tool_rag_ds_agent","en")
 
-class BasicToolNode:
-    """A node that runs the tools requested in the last AIMessage."""
-    def __init__(self, tools: list) -> None:
-        # list of tools of type langchain basetool
-        self.tools_by_name = {tool.name: tool for tool in tools}
-        LOGGER.debug(f"\n@@@> tools in node: {self.tools_by_name}")
-
-    def __call__(self, inputs: dict):
-        # Perform the tool calling if the last message has tool calls list.
-        if messages := inputs.get("messages", []):
-            last_message = messages[-1]
-        else:
-            raise ValueError("No message found in input")
-        outputs = []   # keep outputs of all the tool calls
-        for tool_call in set(last_message.tool_calls):  # use a set to void calling same tool multiple time
-            tool_result = self.tools_by_name[tool_call["name"]].invoke(
-                tool_call["args"]
-            )
-            outputs.append(
-                ToolMessage(
-                    content=json.dumps(tool_result),
-                    name=tool_call["name"],
-                    tool_call_id=tool_call["id"],
-                )
-            )
-        return {"messages": outputs}
     
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
 
@@ -116,7 +91,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
     def process_information_query(self, state):
         question = state["input"]
         messages = state['messages']
-        q#uestion= messages[-1]
+        #uestion= messages[-1]
         if self.use_vector_store:
             state["documents"] = self.rag_retriever.invoke(question)
         else:

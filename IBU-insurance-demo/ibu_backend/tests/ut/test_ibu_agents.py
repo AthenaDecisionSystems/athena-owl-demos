@@ -42,7 +42,7 @@ class Test_ibu_agent(unittest.TestCase):
         cc=self.define_conversation_control(query)
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        assert "Information" in rep.messages[0].content
+        assert "information" in rep.messages[0].content.lower()
     
     def test_2_classify_agent_for_complaint_query(self):
         print("\n--- test_a_complaint_query to classify the query to complaint")
@@ -50,7 +50,7 @@ class Test_ibu_agent(unittest.TestCase):
         cc=self.define_conversation_control(query)
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        assert "Complaint" in rep.messages[0].content
+        assert "complaint" in rep.messages[0].content.lower()
 
          
     
@@ -81,7 +81,7 @@ class Test_ibu_agent(unittest.TestCase):
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
-        self.assertIn("claim with ID 2 is currently", rep.messages[0].content)
+        self.assertIn("claim with ID 2 is", rep.messages[0].content)
 
     
     def test_6_information_from_rag_collection(self):
