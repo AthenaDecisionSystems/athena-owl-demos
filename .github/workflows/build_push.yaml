@@ -33,17 +33,19 @@ jobs:
           fi
         }
 
-        validate_secret DOCKER_USERNAME ${DOCKER_USERNAME}
-        validate_secret DOCKER_PASSWORD ${DOCKER_PASSWORD}
+        validate_secret DOCKER_USER ${DOCKER_USER}
+        validate_secret DOCKER_HUB_TOKEN ${DOCKER_HUB_TOKEN}
         validate_secret DOCKER_REGISTRY ${DOCKER_REGISTRY}
         if [ "${FAIL}" = "true" ]; then
           exit 1
         fi
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_TOKEN }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
   publish_images:
+    needs:
+      validate-docker-secrets
     runs-on: ubuntu-latest
     steps:
       - name: Check out this repo
