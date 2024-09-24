@@ -113,10 +113,10 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                                 "chat_history": messages}, 
                                                 self.config["configurable"]["thread_id"])
         if "information" in message.lower():
-            print("---ROUTE QUESTION TO INFORMATION---")
+            LOGGER.debug("---ROUTE QUESTION TO INFORMATION---")
             return "information"
         elif "complaint"  in message.lower():
-            print("---ROUTE QUESTION TO Complaint---")
+            LOGGER.debug("---ROUTE QUESTION TO Complaint---")
             return "complaint"
         # TODO Decide what to do if none of this 
     

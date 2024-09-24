@@ -1,7 +1,7 @@
 #!/bin/bash
 scriptDir=$(dirname $0)
 
-IMAGE_NAME=jbcodeforce/athena-ibu-insurance
+IMAGE_NAME=athenadecisionsystems/athena-ibu-insurance
 #IMAGE_NAME=athenadecisionsystems/athena-owl-backend
 
 if [[ $# -eq 2 ]]
