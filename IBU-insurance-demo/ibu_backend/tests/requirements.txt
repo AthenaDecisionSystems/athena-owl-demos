@@ -1,1 +1,2 @@
-pytests
+pytest
+psycopg2-binary
