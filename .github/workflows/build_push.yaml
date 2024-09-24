@@ -24,8 +24,8 @@ jobs:
           path: owl_core
       - name: build ibu ins data access image
         run: |
-        docker login -u ${{ env.DOCKER_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
-        docker build IBU-insurance-demo/datamgt/code/apis-datamgr-insurance-pc-claims/ -t athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
+          docker login -u ${{ env.DOCKER_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker build IBU-insurance-demo/datamgt/code/apis-datamgr-insurance-pc-claims/ -t athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
 
       
       
