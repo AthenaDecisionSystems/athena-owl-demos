@@ -19,7 +19,7 @@ jobs:
       - name: Check out owl core repo
         uses: actions/checkout@v4
         with: 
-          repository: https://github.com/AthenaDecisionSystems/athena-owl-core
+          repository: AthenaDecisionSystems/athena-owl-core
           ref: refs/heads/development
           path: owl_core
       - name: build ibu ins data access image
