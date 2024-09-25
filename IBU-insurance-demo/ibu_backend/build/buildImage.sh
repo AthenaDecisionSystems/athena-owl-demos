@@ -1,7 +1,7 @@
 #!/bin/bash
 scriptDir=$(dirname $0)
 
-IMAGE_NAME=athenadecisionsystems/athena-ibu-insurance
+IMAGE_NAME=athenadecisionsystems/ibu-insurance
 #IMAGE_NAME=athenadecisionsystems/athena-owl-backend
 
 if [[ $# -eq 2 ]]
@@ -9,7 +9,7 @@ then
   TAG=$1
   OS=$2
 else
-  TAG=latest
+  TAG=1.0.0
   OS=linux
 fi
 
