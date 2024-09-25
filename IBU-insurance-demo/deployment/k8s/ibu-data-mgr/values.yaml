@@ -1,5 +1,4 @@
-# Default values for postgres.
-# This is a YAML-formatted file.
+# Default values for insurance-data-mgr.
 # Declare variables to be passed into your templates.
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
@@ -7,17 +6,16 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: postgres
+  repository: athenadecisionsystems/ibu-insurance-data-mgr
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "1.0.0"
+
 env:
-  - name: POSTGRES_DB
-    value: insurancedb
-  - name: POSTGRES_PASSWORD
-    value: p0stgrespwd
-  - name: POSTGRES_USER
+  - name: QUARKUS_DATASOURCE_JDBC_URL
+    value: jdbc:postgresql://ibu-db-postgresql.ibu.svc.cluster.local:5432/postgres
+  - name: QUARKUS_DATASOURCE_USERNAME
     value: postgres
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -60,7 +58,7 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 5432
+  port: 8080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -117,10 +115,10 @@ volumes: []
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: 
-  - mountPath: /var/lib/postgresql/data
-    name: postgres-cm0
-
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
 
 nodeSelector: {}
 
