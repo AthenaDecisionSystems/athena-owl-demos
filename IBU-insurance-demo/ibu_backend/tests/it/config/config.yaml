@@ -9,10 +9,10 @@ owl_best_action_ds_url: http://localhost:9060/DecisionService/rest/v1/ComplaintH
 owl_glossary_path: ./config/glossary.json
 owl_prompts_path: ./config/prompts.json
 owl_prompts_key_name: openai_insurance_with_tool
-owl_agent_vs_path: ./tests/it/chromadb
+owl_agent_vs_path: ./tests/data/chromadb
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_content_collection_name: ibu_insurance
-owl_agent_content_file_path: ./tests/it/file_content
+owl_agent_content_file_path: ./tests/data/file_content
 app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
 app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
 app_insurance_backend_url: http://localhost:8080/repository

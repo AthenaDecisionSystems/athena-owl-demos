@@ -1,7 +1,19 @@
-version: '3'
 services:
+  ibu-backend:
+    hostname: ibu-backend
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
+    container_name: ibu-backend
+    ports:
+      - 8002:8000
+    environment:
+      CONFIG_FILE: /app/config/config.yaml
+    volumes:
+      - ../src/config:/app/config
+      - ../../.env:/app/.env
+      - ./data/:/app/data
+      - ../src/ibu:/app/ibu
   insurance-data-mgr:
-    image: athena/ibu-insurance-data-mgr
+    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
     hostname: datamgr
     container_name: datamgr
     depends_on:
@@ -28,11 +40,12 @@ services:
     ports:
       - '5432:5432'
     volumes: 
-      - ./database:/var/lib/postgresql/data
+      - ./data/claimdb:/var/lib/postgresql/data
   decisionsvc:
     image: icr.io/cpopen/odm-k8s/odm:8.12
     hostname: decisionsvc
     container_name: decisionsvc
+    user: "1000:0"
     ports:
       - 9443:9443
       - 9060:9060
@@ -41,4 +54,3 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
-

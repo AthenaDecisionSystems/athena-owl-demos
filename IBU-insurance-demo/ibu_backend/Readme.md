@@ -1,10 +1,10 @@
 # IBU Insurance Demonstration OWL Backend
 
-This folder includes the specifics for the IBU Insurance demonstration with tools and a configuration to use the owl-agent-backend.
+This readme is deprecated, the new content is in [IBU-insurance-demo folder](../Readme.md)
 
-* 05/22 integrate owl-agent-backend
-* 06/06: integrate new document management into ibu_backend component
 
+
+## OLD notes to revisite or migrate in product doc
 
 [Optional] The glossary and the prompts may be initiated with the following command, under the `ibu_backend/bootstrap` folder. These files are committed in github so no need to be run. This is for future updates.
 
@@ -16,83 +16,13 @@ python ibu_setup.py
 This will create two json files under the config folder: `glossary.json` and `prompts.json`.
 
 
-## IBU Development practices
-
-The IBU insurance backend specific code is under `src/ibu`.
-
-Most of the agent development work is around integration with external databases, decision service, and so on, so there is a docker file for integration tests to start the external components like (ODM RES, Data Manager, Postgresql). If you do not have the docker desktop tool, you can use minikube and deploy those components.
-
-```sh
- docker-compose -f tests/data-backend-dc.yaml up -d
-```
-
-To start the backend in development mode, where code updates are propagated, run:
-
-```sh
-# under src
-./start_backend.sh
-```
-
-The backend uses [Fast API](https://fastapi.tiangolo.com/) which means you can access an OpenAPI (Swagger) UI to understand all the available endpoints:
-
-[http://localhost:8000/docs](http://localhost:8000/docs)
-
-
-* The swagger for the client and claim backend is at : [http://localhost:8080/q/swagger-ui](http://localhost:8080/q/swagger-ui).
-
-## Build
-
-Be sure to have a docker engine running to build the image.
-
-Use `docker build` to package the ibu-backend image.
-
-```sh
-# in ibu_backend folder
-./build/buildImage.sh
-```
-
-
-## Integration tests
-
-All the integration tests are in the `tests/it` folder. To run them use:
-
-```sh
-# all tests executed
-pytest -s tests/it/
-# run a specific test
-pytest -s tests/it/test_app_api.py # or other test file
-```
-
-The configuration file used by the tests is `tests/it/config/config.yaml`
 
 ---------------------------------------- STOPPED HERE -> OLD DOC -----------------------
 
 
-
-If you run with minikube as a docker engine, be sure to set the docker env:
-
-
-#### Running the more complete solution
-
-```sh
-export OPENAI_API_KEY=<YOUR_API_KEY>
-docker-compose up -d
-```
-
-* Data Manager for Claim and Client: [http://localhost:8080/](http://localhost:8080/)
-* Decision Service: [http://localhost:9060/](http://localhost:9060/)  user resAdmin
-* PgAdmin to manage postgresql: [http://localhost:5050/](http://localhost:5050/) user admin@admin.com, password: root and then the connection defined for a local server, name is postgres, user: postgres and password: p0stgrespwd
-* Front end for the demo:  [http://localhost:8501/](http://localhost:8501/)
-
-
 ### Run with Minikube
 
-If you are using [Minikube](https://minikube.sigs.k8s.io/docs/start/), be sure to have `kubectl` installed: `alias k="minikube kubectl"` and configure the docker engine, so it is possible to build the images:
-
-```sh
-eval  $(minikube docker-env)
-```
-
+\
 * Build the docker images with `buildAll.sh`, then make them referenced in minikube (not sure it is needed !)
 
 ```sh
@@ -100,12 +30,7 @@ minikube image load  athena/backend:latest
 minikube image load  athena/frontend:latest
 ```
 
-* Ensure kubectl works:
 
-```sh
-k version
-k get nodes
-```
 
 * Create a namespace for the app: `kubectl -f deployment/k8s/namespace.yaml`
 
@@ -119,11 +44,6 @@ kubectl describe secrets backend-secrets -n athena
 
 This secret is used in the deployment to load environment variables for the backend.
 
-* Get minikube IP address: 
-
-```sh
-export MINIKUB_IP=$(minikube ip)
-```
 
 * Deploy the backend
 
