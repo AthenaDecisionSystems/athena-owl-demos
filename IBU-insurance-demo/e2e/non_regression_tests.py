@@ -116,12 +116,26 @@ class TestHappyPathScenario(unittest.TestCase):
                   "chat_history": [],\
                   "agent_id": "' + AGENT_REF + '",  \
                   "user_id" : "remote_test", \
-                  "thread_id" : "1" \
+                  "thread_id" : "2" \
               }'
         print(data)
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
         print(f"\n@@@> {rep}")
-  
+
+    def test_10_another_query(self):
+        query="""
+        Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 
+        for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. 
+        Sonya finds this very disappointing. What would be the next best action?"""
+        data='{ "locale": "en",\
+                  "query": ' + query + '", \
+                  "chat_history": [],\
+                  "agent_id": "' + AGENT_REF + '",  \
+                  "user_id" : "remote_test", \
+                  "thread_id" : "3" \
+              }'
+        rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
+        print(f"\n@@@> {rep}")
 
 if __name__ == "__main__":
     print("################ Non Regression Tests ##############")

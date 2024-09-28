@@ -54,7 +54,18 @@ ibu_claim_status_by_user_name:
   tool_id: ibu_claim_status_by_user_name
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
-    "get the last status for the claim of an insured person giving her/his lastname and firstname."
+    "get the current insurance claim status of an insured person giving her/his lastname and firstname."
   tool_fct_name: get_claim_status_by_user_name  
   tags:
     - internal_tool
+
+insurance_corpus:
+  tool_id: rag_insurance_corpus
+  tool_name: "Use RAG on IBU corpus"
+  tool_description: |
+    "when asking information about insurance policy, used this tool to get tailored content"
+  tool_class_name: ibu.llm.tools.client_tools
+  tool_fct_name: search_corpus
+  tags:
+    - internal_tool
+    - rag

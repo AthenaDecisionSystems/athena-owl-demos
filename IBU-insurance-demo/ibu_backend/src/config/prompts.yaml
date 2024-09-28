@@ -83,15 +83,8 @@ openai_functions_prompt:
     text: |
       you are a helpful assistant using tools when needed by using {agent_scratchpad}
       keeping conversation history: {chat_history}
-      to answer the question: {input}openai_functions_prompt:
-  name: openai_functions_prompt
-  prompt_id: openai_functions_prompt
-  locales:
-  - locale: en
-    text: |
-      you are a helpful assistant using tools when needed by using {agent_scratchpad}
-      keeping conversation history: {chat_history}
       to answer the question: {input}
+  
       
 classify_query_prompt:
   prompt_id:  classify_query_prompt
@@ -110,7 +103,7 @@ ibu_rag_prompt:
   - locale: en
     text: >
       "You assist a customer service representative working in a call center in their work. Use the following pieces of retrieved context to answer the question. 
-      You have access to the specified tools when queries is about recent information, or about insurance claim or policies.
+      You have access to the specified tools when queries is about recent information, or about insurance claim or insurance policy.
       If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
       Question: {input} 
       Context: {context} 
