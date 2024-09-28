@@ -7,10 +7,11 @@ from typing import Optional, Any
 from importlib import import_module
 from langchain.tools import StructuredTool, Tool
 from langchain_community.tools.tavily_search import TavilySearchResults
-
+from langchain.tools.retriever import create_retriever_tool
 
 from ibu.app_settings import get_config
-from athena.llm.tools.tool_mgr import DefaultToolInstanceFactory, OwlToolEntity
+from athena.llm.tools.tool_mgr import DefaultToolInstanceFactory
+from athena.itg.store.content_mgr import get_content_mgr
 
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService, callDecisionServiceMock
 from ibu.itg.ds.ComplaintHandling_generated_model import Motive
@@ -54,7 +55,7 @@ def get_client_by_id(id: int) -> dict:
     return build_or_get_insurance_client_repo().get_client_json(id)
 
 def get_client_by_name(firstname: str, lastname: str) -> dict:
-    """get client information given his or her name"""
+    """get client information given his or her firstname and lastname"""
     return build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
 
 def get_claim_by_id(id: int) -> dict:
@@ -72,11 +73,15 @@ def define_next_best_action_with_decision(claim_id : int, client_motive: Motive,
 
 
 def get_claim_status_by_user_name(firstname: str, lastname: str):
+    """
+    """
     client = build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
     return client
 
 
-
+def search_corpus(query: str):
+    content_mgt= get_content_mgr()
+    return content_mgt.search(get_config().owl_agent_content_collection_name, query,3)
 
         
 class IbuInsuranceToolInstanceFactory(DefaultToolInstanceFactory):
@@ -85,5 +90,6 @@ class IbuInsuranceToolInstanceFactory(DefaultToolInstanceFactory):
         "get_client_by_name": get_client_by_name, 
         "get_claim_by_id" : get_claim_by_id, 
         "get_claim_status_by_user_name": get_claim_status_by_user_name,
-        "define_next_best_action_with_decision": define_next_best_action_with_decision
+        "define_next_best_action_with_decision": define_next_best_action_with_decision,
+        "search_corpus": search_corpus
         }

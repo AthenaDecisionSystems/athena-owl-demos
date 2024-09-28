@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "postgres.fullname" . }}
+  name: {{ include "owl-backend.fullname" . }}
   labels:
-    {{- include "postgres.labels" . | nindent 4 }}
+    {{- include "owl-backend.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "postgres.fullname" $ }}
+                name: {{ include "owl-backend.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

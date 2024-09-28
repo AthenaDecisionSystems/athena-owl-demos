@@ -1,8 +1,8 @@
 ibu_agent:
   agent_id: ibu_agent
   name: ibu_agent
-  description:  OpenAI based agent with tool to support the IBU insurance demo and variable model 
-  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  description:  OpenAI based agent with tools to support the IBU insurance demo and variable model 
+  runner_class_name: ibu.llm.agents.ibu_agent_lg.IBUInsuranceAgent
   modelName: gpt-4o-2024-08-06
   modelClassName: langchain_openai.ChatOpenAI
   prompt_ref: openai_insurance_with_tool
@@ -15,14 +15,9 @@ ibu_agent:
     - ibu_claim_by_id
     - ibu_claim_status_by_user_name
     - ibu_best_action
+    - tavily
+    - rag_insurance_corpus
 
-ibu_agent_limited:
-  agent_id: ibu_agent_limited
-  name: ibu_agent
-  description: OpenAI based agent with tool IBU loan app prompt without decision service
-  runner_class_name: ibu.llm.agents.ibu_agent_lg.IBUInsuranceAgent
-  prompt_ref: openai_insurance_with_tool
-  # hwchase17/react-chat-json 
 
 ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
@@ -35,9 +30,10 @@ ibu_classify_query_agent:
   temperature: 0
   top_k: 1
   top_p: 1
+  hidden_to_ui: true
 
-ibu_tool_rag_agent_limited:
-  agent_id: ibu_tool_rag_agent_limited
+ibu_information_agent:
+  agent_id: ibu_information_agent
   name: OpenAI IBU agent with RAG Limited
   description: OpenAI IBU agent with RAG and insurance tools without decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
@@ -47,27 +43,32 @@ ibu_tool_rag_agent_limited:
   temperature: 0
   top_k: 1
   top_p: 1
+  hidden_to_ui: true
   tools:
     - ibu_client_by_id
     - ibu_client_by_name
     - ibu_claim_by_id
     - ibu_claim_status_by_user_name
     - tavily
+    - rag_insurance_corpus
 
-ibu_tool_rag_ds_agent:
-  agent_id: ibu_tool_rag_ds_agent
+
+ibu_complaint_agent:
+  agent_id: ibu_complaint_agent
   name: RAG with Decision Agent
   description: OpenAI IBU agent with RAG and insurance tools with decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
   modelName: gpt-4o-2024-08-06
-  prompt_ref: ibu_rag_prompt
+  prompt_ref: openai_insurance_with_tool
   temperature: 0
   top_k: 1
   top_p: 1
+  hidden_to_ui: true
   tools:
-    - ibu_best_action
     - ibu_client_by_id
     - ibu_client_by_name
-    - ibu_claim_status_by_user_name
     - ibu_claim_by_id
+    - ibu_claim_status_by_user_name
+    - ibu_best_action
+

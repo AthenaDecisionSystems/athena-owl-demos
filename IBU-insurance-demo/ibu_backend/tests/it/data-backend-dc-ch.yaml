@@ -1,7 +1,7 @@
 version: '3'
 services:
   insurance-data-mgr:
-    image: jbcodeforce/ibu-insurance-data-mgr
+    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0
     hostname: datamgr
     container_name: datamgr
     depends_on:

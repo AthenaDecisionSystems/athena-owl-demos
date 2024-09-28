@@ -26,7 +26,7 @@ class TestTestToDebugStuff(unittest.TestCase):
     def test_calling_graph_agent(self):
         print("\n--- test_7_using_graph_agent_should_get_client_info to get client information from DB")
         query="What is the name of the client with an id 1?"
-        cc=self.define_conversation_control(query, "ibu_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)

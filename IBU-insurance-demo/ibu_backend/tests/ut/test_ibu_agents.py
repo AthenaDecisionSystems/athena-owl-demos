@@ -58,45 +58,52 @@ class Test_ibu_agent(unittest.TestCase):
         """When the branch is in the information node, generic query should get results from Tavily, but insurance should get claim by id"""
         print("\n--- test_3_information_agent to get general response from web search")
         query="What is the weather today in San Francisco?"
-        cc=self.define_conversation_control(query, "ibu_tool_rag_agent_limited")
+        # this agent with the prompt can use external tools
+        cc=self.define_conversation_control(query, "ibu_information_agent")
+        cc.thread_id="3"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        assert "I don't know" in rep.messages[0].content
+        assert "weather in San Francisco" in rep.messages[0].content
         
     def test_4_information_agent_on_insurance_client(self):
         """When the branch is in the information node, query about insurance domain should get claim by id, client by name..."""
         print("\n--- test_4_information_agent_on_insurance_client to get client information from DB")
         query="What is the name of the client with an id 2?"
-        cc=self.define_conversation_control(query, "ibu_tool_rag_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_information_agent")
+        cc.thread_id="4"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
         self.assertIn("Sonya Smith", rep.messages[0].content)
         
     def test_5_information_agent_on_insurance_claim(self):
-        """When the branch is in the information node, query about insurance domain should get claim by id, client by name..."""
-        print("\n--- test_35_information_agent_on_insurance_claim to get claim information from DB")
+        """query about insurance domain should get claim by id"""
+        print("\n--- test_5_information_agent_on_insurance_claim to get claim information from DB")
         query="What is the status of the claim with the id 2?"
-        cc=self.define_conversation_control(query, "ibu_tool_rag_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_information_agent")
+        cc.thread_id="5"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
         self.assertIn("claim with ID 2 is", rep.messages[0].content)
-
+        self.assertIn("IN_PROCESS_VERIFIED", rep.messages[0].content )
     
     def test_6_information_from_rag_collection(self):
-        """When the branch is in the information node, query about insurance domain should get claim by id, client by name..."""
+        """When the branch is in the information node, query may use rag."""
         print("\n--- test_6_information_from_rag_collection to get business policy definition")
         query="what is insurance policy 41?"
-        cc=self.define_conversation_control(query, "ibu_tool_rag_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_information_agent")
+        cc.thread_id="6"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
 
+
     def test_7_using_graph_agent_should_get_client_info(self):
         print("\n--- test_7_using_graph_agent_should_get_client_info to get client information from DB")
         query="What is the name of the client with an id 1?"
-        cc=self.define_conversation_control(query, "ibu_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_agent")
+        cc.thread_id="7"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
@@ -105,7 +112,8 @@ class Test_ibu_agent(unittest.TestCase):
     def test_8_using_graph_agent_should_get_claim_info(self):
         print("\n--- test_8_using_graph_agent_should_get_claim_info to get client information from DB")
         query="what is the claim with id 2?"
-        cc=self.define_conversation_control(query, "ibu_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_agent")
+        cc.thread_id="8"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertIn("water damage", rep.messages[0].content)
@@ -113,7 +121,8 @@ class Test_ibu_agent(unittest.TestCase):
     def test_9_using_graph_agent_should_get_policy_info_from_user_name(self):
         print("\n--- test_9_using_graph_agent_should_get_policy_info_from_user_name to get client information from DB")
         query="my name is Sonya Smith, I would like to get a status of my insurance policy"  
-        cc=self.define_conversation_control(query, "ibu_agent_limited")
+        cc=self.define_conversation_control(query, "ibu_agent")
+        cc.thread_id="9"
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         self.assertIn("insurance policy", rep.messages[0].content)

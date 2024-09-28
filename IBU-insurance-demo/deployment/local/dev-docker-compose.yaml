@@ -1,13 +1,15 @@
 services:
-  owl-backend:
-    hostname: owl-backend
+  ibu-backend:
+    hostname: ibu-backend
     image: athenadecisionsystems/athena-owl-backend:1.0.0
-    container_name: owl-backend
+    container_name: ibu-backend
     ports:
-      - 8000:8000
+      - 8002:8000
     environment:
       CONFIG_FILE: /app/config/config.yaml
-      OPENAI_API_KEY: $OPENAI_API_KEY
+      #OPENAI_API_KEY: $OPENAI_API_KEY
+    env_file:
+      - .env
     volumes:
       - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env
@@ -47,6 +49,7 @@ services:
     image: icr.io/cpopen/odm-k8s/odm:8.12
     hostname: decisionsvc
     container_name: decisionsvc
+    user: "1000:0"
     ports:
       - 9443:9443
       - 9060:9060
@@ -55,25 +58,3 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
-  chroma-db:
-    image: ghcr.io/chroma-core/chroma:latest
-    hostname: chroma-db
-    container_name: chroma-db
-    volumes:
-      - ./chromadb:/.chroma/index
-    ports:
-      - 8005:8000
-  pgadmin:
-    image: dpage/pgadmin4
-    hostname: pgagmin
-    container_name: pgadmin
-    restart: always
-    profiles: 
-      - dev
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=user@domain.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
-    ports:
-      - "5050:80"
-    volumes: 
-      - ./data_files:/tmp/data_files

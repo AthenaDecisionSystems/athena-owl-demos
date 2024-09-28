@@ -10,18 +10,18 @@ import langchain
 from langchain_core.prompts import BasePromptTemplate
 from langchain_core.messages import AnyMessage, ToolMessage, HumanMessage, AIMessage
 from langchain_core.runnables.config import RunnableConfig
+
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.pregel.types import StateSnapshot
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.prebuilt import ToolNode, tools_condition
 
 from athena.llm.agents.agent_mgr import OwlAgentDefaultRunner, OwlAgent, get_agent_manager
-from ibu.app_settings import get_config
 from athena.itg.store.content_mgr import get_content_mgr
 from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.routers.dto_models import ConversationControl, ResponseControl
-from langgraph.prebuilt import ToolNode, tools_condition
+from ibu.app_settings import get_config
 
 """
 An assistance to support the contact center agents from IBU insurance for the complaint management process.
@@ -54,11 +54,11 @@ class AgentState(TypedDict):
 def define_classifier_model():
     return get_agent_manager().build_agent_runner("ibu_classify_query_agent","en")
 
-def define_ibu_tool_rag_agent_limited():
-    return get_agent_manager().build_agent_runner("ibu_tool_rag_agent_limited","en")
+def define_information_model():
+    return get_agent_manager().build_agent_runner("ibu_information_agent","en")
 
-def define_ibu_tool_rag_agent():
-    return get_agent_manager().build_agent_runner("ibu_tool_rag_ds_agent","en")
+def define_complaint_agent():
+    return get_agent_manager().build_agent_runner("ibu_complaint_agent","en")
 
     
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
@@ -66,9 +66,9 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
     def __init__(self, agentEntity: OwlAgent, prompt: Optional[BasePromptTemplate], tool_instances: Optional[list[OwlToolEntity]]):
         self.agent_id = agentEntity.agent_id
         self.classifier_model= define_classifier_model()
-        self.information_q_model = define_ibu_tool_rag_agent_limited() # TODO could comes for subagent list
-        self.complaint_model = define_ibu_tool_rag_agent()
-        #tool_node=BasicToolNode(tool_instances)
+        self.information_q_model = define_information_model() # TODO could comes for subagent list
+        self.complaint_model = define_complaint_agent()
+        self.tool_node=ToolNode(tool_instances)
         self.use_vector_store = False
         self.build_the_graph()
        
@@ -86,6 +86,12 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         graph_builder.add_node("process_complaint", self.process_complaint)
         graph_builder.add_edge("gather_information", END)
         graph_builder.add_edge("process_complaint", END)
+        graph_builder.add_node("tools", self.tool_node)
+        graph_builder.add_conditional_edges(
+            "process_complaint",
+            tools_condition
+        )
+        graph_builder.add_edge("tools", "process_complaint")
         self.graph = graph_builder.compile(checkpointer=MemorySaver())
 
     def process_information_query(self, state):
@@ -113,10 +119,10 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                                 "chat_history": messages}, 
                                                 self.config["configurable"]["thread_id"])
         if "information" in message.lower():
-            print("---ROUTE QUESTION TO INFORMATION---")
+            LOGGER.debug("---ROUTE QUESTION TO INFORMATION---")
             return "information"
         elif "complaint"  in message.lower():
-            print("---ROUTE QUESTION TO Complaint---")
+            LOGGER.debug("---ROUTE QUESTION TO Complaint---")
             return "complaint"
         # TODO Decide what to do if none of this 
     
@@ -128,11 +134,11 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         else:
             state["documents"] = []
         documents = state["documents"]
-        message = self.complaint_model.invoke({"input": question,
+        message = self.complaint_model.invoke({"input": [question],
                                                "context": documents, 
                                                 "chat_history": messages},
                                                 self.config["configurable"]["thread_id"])
-        return {'messages': [AIMessage(content=message["output"])]}
+        return {'messages': [message]}
     
     # ==================== overrides =============================
     def invoke(self, request, thread_id: Optional[str], **kwargs) -> dict[str, Any] | Any:
