@@ -39,6 +39,13 @@ services:
         max-file: "3"
     ports:
       - '5432:5432'
+    healthcheck:
+      test: pg_isready -U postgres
+      start_period: 10s
+      timeout: 1s
+      retries: 5
+      interval: 60s
+      start_interval: 1s
     volumes: 
       - ./data/claimdb:/var/lib/postgresql/data
   decisionsvc:
@@ -54,3 +61,17 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgagmin
+    container_name: pgadmin
+    restart: always
+    profiles: 
+      - dev
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    ports:
+      - "5050:80"
+    volumes: 
+      - ./data_files:/tmp/data_files

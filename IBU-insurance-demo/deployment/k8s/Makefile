@@ -8,7 +8,7 @@ IBU_DB ?= ibu-db-postgresql
 # -------------------------------------------------------
 # Entry points
 # -------------------------------------------------------
-prepare: create_ns create_secret_from_env
+prepare: create_ns create_secret_from_env deploy_postgresql deploy_data_mgr
 
 all: prepare
 
@@ -24,6 +24,8 @@ ensure_ns = \
 create_ns:
 	$(call ensure_ns, $(DEV_NC))
 
+create_secret_from_env:
+	@kubectl create secret generic env --from-file=../../.env -n $(DEV_NS)
 
 deploy_postgresql:
 	@helm install $(IBU_DB) oci://registry-1.docker.io/bitnamicharts/postgresql -n $(DEV_NS)

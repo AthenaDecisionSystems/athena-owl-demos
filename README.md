@@ -10,7 +10,7 @@ See [the readme](./IBU-insurance-demo/Readme.md) about this insurance domain spe
 
 ## Creating your own demonstration
 
-
+[See this chapter in the product documentation]()
 --- 
 
 ## Contribute
@@ -24,3 +24,5 @@ The [contributing guidelines are in this note.](./CONTRIBUTING.md)
 
 * [01/2024] Creation
 * [05/2024] Integration of LangChain
+* [July and August] Better integration of the owl-core framework. IBU agent for the insurance demo. Simplications
+* [09/2024] Adding deployments, more tests, and removing dead code in IBU insurance demo.

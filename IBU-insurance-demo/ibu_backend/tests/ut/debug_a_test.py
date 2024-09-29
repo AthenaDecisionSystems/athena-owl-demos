@@ -10,7 +10,7 @@ module_path = "./src"
 sys.path.append(os.path.abspath(module_path))
 
 from athena.routers.dto_models import ConversationControl, ResponseControl
-from athena.llm.conversations.conversation_mgr import get_or_start_conversation
+from athena.llm.conversations.conversation_mgr import get_or_start_conversation, get_conversation_trace_given_thread_id
 
 class TestTestToDebugStuff(unittest.TestCase):
 
@@ -31,7 +31,8 @@ class TestTestToDebugStuff(unittest.TestCase):
         print(f"\n\t--> {rep}")
         self.assertNotEqual("I don't know", rep.messages[0].content)
         self.assertIn("David Martin", rep.messages[0].content)
-
+        for m in get_conversation_trace_given_thread_id("1"):
+            print(m)
 
 if __name__ == '__main__':
     unittest.main()

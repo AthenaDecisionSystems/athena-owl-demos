@@ -92,7 +92,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             tools_condition
         )
         graph_builder.add_edge("tools", "process_complaint")
-        self.graph = graph_builder.compile(checkpointer=MemorySaver())
+        self.checkpointer=MemorySaver()
+        self.graph = graph_builder.compile(checkpointer=self.checkpointer)
 
     def process_information_query(self, state):
         question = state["input"]
@@ -159,3 +160,4 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         agent_resp= self.invoke(request, controller.thread_id, vector_store = controller.callWithVectorStore)   # AIMessage
         resp = self.build_response(controller,agent_resp)
         return resp
+    

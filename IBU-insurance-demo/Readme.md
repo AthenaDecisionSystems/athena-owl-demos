@@ -46,9 +46,9 @@ python non_regression_tests.py
 
 * Get the Kubeconfig with cluster reference and secrets from your administrator and set it as context in the $USER_HOME/.kube/config file.
 
-The Kubernetes environment has a namespace call **ibu** to deploy the demonstrations. For the IBU insurance we will deploy the data manager microservice to access insurance data, and the custom ibu_backend.
+The Kubernetes environment has a namespace called **ibu** to deploy the demonstrations. For the IBU insurance, we need to deploy the data manager microservice to access insurance data, a postgrsql srever, the ODM decision service, the frontend and the custom ibu_backend.
 
-* Use make CLI with the Makefile under deployment folder, the following targets can  be used
+* Use `make` CLI with the Makefile under the deployment folder, the following targets can  be used
 
     * `make set_k8s_context`
     * `make deploy_postgresql` 
