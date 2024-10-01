@@ -25,15 +25,15 @@ services:
       - 3000:3000
     environment:
       - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8002/api/v1/
-      - NEXT_PUBLIC_DEMO_TEXT="My name is Sonya Smith, I have problem with my claim 2 for my water damage, my carpet is expensive, I m surprise of the current coverage, very disappointing?"
-      
+      - NEXT_PUBLIC_DEMO_TEXT=Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?
+
   insurance-data-mgr:
-    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
+    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0
     hostname: datamgr
     container_name: datamgr
     depends_on:
       - postgres
-    ports: 
+    ports:
       - 8080:8080
     environment:
       - QUARKUS_DATASOURCE_USERNAME=postgres
@@ -54,7 +54,7 @@ services:
         max-file: "3"
     ports:
       - '5432:5432'
-    volumes: 
+    volumes:
       - ./data/claimdb:/var/lib/postgresql/data
   decisionsvc:
     image: icr.io/cpopen/odm-k8s/odm:8.12

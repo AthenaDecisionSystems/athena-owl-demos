@@ -19,6 +19,18 @@ ibu_agent:
     - rag_insurance_corpus
 
 
+watson_llama_3_70_agent:
+  agent_id: watson_llama_3_70_agent
+  name: "WatsonX.ai Llam 3 70b Instruct Agent"
+  description: WatsonX ai with Llama 3 at 70b parameters
+  runner_class_name: athena.llm.agents.adaptive_rag_graph.SequenceOfActionAgent
+  modelName: meta-llama/llama-3-70b-instruct
+  modelClassName: langchain_ibm.WatsonxLLM
+  prompt_ref: llama_base_prompt
+  temperature: 0
+  top_k: 20
+  top_p: 1
+
 ibu_classify_query_agent:
   agent_id: ibu_classify_query_agent
   name: IBU Classify Query Agent
