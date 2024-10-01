@@ -1,7 +1,8 @@
 services:
   ibu-backend:
     hostname: ibu-backend
-    image: athenadecisionsystems/ibu-insurance:latest
+    image: athenadecisionsystems/ibu-insurance:1.0.0
+    pull_policy: always
     container_name: ibu-backend
     ports:
       - 8002:8000
@@ -18,13 +19,13 @@ services:
   owl-frontend:
     hostname: owl-frontend
     image: athenadecisionsystems/athena-owl-frontend:1.0.0
+    pull_policy: always
     container_name: owl-frontend
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_OWL_AGENT_NAME="IBU Insurance Management Agent"
       - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8002/api/v1/
-      - REACT_APP_DEMO_TEXT="My name is Sonya Smith, I have problem with my claim 2 for my water damage, my carpet is expensive, I m surprise of the current coverage, very disappointing?"
+      - NEXT_PUBLIC_DEMO_TEXT="My name is Sonya Smith, I have problem with my claim 2 for my water damage, my carpet is expensive, I m surprise of the current coverage, very disappointing?"
       
   insurance-data-mgr:
     image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0 
