@@ -5,11 +5,13 @@ services:
     container_name: ibu-backend
     ports:
       - 8002:8000
+    env_file:
+      - .env
     environment:
       CONFIG_FILE: /app/config/config.yaml
     volumes:
       - ../src/config:/app/config
-      - ../../.env:/app/.env
+      - ../../../.env:/app/.env
       - ./data/:/app/data
       - ../src/ibu:/app/ibu
   insurance-data-mgr:

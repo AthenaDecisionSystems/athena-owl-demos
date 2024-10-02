@@ -10,15 +10,15 @@ from ibu.itg.ds.insurance_client_repo_datamgr import InsuranceClientFromDataMgr
 from ibu.itg.ds.insurance_claim_repo_datamgr import InsuranceClaimFromDataMgr
 from ibu.itg.ds.insurance_claim_repo import InsuranceClaimRepositoryInterface
 from ibu.itg.ds.insurance_client_repo import InsuranceClientRepositoryInterface
-from ibu.itg.ds.ComplaintHandling_generated_model import *
+from ibu.itg.ds.ComplaintHandling_generated_model import Claim
 from athena.app_settings import get_config
 class TestRemoteDataManager(unittest.TestCase):
     
     @classmethod
     def setUpClass(self):
 
-        self.client_repo: InsuranceClientRepositoryInterface = InsuranceClientFromDataMgr()
-        self.claim_repo: InsuranceClaimRepositoryInterface = InsuranceClaimFromDataMgr()
+        self.client_repo: InsuranceClientRepositoryInterface = InsuranceClientFromDataMgr(None)
+        self.claim_repo: InsuranceClaimRepositoryInterface = InsuranceClaimFromDataMgr(None)
 
     def test_client_data_remote_access(self):
         """
@@ -43,8 +43,8 @@ class TestRemoteDataManager(unittest.TestCase):
         self.assertEqual("IN_PROCESS_VERIFIED",claim_str["status"])
 
     def test_client_by_name_remote_access(self):
-        client_str=self.client_repo.get_client_by_name_json("Martin")
-        self.assertEqual("Martin",client_str["lastName"])
+        client_str=self.client_repo.get_client_by_name_json("Zoe", "Duran")
+        self.assertEqual("Duran",client_str["lastName"])
 
 
 

@@ -24,15 +24,13 @@ class TestTestToDebugStuff(unittest.TestCase):
         return cc
 
     def test_calling_graph_agent(self):
-        print("\n--- test_7_using_graph_agent_should_get_client_info to get client information from DB")
-        query="What is the name of the client with an id 1?"
+        print("\n--- test_10 get_claim_status as a complain")
+        query="My name is Sonya Smith, I want to know the status of my current claim?"
         cc=self.define_conversation_control(query, "ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        self.assertNotEqual("I don't know", rep.messages[0].content)
-        self.assertIn("David Martin", rep.messages[0].content)
-        for m in get_conversation_trace_given_thread_id("1"):
-            print(m)
+        assert rep.messages[0].content
+        assert "Step" in rep.messages[0].content
 
 if __name__ == '__main__':
     unittest.main()

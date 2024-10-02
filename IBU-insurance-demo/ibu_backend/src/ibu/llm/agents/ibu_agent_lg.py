@@ -99,7 +99,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         question = state["input"]
         messages = state['messages']
         #uestion= messages[-1]
-        if self.use_vector_store:
+        if self.use_vector_store and self.rag_retriever:
             state["documents"] = self.rag_retriever.invoke(question)
         else:
             state["documents"] = []
@@ -109,7 +109,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                                    "context": documents,    
                                                    "chat_history": messages},
                                                     self.config["configurable"]["thread_id"]) # dict
-        return {'messages': [AIMessage(content=message["output"])], "input" : message["input"]}
+        return {'messages': [AIMessage(content=message["output"])]}
     
     def process_classify_query(self, state: AgentState):
         messages = state['messages']
@@ -130,7 +130,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
     def process_complaint(self, state):  
         messages = state['messages']
         question = state["input"]
-        if self.use_vector_store:
+        if self.use_vector_store and self.rag_retriever:
             state["documents"] = self.rag_retriever.invoke(question)
         else:
             state["documents"] = []
@@ -139,6 +139,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                                "context": documents, 
                                                 "chat_history": messages},
                                                 self.config["configurable"]["thread_id"])
+        if message.get("output"):
+            return {'messages': [AIMessage(content=message["output"])]}
         return {'messages': [message]}
     
     # ==================== overrides =============================
@@ -146,8 +148,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         if kwargs["vector_store"]:
             self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-        m=HumanMessage(content=request["input"])
-        resp= self.graph.invoke({"messages": [m], "input": m}, self.config)
+        user_input=HumanMessage(content=request["input"])
+        resp= self.graph.invoke({"messages": [user_input], "input": user_input}, self.config)
         msg=resp["messages"][-1].content
         return msg
     

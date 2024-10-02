@@ -89,11 +89,11 @@ class TestHappyPathScenario(unittest.TestCase):
         fname="../scenarios/IBU_policies_2.md"
         f = open(fname, "rb")
         files = {'myFile' :  f }
-        rep = requests.post(IBU_BASE_URL + "/a/documents?name=IBU_policies-complaint&description=The%20rules%20about%20claim%20complaint%20management&type=md", files=files, timeout = 10).content.decode()
+        rep = requests.post(IBU_BASE_URL + "/a/documents?name=IBU_policies-complaint&description=The%20rules%20about%20claim%20complaint%20management&type=md&collection_name=ibutest", files=files, timeout = 10).content.decode()
         print(f"\n@@@> {rep}")
         assert "document IBU_policies-complaint processed" in rep
         print("Validate there is some similarity search working")
-        rep = requests.get(IBU_BASE_URL + "/a/documents/policy%2041/3")
+        rep = requests.get(IBU_BASE_URL + "/a/documents/ibutest/policy%2041/3")
         print(f"\n@@@> {rep}")
     
     def test_8_perform_general_knowledge_query_legacy(self):
@@ -115,8 +115,7 @@ class TestHappyPathScenario(unittest.TestCase):
                   "query": "One of our client, Sonya Smith, has a problem with her claim with the id=2 for water damage, her carpet is expensive, she is surprise by the current coverage, very disappointed?",\
                   "chat_history": [],\
                   "agent_id": "' + AGENT_REF + '",  \
-                  "user_id" : "remote_test", \
-                  "thread_id" : "2" \
+                  "user_id" : "remote_test"\
               }'
         print(data)
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()

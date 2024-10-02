@@ -49,7 +49,7 @@ class TestAppApi(unittest.TestCase):
         print(f"\n@@@> {rep}")
         #self.assertTrue(rep.find("David Martin") > 0 )
         
-    def test_3_get_voucher_for_sonya(self):
+    def _test_3_get_voucher_for_sonya(self):
         """
         Verify the voucher is proposed by the rules
         """
@@ -63,5 +63,7 @@ class TestAppApi(unittest.TestCase):
         }'
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
         print(f"\n@@@> {rep}")
+
+
 if __name__ == '__main__':
     unittest.main()

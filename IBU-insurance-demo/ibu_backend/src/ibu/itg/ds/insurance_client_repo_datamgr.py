@@ -4,8 +4,9 @@ Copyright 2024 Athena Decision Systems
 """
 import json, logging
 import requests
+from typing import Optional
 from fastapi.encoders import jsonable_encoder
-from athena.app_settings import get_config
+from ibu.app_settings import get_config, InsuranceAppSettings
 from ibu.itg.ds.insurance_client_repo import InsuranceClientRepositoryInterface
 from ibu.itg.ds.ComplaintHandling_generated_model import *
 LOGGER = logging.getLogger(__name__)
@@ -13,8 +14,11 @@ LOGGER = logging.getLogger(__name__)
 
 class InsuranceClientFromDataMgr(InsuranceClientRepositoryInterface):
 
-    def __init__(self):
-        self.data_mgr_url= get_config().app_insurance_backend_url
+    def __init__(self, config: Optional[InsuranceAppSettings]):
+        if config:
+            self.data_mgr_url= config.app_insurance_backend_url
+        else:    
+            self.data_mgr_url= get_config().app_insurance_backend_url
         
 
     def get_client(self, id: int) -> Client:

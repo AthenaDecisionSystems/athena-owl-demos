@@ -127,5 +127,15 @@ class Test_ibu_agent(unittest.TestCase):
         print(f"\n\t--> {rep}")
         self.assertIn("insurance policy", rep.messages[0].content)
 
+    def test_10_get_claim_status_for_sonya(self):
+        print("\n--- test_10 get_claim_status as a complain")
+        query="My name is Sonya Smith, I want to know the status of my current claim?"
+        cc=self.define_conversation_control(query, "ibu_agent")
+        cc.thread_id="10"
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
+        assert rep.messages[0].content
+        assert "Step" in rep.messages[0].content
+
 if __name__ == '__main__':
     unittest.main()

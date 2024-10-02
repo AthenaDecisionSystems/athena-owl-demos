@@ -14,7 +14,7 @@ from athena.llm.tools.tool_mgr import DefaultToolInstanceFactory
 from athena.itg.store.content_mgr import get_content_mgr
 
 from ibu.itg.decisions.next_best_action_ds_client import callDecisionService, callDecisionServiceMock
-from ibu.itg.ds.ComplaintHandling_generated_model import Motive
+from ibu.itg.ds.ComplaintHandling_generated_model import Motive, Status, Claim
 
 
 LOGGER = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def build_or_get_insurance_client_repo():
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
         LOGGER.debug(f"---> klass {klass}")
-        _insurance_client= klass()
+        _insurance_client= klass(config)
         LOGGER.debug("Created repository for client")
     return _insurance_client
 
@@ -44,7 +44,7 @@ def build_or_get_instantiate_claim_repo():
         module_path, class_name = config.app_insurance_claim_repository.rsplit('.',1)
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
-        _insurance_claim= klass()
+        _insurance_claim= klass(config)
         LOGGER.debug("Created repository for claim")
     return _insurance_claim
 
@@ -76,7 +76,15 @@ def get_claim_status_by_user_name(firstname: str, lastname: str):
     """
     """
     client = build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
-    return client
+    claims = build_or_get_instantiate_claim_repo().get_all_claims()
+    for claim in claims:
+        if type(claim) == dict:
+            aClaim=Claim.model_validate(claim)
+        else:
+            aClaim=claim
+        if aClaim.policy and aClaim.policy.client and aClaim.policy.client.id == client.id:
+            return aClaim.status
+    return None
 
 
 def search_corpus(query: str):
