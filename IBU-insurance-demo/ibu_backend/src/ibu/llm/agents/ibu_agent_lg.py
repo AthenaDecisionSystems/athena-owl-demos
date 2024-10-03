@@ -70,6 +70,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         self.complaint_model = define_complaint_agent()
         self.tool_node=ToolNode(tool_instances)
         self.use_vector_store = False
+        self.rag_retriever= get_content_mgr().get_retriever()
         self.build_the_graph()
        
 

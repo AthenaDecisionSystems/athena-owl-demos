@@ -137,5 +137,15 @@ class Test_ibu_agent(unittest.TestCase):
         assert rep.messages[0].content
         assert "Step" in rep.messages[0].content
 
+    def test_11_get_sonya_query(self):
+        print("\n--- test_11_get_sonya_query")
+        query="Hi IBU, I am on the phone with one of my very impor tant customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What should I answer? What is the next best action?"
+        cc=self.define_conversation_control(query, "ibu_agent")
+        cc.thread_id="11"
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
+        assert rep.messages[0].content
+
+        
 if __name__ == '__main__':
     unittest.main()
