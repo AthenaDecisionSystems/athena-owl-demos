@@ -10,6 +10,9 @@ openai_chain_agent:
   temperature: 0
   top_k: 1
   top_p: 1
+  tools:
+    - tavily
+    - get_client_by_email_id
 
 openai_tool_chain:
   agent_id: openai_tool_chain
@@ -98,19 +101,3 @@ watson_llama_3_70_agent:
   temperature: 0.1
   top_k: 20
   top_p: 1
-
-
-fake_agent:
-  agent_id: fake_agent
-  name: Fake Agent
-  description: Fake agent for testing 
-  runner_class_name: athena.llm.agents.fake_agent.FakeAgent
-  modelName: not_needed
-  prompt_ref: default_prompt
-  temperature: 0
-  top_k: 1
-  top_p: 1
-
-
-
-

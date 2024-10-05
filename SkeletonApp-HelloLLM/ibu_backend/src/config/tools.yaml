@@ -6,11 +6,11 @@ tavily:
   tags:
     - websearch
 
-query_crm:
-  tool_id: query_crm
-  tool_class_name: athena.llm.tools.demo_tools
-  tool_description: "Call the customer relationship management (CRM) to get customer data."
-  tool_fct_name: query_crm_backend
-  tool_arg_schema_class: CrmArgument
+get_client_by_email_id:
+  tool_id: get_client_by_email_id
+  tool_name: "Get client data by email id"
+  tool_class_name: 'ibu.llm.tools.client_tools'
+  tool_description: 'Get client data given its unique email id'
+  tool_fct_name: get_client_by_email_id
   tags:
-    - internal_tool
+    - internal_tool    
