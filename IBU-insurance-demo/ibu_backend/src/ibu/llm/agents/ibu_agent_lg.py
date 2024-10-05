@@ -33,14 +33,15 @@ for tool calling and then let one of the Tool node performing the function execu
 Use memory to keep state of the conversation
 """  
 
-LOGGER = logging.getLogger(__name__)
+
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
-
+LOGGER = logging.getLogger(__name__)
 if get_config().logging_level == "DEBUG":
     langchain.debug=True
+    LOGGER.setLevel(logging.DEBUG)
 
 class AgentState(TypedDict):
     """
@@ -149,7 +150,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         if kwargs["vector_store"]:
             self.use_vector_store = True
         self.config: RunnableConfig = {"configurable": {"thread_id": thread_id}}
-        user_input=HumanMessage(content=request["input"])
+        user_input=HumanMessage(content=request)
         resp= self.graph.invoke({"messages": [user_input], "input": user_input}, self.config)
         msg=resp["messages"][-1].content
         return msg
@@ -158,9 +159,12 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         return self.graph.get_state(self.config)
     
     def send_conversation(self, controller: ConversationControl) -> ResponseControl | Any:
-         # overwrite the default. 
-        request = { "input": controller.query }
-        agent_resp= self.invoke(request, controller.thread_id, vector_store = controller.callWithVectorStore)   # AIMessage
+        """
+        Override the default as the history is kept in the graph state
+        and we need to take into account the tools needed dynamically
+        There is no need to process closed questions too
+        """ 
+        agent_resp= self.invoke(controller.query, controller.thread_id, vector_store = controller.callWithVectorStore)   # AIMessage
         resp = self.build_response(controller,agent_resp)
         return resp
     

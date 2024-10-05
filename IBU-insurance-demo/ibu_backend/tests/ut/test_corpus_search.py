@@ -27,7 +27,7 @@ class Test_ibu_agent_rag(unittest.TestCase):
     """
     Validate the  rag tool with  IBU insurance agent
     """
-    def define_conversation_control(self,query, aid: str = "ibu_agent"):
+    def define_conversation_control_for_test(self,query, aid: str = "ibu_agent"):
         cc = ConversationControl()
         cc.agent_id=aid
         cc.user_id="unit_test"
@@ -37,6 +37,9 @@ class Test_ibu_agent_rag(unittest.TestCase):
         return cc
     
     def upload_corpus(self):
+        """
+        Upload a document to be able to query on, using the collection defined in CONFIG_FILE
+        """
         service = get_content_mgr()
         fd=FileDescription()
         fd.name="Claims-complaint-rules"
@@ -46,13 +49,13 @@ class Test_ibu_agent_rag(unittest.TestCase):
         fd.collection_name=get_config().owl_agent_content_collection_name
         rep=service.process_doc(fd,None)
     
-    def test_1_search_inusrance_corpus(self):
-        print("\n--- test_1_search_inusrance_corpus")
+    def test_1_search_insurance_corpus(self):
+        print("\n--- test_1_search_insurance_corpus")
         print("\n -1- upload doc in collection")
         self.upload_corpus()
         query="what coverage is in the IBU insurance policy for water damage?"
         print("\n -2- query {query} using the agent and rag tool\n\n")
-        cc=self.define_conversation_control(query)
+        cc=self.define_conversation_control_for_test(query,"ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         assert "limited to 45% of the repair cost" in rep.messages[0].content.lower()

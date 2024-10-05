@@ -1,7 +1,7 @@
 services:
   ibu-backend:
     hostname: ibu-backend
-    image: athenadecisionsystems/athena-owl-backend:1.0.0
+    image: athenadecisionsystems/athena-owl-backend:latest
     container_name: ibu-backend
     ports:
       - 8002:8000
@@ -63,17 +63,4 @@ services:
       - LICENSE=accept
     volumes:
       - ../../decisions/persistence:/config/dbdata/
-  pgadmin:
-    image: dpage/pgadmin4
-    hostname: pgagmin
-    container_name: pgadmin
-    restart: always
-    profiles: 
-      - dev
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=user@domain.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
-    ports:
-      - "5050:80"
-    volumes: 
-      - ./data_files:/tmp/data_files
+

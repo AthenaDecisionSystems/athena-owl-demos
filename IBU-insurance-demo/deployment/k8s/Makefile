@@ -45,16 +45,30 @@ deploy_ibu_backend:
 upgrade_ibu_backend:
 	@helm upgrade $(IBU_BACKEND) $(IBU_BACKEND)  -n $(DEV_NS)
 
-deploy_decision_svc:
-	@helm install -name decision-svc decision-svc -n $(DEV_NS)
+deploy_odm_dev:
+	@helm install ibu-odm-dev --set license=accept --set usersPassword=iburesAdmin ibm-helm/ibm-odm-dev -n $(DEV_NS)
 
+info_odm_dev:
+	@helm status ibu-odm-dev
+	@helm get values ibu-odm-dev
+	@helm get hooks ibu-odm-dev
+
+where_is_odm:
+	@NODE_PORT=$$(kubectl get --namespace ibu -o jsonpath="{.spec.ports[0].nodePort}" services ibu-odm-dev-ibm-odm-dev); \
+ 	NODE_IP=$(kubectl get nodes --namespace ibu -o jsonpath="{.items[0].status.addresses[0].address}"); \
+	echo http://$$NODE_IP:$$NODE_PORT/res
+
+list_odm_releases:
+	@helm repo list
+	@helm repo update
+	@helm search repo ibm-odm-prod -l
 
 
 clean:
 	@helm delete $(IBU_DATAMGR)
 	@helm delete $(IBU_DB)
 	@helm delete $(IBU_BACKEND)
-	@helm delete decision-svc 
+	@helm delete ibu-odm-dev
 
 set_k8s_context:
 	@kubectl config  --kubeconfig=$HOME/.kube/config  use-context athena-demo

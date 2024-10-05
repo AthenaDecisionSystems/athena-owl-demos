@@ -1,4 +1,4 @@
-logging_level: DEBUG
+logging_level: INFO
 version: 0.0.7
 owl_env_path: ../.env
 

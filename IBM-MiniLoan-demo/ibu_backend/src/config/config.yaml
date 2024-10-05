@@ -19,7 +19,7 @@ owl_prompts_key_name: defaut_prompt
 owl_agent_content_vstore_url: http://localhost:8005
 owl_agent_content_collection_name: ibu_loan
 owl_agent_content_file_path: /app/file_content
-owl_agent_vs_path: /app/chromadb
+owl_agent_vs_path: /app/vs_db
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_llm_history_length: 5
 owl_agent_decision_service_fct_name: ibu.itg.decisions.next_best_action_ds_client.callDecisionService

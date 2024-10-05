@@ -15,7 +15,7 @@ services:
       - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
-      - ./data/chromadb:/app/chromadb
+      - ./data/vs_db:/app/vs_db
       - ../../ibu_backend/src/ibu:/app/ibu
   owl-frontend:
     hostname: owl-frontend
