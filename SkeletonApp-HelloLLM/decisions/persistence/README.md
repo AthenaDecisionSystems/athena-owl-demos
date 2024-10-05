@@ -1,0 +1,1 @@
+This directory will contain the IBM Operional Decision Manager (ODM) databases for the Rule Execution Server (RES) and the Decision Console (DC)
