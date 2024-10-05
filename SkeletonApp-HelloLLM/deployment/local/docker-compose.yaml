@@ -1,0 +1,44 @@
+services:
+  # THE BACKEND
+  ibu-backend:
+    hostname: ibu-backend
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
+    #pull_policy: always
+    container_name: ibu-backend
+    ports:
+      - 8002:8000
+    environment:
+      CONFIG_FILE: /app/config/config.yaml
+    env_file:
+      - ../../.env                                # path to the file containing the API keys of your various providers
+    volumes:
+      - ../../ibu_backend/src/config:/app/config
+      - ./data/file_content:/app/file_content
+
+  # Out-of-the-box FRONTEND WEBAPP
+  owl-frontend:
+    hostname: owl-frontend
+    image: athenadecisionsystems/athena-owl-frontend:1.0.0
+    #pull_policy: always
+    container_name: owl-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8002/api/v1/
+      - NEXT_PUBLIC_DEMO_TEXT=Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?
+
+
+  # THE DECISIONS
+  # decisionsvc:
+  #   image: icr.io/cpopen/odm-k8s/odm:8.12
+  #   hostname: decisionsvc
+  #   container_name: decisionsvc
+  #   user: "1001:0"
+  #   ports:
+  #     - 9443:9443
+  #     - 9060:9060
+  #   environment:
+  #     - SAMPLE=false
+  #     - LICENSE=accept
+  #   volumes:
+  #     - ../../decisions/persistence:/config/dbdata/
