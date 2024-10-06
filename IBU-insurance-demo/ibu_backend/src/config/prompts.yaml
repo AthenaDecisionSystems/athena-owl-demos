@@ -1,6 +1,5 @@
 openai_insurance_with_tool:
   name: openai_insurance_with_tool
-  prompt_id: openai_insurance_with_tool
   locales:
   - locale: en
     text: | 
@@ -82,7 +81,6 @@ openai_insurance_with_tool:
 
 openai_functions_prompt:
   name: openai_functions_prompt
-  prompt_id: openai_functions_prompt
   locales:
   - locale: en
     text: |
@@ -92,7 +90,6 @@ openai_functions_prompt:
   
       
 classify_query_prompt:
-  prompt_id:  classify_query_prompt
   name: Classify the query prompt
   locales:
   - locale: en
@@ -102,7 +99,6 @@ classify_query_prompt:
         Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint."
    
 ibu_rag_prompt:
-  prompt_id: ibu_rag_prompt
   name: IBU insurance prompt for context
   locales:
   - locale: en

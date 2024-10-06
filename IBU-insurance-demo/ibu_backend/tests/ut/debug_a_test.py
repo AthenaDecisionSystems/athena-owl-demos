@@ -37,7 +37,7 @@ class TestTestToDebugStuff(unittest.TestCase):
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         assert rep.messages[0].content
-        assert "Step" in rep.messages[0].content
+        assert "didn't understand" in rep.messages[0].content
 
 if __name__ == '__main__':
     unittest.main()

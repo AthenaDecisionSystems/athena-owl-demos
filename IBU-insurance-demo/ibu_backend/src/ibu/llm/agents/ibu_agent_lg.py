@@ -53,7 +53,8 @@ class AgentState(TypedDict):
     input: str
 
 def define_classifier_model():
-    return get_agent_manager().build_agent_runner("ibu_classify_query_agent","en")
+    #return get_agent_manager().build_agent_runner("ibu_classify_query_agent","en")
+    return get_agent_manager().build_agent_runner("ibu_classify_query_watson_agent","en")
 
 def define_information_model():
     return get_agent_manager().build_agent_runner("ibu_information_agent","en")

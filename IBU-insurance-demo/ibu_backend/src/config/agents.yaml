@@ -1,5 +1,4 @@
 ibu_agent:
-  agent_id: ibu_agent
   name: ibu_agent
   description:  OpenAI based agent with tools to support the IBU insurance demo and variable model 
   runner_class_name: ibu.llm.agents.ibu_agent_lg.IBUInsuranceAgent
@@ -17,20 +16,7 @@ ibu_agent:
     - rag_insurance_corpus
 
 
-watson_llama_3_70_agent:
-  agent_id: watson_llama_3_70_agent
-  name: "WatsonX.ai Llam 3 70b Instruct Agent"
-  description: WatsonX ai with Llama 3 at 70b parameters
-  runner_class_name: athena.llm.agents.adaptive_rag_graph.SequenceOfActionAgent
-  modelName: meta-llama/llama-3-70b-instruct
-  modelClassName: langchain_ibm.WatsonxLLM
-  prompt_ref: llama_base_prompt
-  temperature: 0
-  top_k: 20
-  top_p: 1
-
 ibu_classify_query_agent:
-  agent_id: ibu_classify_query_agent
   name: IBU Classify Query Agent
   description: OpenAI Agent to classify a query as Information or Complaint
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
@@ -42,8 +28,18 @@ ibu_classify_query_agent:
   top_p: 1
   hidden_to_ui: true
 
+ibu_classify_query_watson_agent:
+  name: "Classify query Watson Llama 3 Agent"
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  description: A default agent that uses LLM using WatsonX and Llama3
+  modelName: meta-llama/llama-3-70b-instruct
+  modelClassName: langchain_ibm.WatsonxLLM
+  prompt_ref: classify_query_prompt
+  temperature: 0.2
+  top_k: 1
+  top_p: 1
+
 ibu_information_agent:
-  agent_id: ibu_information_agent
   name: OpenAI IBU agent with RAG Limited
   description: OpenAI IBU agent with RAG and insurance tools without decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
@@ -64,7 +60,6 @@ ibu_information_agent:
 
 
 ibu_complaint_agent:
-  agent_id: ibu_complaint_agent
   name: RAG with Decision Agent
   description: OpenAI IBU agent with RAG and insurance tools with decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
