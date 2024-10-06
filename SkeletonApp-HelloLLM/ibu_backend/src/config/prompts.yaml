@@ -1,6 +1,5 @@
 default_prompt:
   name:  Default prompt
-  prompt_id: default_prompt
   locales:
   - locale: en
     text: "Answer the user's question based on the conversation history: {chat_history} \n\n question: {input}. If you do not know the answer, respond that you do not know."
@@ -11,7 +10,6 @@ default_prompt:
 
 openai_functions_prompt:
   name: openai_functions_prompt
-  prompt_id: openai_functions_prompt
   locales:
   - locale: en
     text: |
@@ -21,7 +19,6 @@ openai_functions_prompt:
 
 graph_prompt:
   name: A prompt for tool and graph
-  prompt_id: graph_prompt
   locales:
   - locale: en
     text: |
@@ -30,7 +27,6 @@ graph_prompt:
 
 mistral_rag_prompt:
     name: Mistral Bank Query Classification
-    prompt_id: mistral_rag_prompt
     locales:
     - locale: en
       text: |
@@ -43,7 +39,6 @@ mistral_rag_prompt:
         Question: "
 
 llama_base_prompt:
-  prompt_id: llama_base_prompt
   name: Llama 3 basic prompt
   locales:
     - locale: en

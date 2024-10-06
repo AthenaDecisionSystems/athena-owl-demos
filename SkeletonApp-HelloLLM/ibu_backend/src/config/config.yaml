@@ -14,7 +14,7 @@ owl_agent_vs_path: /app/chromadb
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_vs_embedding_fct_model: text-embedding-3-large
 owl_agent_llm_history_length: 5
-owl_agent_tool_factory_class:  athena.llm.tools.tool_mgr.DefaultToolInstanceFactory
+owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.MyApplicationToolInstanceFactory
 owl_agent_decision_service_fct_name: athena.itg.decisions.nba_ds_dummy.callDecisionService
 owl_agent_default_agent: openai_chain_agent
 watsonx_ai_url: https://us-south.ml.cloud.ibm.com

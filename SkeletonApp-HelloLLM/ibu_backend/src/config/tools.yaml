@@ -1,5 +1,4 @@
 tavily:
-  tool_id: tavily
   tool_class_name: langchain_community.tools.tavily_search.TavilySearchResults
   tool_description: 'A search engine optimized for comprehensive, accurate, and trusted results'
   tool_fct_name: ''
@@ -7,10 +6,9 @@ tavily:
     - websearch
 
 get_client_by_email_id:
-  tool_id: get_client_by_email_id
   tool_name: "Get client data by email id"
   tool_class_name: 'ibu.llm.tools.client_tools'
   tool_description: 'Get client data given its unique email id'
-  tool_fct_name: get_client_by_email_id
-  tags:
+  tool_fct_name: get_client_by_email_id                           # key in the hashmap of the tool factory
+  tags:                                                           # used by frontend
     - internal_tool    
