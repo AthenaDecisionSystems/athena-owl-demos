@@ -14,6 +14,7 @@ services:
     volumes:
       - ../../ibu_backend/src/config:/app/config
       - ./data/file_content:/app/file_content
+      - ../../ibu_backend/src/ibu:/app/ibu
 
   # Out-of-the-box FRONTEND WEBAPP
   owl-frontend:

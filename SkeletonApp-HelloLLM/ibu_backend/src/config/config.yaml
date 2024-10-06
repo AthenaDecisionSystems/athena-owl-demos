@@ -1,16 +1,17 @@
 logging_level: DEBUG
 version: v0.0.7
 owl_env_path: ../.env
-app_index_path: /app/athena/routers/index.html
-owl_glossary_path: /app/athena/config/glossary.json
-owl_agents_path: /app/athena/config/agents.yaml
-owl_tools_path: /app/athena/config/tools.yaml
-owl_prompts_path: /app/athena/config/prompts.yaml
+app_index_path: /app/routers/index.html
+owl_glossary_path: /app/config/glossary.json
+owl_agents_path: /app/config/agents.yaml
+owl_tools_path: /app/config/tools.yaml
+owl_prompts_path: /app/config/prompts.yaml
 owl_agent_content_collection_name: base_collection
 owl_agent_content_file_path: /app/file_content
 # do not use chroma in client server in cost use case
 # owl_agent_vs_url: http://localhost:8010
-owl_agent_vs_path: /app/chromadb
+owl_agent_vs_path: /app/vs_db
+owl_agent_vs_class_name: langchain_chroma.Chroma
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_vs_embedding_fct_model: text-embedding-3-large
 owl_agent_llm_history_length: 5
