@@ -20,6 +20,8 @@ class TestValidateConfiguration(unittest.TestCase):
             print(f"Create instance for {agent_entity}")
             agent = agent_mgr.build_agent_runner(agent_entity,"en")
             assert agent
+            assert agent.agent_id
+            print(agent.agent_id)
 
 
 if __name__ == '__main__':

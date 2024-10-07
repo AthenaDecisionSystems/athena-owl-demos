@@ -35,7 +35,8 @@ ibu_classify_query_watson_agent:
   modelName: meta-llama/llama-3-70b-instruct
   modelClassName: langchain_ibm.WatsonxLLM
   prompt_ref: classify_query_prompt
-  temperature: 0.2
+  temperature: 0
+  hidden_to_ui: true
   top_k: 1
   top_p: 1
 
