@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - 'docs/**'
       - '.vscode/**'
-      - 'deployment/**'
       - 'tools/**'
       - 'owl-agent-frontend/**'
 jobs:
@@ -54,7 +53,7 @@ jobs:
         uses: actions/checkout@v4
         with: 
           repository: AthenaDecisionSystems/athena-owl-core
-          ref: refs/heads/development
+          ref: refs/heads/main
           path: owl_core
       - name: build ibu backend image
         run: |

@@ -2,7 +2,7 @@ services:
   ibu-backend:
     hostname: ibu-backend
     image: athenadecisionsystems/ibu-insurance:1.0.0
-    #pull_policy: always
+    pull_policy: always
     container_name: ibu-backend
     ports:
       - 8002:8000
