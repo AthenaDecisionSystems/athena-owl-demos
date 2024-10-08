@@ -150,7 +150,7 @@ class Test_ibu_agent(unittest.TestCase):
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         assert rep.messages[0].content
-        assert "Step" in rep.messages[0].content
+        assert "Verified" in rep.messages[0].content
 
     def test_11_get_sonya_query(self):
         print("\n--- test_11_get_sonya_query")

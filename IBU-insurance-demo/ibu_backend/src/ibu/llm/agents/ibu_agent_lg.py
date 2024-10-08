@@ -83,6 +83,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             {
                 "information": "gather_information",
                 "complaint": "process_complaint",
+                "other": END
             },
         )
         graph_builder.add_node("gather_information", self.process_information_query)
@@ -119,7 +120,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         question = state["input"]
         #messages= [convert_message_to_dict(m) for m in messages]
         LOGGER.debug(f"\n@@@> {messages}")
-        message = self.classifier_model.invoke({"input": [question], 
+        message = self.classifier_model.invoke({"input": [question.content], 
                                                 "chat_history": messages}, 
                                                 self.config["configurable"]["thread_id"])
         if "information" in message.lower():
@@ -128,6 +129,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         elif "complaint"  in message.lower():
             LOGGER.debug("---ROUTE QUESTION TO Complaint---")
             return "complaint"
+        else:
+            return "other"
         # TODO Decide what to do if none of this 
     
     def process_complaint(self, state):  
