@@ -25,7 +25,24 @@ services:
       - 3000:3000
     environment:
       - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8002/api/v1/
-      - NEXT_PUBLIC_DEMO_TEXT=Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?
+      - NEXT_PUBLIC_COLLECTION_NAME=ibu_insurance
+      - NEXT_PUBLIC_DEMO_TEXT=*I received this email from my customer. What should I answer?*
+
+        **From**:  Sonya Smith (sonya.smith@thecure.org)
+
+        **To**:  support@ibuinsurance.com
+
+        **Subject**:  Covering my carpet cleaning
+
+        Dear IBU,
+
+        During the recent water leak at my house (cf claim 2), my expensive Moroccan carpet was damaged by the water.  You told me that this damage is not covered by my policy.  I’m very disappointed.  It will be expensive to get it cleaned.  What do you propose?
+
+        Thank you!
+
+        Yours,
+
+        **Sonya Smith**
 
   insurance-data-mgr:
     image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0
