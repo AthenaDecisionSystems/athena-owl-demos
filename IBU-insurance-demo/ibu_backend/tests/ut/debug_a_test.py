@@ -29,15 +29,17 @@ class TestTestToDebugStuff(unittest.TestCase):
         return rep_dict["messages"][0]["content"]
 
     def test_calling_graph_agent(self):
-        print("\n--- test_10 get_claim_status as a complain")
+        print("\n--- test to debug something specific")
         #query="My name is Sonya Smith, I want to know the status of my current claim?"
         #query="Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?"
-        query="asdfdsg grtggfdgre dcfs"
+        query="hello"
         cc=self.define_conversation_control(query, "ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
         assert rep.messages[0].content
-        assert "didn't understand" in rep.messages[0].content
+        cc.chat_history=rep.chat_history
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
 
 if __name__ == '__main__':
     unittest.main()
