@@ -2,6 +2,16 @@
 <ilog.rules.studio.model.dt:DecisionTable xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.dt="http://ilog.rules.studio/model/dt.ecore">
   <name>HD-CCOM</name>
   <uuid>1043c6e8-74de-4fe7-ae1d-120803de32e6</uuid>
+  <documentation><![CDATA[EXPLANATION
+# Handling delays in answering to customer - communication (HD-CCOM)
+| Delta vs target duration | Message to client       | Explanation | Reassign to                     |
+|--------------------------|-------------------------|-------------|---------------------------------|
+| ≥ 10                     | ApologyOnly             | HD-CCOM1    | SpecializedClientRepresentative |
+| 2 - 9                    | ApologyOnly             | HD-CCOM2    |                                 |
+| 0 - 1                    | AcknowledgmentOfReceipt | HD-CCOM3    |                                 |
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition>
 <DT xmlns="http://schemas.ilog.com/Rules/7.0/DecisionTable" Version="7.0">

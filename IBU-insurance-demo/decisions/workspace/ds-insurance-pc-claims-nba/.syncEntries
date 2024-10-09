@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><teamservers>
 <teamserver>
 <target dataSource="" login="odmAdmin" url="http://localhost:9060/decisioncenter"/>
-<entry baseType="DecisionOperation" checksum="4083646939" projectName="ds-insurance-pc-claims-nba" qualifiedName="nextBestAction" sourceCS="C3E4E99643BB6E8F879B15C5492D928F" targetCS="4083646939" type="DecisionOperation" uuid="a1bc0961-c11d-4d4c-91a7-41f40ef21672"/>
-<entry baseType="DeploymentConfiguration" checksum="1082491558" projectName="ds-insurance-pc-claims-nba" qualifiedName="ComplaintHandling" sourceCS="FB23B48210E54C6A14FB85D46AAE75CA" targetCS="1082491558" type="DeploymentConfiguration" uuid="4602a454-0e89-4ce3-b853-85092ff706e6"/>
-<entry baseType="RuleProjectInfo" checksum="3246860226" projectName="ds-insurance-pc-claims-nba" qualifiedName="ds-insurance-pc-claims-nba" sourceCS="0CDE6FBED9FF90CE83FE3AFEE2B17B44" targetCS="3246860226" type="RuleProjectInfo" uuid="88f8c5be-d29f-4e50-ae40-58ebee713c6f"/>
+<entry baseType="DecisionOperation" checksum="4083646939" projectName="ds-insurance-pc-claims-nba" qualifiedName="nextBestAction" sourceCS="0116A08656031943D371B6AEC6FDDFAE" targetCS="4083646939" type="DecisionOperation" uuid="a1bc0961-c11d-4d4c-91a7-41f40ef21672"/>
+<entry baseType="DeploymentConfiguration" checksum="1082491558" projectName="ds-insurance-pc-claims-nba" qualifiedName="ComplaintHandling" sourceCS="D9AC00417D5917E07EB37BDBDD8E55C3" targetCS="1082491558" type="DeploymentConfiguration" uuid="4602a454-0e89-4ce3-b853-85092ff706e6"/>
+<entry baseType="RuleProjectInfo" checksum="126391690" projectName="ds-insurance-pc-claims-nba" qualifiedName="ds-insurance-pc-claims-nba" sourceCS="D0AB68793126706958D13B52F9FE875C" targetCS="126391690" type="RuleProjectInfo" uuid="88f8c5be-d29f-4e50-ae40-58ebee713c6f"/>
 </teamserver>
 </teamservers>
