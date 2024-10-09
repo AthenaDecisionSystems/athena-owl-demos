@@ -2,6 +2,7 @@ services:
   owl-backend:
     hostname: owl-backend
     image: athenadecisionsystems/athena-owl-backend:1.0.0
+    pull_policy: always
     container_name: owl-backend
     ports:
       - 8000:8000
@@ -14,11 +15,12 @@ services:
       - ../../ibu_backend/src/config:/app/config
       - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
-      - ./data/chromadb:/app/chromadb
+      - ./data/vs_db:/app/vs_db
       - ../../ibu_backend/src/ibu:/app/ibu
   owl-frontend:
     hostname: owl-frontend
     image: athenadecisionsystems/athena-owl-frontend:1.0.0
+    pull_policy: always
     container_name: owl-frontend
     ports:
       - 3000:3000

@@ -14,9 +14,15 @@ from athena.llm.agents.agent_mgr import get_agent_manager
 
 class TestValidateConfiguration(unittest.TestCase):
     
-    def test_load_all_agents(self):
+    def test_load_all_agents_and_create_runner_instances(self):
         agent_mgr = get_agent_manager()
         for agent_entity in agent_mgr.get_agents():
             print(f"Create instance for {agent_entity}")
             agent = agent_mgr.build_agent_runner(agent_entity,"en")
             assert agent
+            assert agent.agent_id
+            print(agent.agent_id)
+
+
+if __name__ == '__main__':
+    unittest.main()

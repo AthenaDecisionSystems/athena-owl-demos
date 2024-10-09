@@ -2,9 +2,8 @@
 Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
-from dataclasses import dataclass, asdict
-import json
-from .ComplaintHandling_generated_model import *
+
+from .ComplaintHandling_generated_model import Client
 
 
 class InsuranceClientRepositoryInterface:

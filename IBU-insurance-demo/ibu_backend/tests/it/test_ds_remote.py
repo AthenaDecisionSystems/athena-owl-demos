@@ -15,7 +15,7 @@ class TestDecisionServiceRemote(unittest.TestCase):
         motive = Motive.UnsatisfiedWithReimbursedAmount
         config = AppSettings()
         config.owl_best_action_ds_url= "http://localhost:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction"
-        config.owl_glossary_path=  "./config/glossary.json"
+        config.owl_glossary_path=  "./src/config/glossary.json"
         config.app_insurance_backend_url="http://localhost:8080/repository"
         repo=InsuranceClaimFromDataMgr(config)
         rep = callDecisionService(config, repo,1,motive,True,"en")

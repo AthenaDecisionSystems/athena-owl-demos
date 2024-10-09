@@ -1,0 +1,15 @@
+services:
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgagmin
+    container_name: pgadmin
+    restart: always
+    profiles: 
+      - dev
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    ports:
+      - "5050:80"
+    volumes: 
+      - ./data_files:/tmp/data_files

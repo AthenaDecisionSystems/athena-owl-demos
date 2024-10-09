@@ -31,7 +31,7 @@ For any complaint about the level of claim reimbursement, refer to a retention e
 
 ### **Policy 50**
 
-Assess if the water damage inside individual house is due to a broken pipe.
+Assess if the water damage inside individual house is due to a broken pipe. For house older than 15 years the coverage is limited at 45% of the cost to repair.
 
 ### **Policy 51**
 

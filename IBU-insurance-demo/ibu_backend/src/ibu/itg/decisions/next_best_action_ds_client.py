@@ -8,7 +8,16 @@ from importlib import import_module
 from ibu.itg.ds.ComplaintHandling_generated_model import *
 from fastapi.encoders import jsonable_encoder
 from athena.glossary.glossary_mgr import build_get_glossary
+from ibu.app_settings import get_config
 from string import Template
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
+LOGGER = logging.getLogger(__name__)
+if get_config().logging_level == "DEBUG":
+    LOGGER.setLevel(logging.DEBUG)
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -101,7 +110,7 @@ def _process_odm_response(resp_json, g: build_get_glossary, locale: str):
 
     """
 
-    LOGGER.debug(f"@@@> ODM response:  {resp_json}")
+    LOGGER.info(f"@@@@> ODM response:  {resp_json}")
     if len(resp_json) == 0:
         return g.get_phrase("NoAction", locale)
     else:

@@ -1,7 +1,7 @@
 """
 code to isolate a test if needed
 """
-import unittest, sys, os
+import unittest, sys, os, json
 from dotenv import load_dotenv
 load_dotenv()
 # Order of the following code is important to make the tests working
@@ -10,7 +10,7 @@ module_path = "./src"
 sys.path.append(os.path.abspath(module_path))
 
 from athena.routers.dto_models import ConversationControl, ResponseControl
-from athena.llm.conversations.conversation_mgr import get_or_start_conversation
+from athena.llm.conversations.conversation_mgr import get_or_start_conversation, get_conversation_trace_given_thread_id
 
 class TestTestToDebugStuff(unittest.TestCase):
 
@@ -22,16 +22,24 @@ class TestTestToDebugStuff(unittest.TestCase):
         cc.chat_history=[]
         cc.query=query
         return cc
+    
+    def get_response_content(self, rep) -> str:
+        print(f"\n@@@> {rep}")
+        rep_dict= json.loads(rep)
+        return rep_dict["messages"][0]["content"]
 
     def test_calling_graph_agent(self):
-        print("\n--- test_7_using_graph_agent_should_get_client_info to get client information from DB")
-        query="What is the name of the client with an id 1?"
-        cc=self.define_conversation_control(query, "ibu_agent_limited")
+        print("\n--- test to debug something specific")
+        #query="My name is Sonya Smith, I want to know the status of my current claim?"
+        #query="Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?"
+        query="hello"
+        cc=self.define_conversation_control(query, "ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        self.assertNotEqual("I don't know", rep.messages[0].content)
-        self.assertIn("David Martin", rep.messages[0].content)
-
+        assert rep.messages[0].content
+        cc.chat_history=rep.chat_history
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
 
 if __name__ == '__main__':
     unittest.main()

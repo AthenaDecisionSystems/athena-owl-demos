@@ -3,13 +3,14 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 import json, logging
+from ibu.app_settings import get_config, InsuranceAppSettings
 from ibu.itg.ds.insurance_client_repo import InsuranceClientRepositoryInterface
 from ibu.itg.ds.ComplaintHandling_generated_model import *
 from datetime import datetime
 
 class InsuranceClientInMem(InsuranceClientRepositoryInterface):
 
-    def __init__(self):
+    def __init__(self, config: Optional[InsuranceAppSettings]= None):
         self.CLIENTDB = dict()
         self.initialize_client_db()
 
