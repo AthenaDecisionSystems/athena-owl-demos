@@ -34,7 +34,7 @@ ibu_classify_query_watson_agent:
   description: A default agent that uses LLM using WatsonX and Llama3
   modelName: meta-llama/llama-3-70b-instruct
   modelClassName: langchain_ibm.WatsonxLLM
-  prompt_ref: classify_query_prompt
+  prompt_ref: classify_query__llama_prompt
   temperature: 0
   hidden_to_ui: true
   top_k: 1

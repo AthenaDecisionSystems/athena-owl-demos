@@ -97,7 +97,20 @@ classify_query_prompt:
       "You are an expert at extracting intent from user question. Assess if this is a complaint or an information gathering query.
         The information contains documents related to insurance policies, claim, coverages.
         Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint."
+
+classify_query__llama_prompt:
+  name: Classify the query for Llama prompt
+  locales:
+  - locale: en
+    text: >
+      "<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+      You are an expert at extracting intent from user question. Assess if the user request is a complaint or an information gathering query.
+        The information contains documents related to insurance policies, claim, coverages.
+        Use complaint for questions on insurance claim status or reimbursement or unhappy customer. Only return information or complaint.
+        <|eot_id|>
+        <|start_header_id|>user<|end_header_id|>{input}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"
    
+
 ibu_rag_prompt:
   name: IBU insurance prompt for context
   locales:
