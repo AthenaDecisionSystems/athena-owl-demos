@@ -4,18 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-        {
-            "name": "APAVE Python Debugger: Current File",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            //"env": { "PYTHONPATH": "${workspaceRoot}/owl-agent-backend/src"},
-            "env": { "PYTHONPATH": "${workspaceRoot}/../athena-owl-core/owl-agent-backend/src"},
-            //"cwd": "${workspaceRoot}/../athena-owl-core/owl-agent-backend"
-            "cwd": "${workspaceRoot}/APAVE-demo/ibu_backend"
-        },
         {
             "name": "IBU_insurance - Python Debugger",
             "type": "debugpy",

@@ -62,7 +62,13 @@ def define_information_model():
 def define_complaint_agent():
     return get_agent_manager().build_agent_runner("ibu_complaint_agent","en")
 
-    
+def format_docs(docs):
+    list_messages = []  
+    for doc in docs:
+        list_messages.append(doc.page_content)
+    return list_messages
+
+
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
 
     def __init__(self, agentEntity: OwlAgent, prompt: Optional[BasePromptTemplate], tool_instances: Optional[list[OwlToolEntity]]):
@@ -99,8 +105,9 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         self.checkpointer=MemorySaver()
         self.graph = graph_builder.compile(checkpointer=self.checkpointer)
 
+   
     def process_information_query(self, state):
-        question = state["input"]
+        question = state["input"].content
         messages = state['messages']
         #uestion= messages[-1]
         if self.use_vector_store and self.rag_retriever:
@@ -110,17 +117,17 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         documents = state["documents"]
 
         message = self.information_q_model.invoke({"input": [question], 
-                                                   "context": documents,    
+                                                   "context": format_docs(documents),
                                                    "chat_history": messages},
                                                     self.config["configurable"]["thread_id"]) # dict
         return {'messages': [AIMessage(content=message["output"])]}
     
     def process_classify_query(self, state: AgentState):
         messages = state['messages']
-        question = state["input"]
+        question = state["input"].content
         #messages= [convert_message_to_dict(m) for m in messages]
         LOGGER.debug(f"\n@@@> {messages}")
-        message = self.classifier_model.invoke({"input": [question.content], 
+        message = self.classifier_model.invoke({"input": [question], 
                                                 "chat_history": messages}, 
                                                 self.config["configurable"]["thread_id"])
         if "information" in message.lower():
@@ -135,15 +142,15 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
     
     def process_complaint(self, state):  
         messages = state['messages']
-        question = state["input"]
+        question = state["input"].content
         if self.use_vector_store and self.rag_retriever:
             state["documents"] = self.rag_retriever.invoke(question)
         else:
             state["documents"] = []
         documents = state["documents"]
         message = self.complaint_model.invoke({"input": [question],
-                                               "context": documents, 
-                                                "chat_history": messages},
+                                               "context": format_docs(documents),
+                                               "chat_history": messages},
                                                 self.config["configurable"]["thread_id"])
         if message.get("output"):
             return {'messages': [AIMessage(content=message["output"])]}
