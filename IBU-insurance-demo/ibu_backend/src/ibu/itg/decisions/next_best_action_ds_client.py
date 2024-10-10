@@ -106,7 +106,8 @@ def _process_odm_response(resp_json, g: build_get_glossary, locale: str):
                         'suggestion': None}
                         ], 
             'missingInfoElements': [], 
-            'outputTraces': []}}
+            'outputTraces': [""]}
+            }
 
     """
 
@@ -132,6 +133,8 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     """
     Delegate the next best action to an external decision service
     """
+    LOGGER.info(f"\n\n callDecisionService")
+    print(f"\n\n callDecisionService")
     claim =  claim_repo.get_claim(claim_id).model_dump()
     payload = _prepare_odm_payload(claim, client_motive, intentionToLeave)
     json_data = jsonable_encoder(payload)
@@ -142,10 +145,13 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
         data=json.dumps(json_data),
         headers={"Content-Type": "application/json"}
     )
+    
     if response.status_code == 200:
         if response.json()["response"] != None:
+            response["outputTraces"] = "TOTO"
             g = build_get_glossary(config.owl_glossary_path) # should be loaded one time 
             final_response= _process_odm_response(response.json()["response"], g, locale)
+            LOGGER.debug(f"\n\nresponse EXPLAINABILITY: {response["outputTraces"]}")
             return final_response
     else:
         LOGGER.error("** Error during decision service call:", response)
