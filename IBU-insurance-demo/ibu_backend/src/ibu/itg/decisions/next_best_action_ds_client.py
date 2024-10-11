@@ -151,7 +151,7 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
             response["outputTraces"] = "TOTO"
             g = build_get_glossary(config.owl_glossary_path) # should be loaded one time 
             final_response= _process_odm_response(response.json()["response"], g, locale)
-            LOGGER.debug(f"\n\nresponse EXPLAINABILITY: {response["outputTraces"]}")
+            # LOGGER.debug(f"\n\nresponse EXPLAINABILITY: {response["outputTraces"]}")
             return final_response
     else:
         LOGGER.error("** Error during decision service call:", response)
