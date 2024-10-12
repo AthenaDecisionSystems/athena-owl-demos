@@ -2,6 +2,7 @@
 Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
+import os
 
 import requests, logging, json
 from importlib import import_module
@@ -133,13 +134,20 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     """
     Delegate the next best action to an external decision service
     """
-    LOGGER.info(f"\n\n callDecisionService")
+    LOGGER.info(f"\n\n callingDecisionService")
     print(f"\n\n callDecisionService")
+
+    file_path = './decisions/ds-insurance-pc-claims-nba.json'
+
+    if os.path.isfile(file_path):
+        LOGGER.info("File exists.")
+    else:
+        LOGGER.info("File does not exist.")
+
     claim =  claim_repo.get_claim(claim_id).model_dump()
     payload = _prepare_odm_payload(claim, client_motive, intentionToLeave)
     json_data = jsonable_encoder(payload)
     LOGGER.debug(f"\n\n {json_data}")
-    #print(type(json_data))
     response = requests.post(
         config.owl_best_action_ds_url,
         data=json.dumps(json_data),
@@ -148,10 +156,8 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     
     if response.status_code == 200:
         if response.json()["response"] != None:
-            response["outputTraces"] = "TOTO"
             g = build_get_glossary(config.owl_glossary_path) # should be loaded one time 
             final_response= _process_odm_response(response.json()["response"], g, locale)
-            # LOGGER.debug(f"\n\nresponse EXPLAINABILITY: {response["outputTraces"]}")
             return final_response
     else:
         LOGGER.error("** Error during decision service call:", response)
