@@ -3,6 +3,7 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 import os
+from typing import Optional
 
 import requests, logging, json
 from importlib import import_module
@@ -11,6 +12,12 @@ from fastapi.encoders import jsonable_encoder
 from athena.glossary.glossary_mgr import build_get_glossary
 from ibu.app_settings import get_config
 from string import Template
+
+from ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract
+
+from ibu.itg.decisions.decision_service_traceability import set_trace
+
+from ibu.itg.decisions.e2e_decision_explainability import ExplanationArtefactList
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -27,20 +34,21 @@ logging.basicConfig(
 LOGGER = logging.getLogger(__name__)
 
 
-    
 def _instantiate_claim_repo(config):
     """
     From the configuration loaded, instantiate the class for the claim repository
     """
-    module_path, class_name = config.app_insurance_claim_repository.rsplit('.',1)
+    module_path, class_name = config.app_insurance_claim_repository.rsplit('.', 1)
     mod = import_module(module_path)
     klass = getattr(mod, class_name)
     return klass(config)
 
+
 def _get_claim_data(config, claim_id: int):
-    app_insurance_claim_repository= _instantiate_claim_repo(config)
+    app_insurance_claim_repository = _instantiate_claim_repo(config)
     claim = app_insurance_claim_repository.get_claim(claim_id)
     return claim
+
 
 def _prepare_odm_payload(claim, motive: Motive, intentionToLeave: bool):
     data = {
@@ -57,6 +65,7 @@ def _prepare_odm_payload(claim, motive: Motive, intentionToLeave: bool):
     }
     LOGGER.debug(f"@@@>  {data}")
     return data
+
 
 def _format_action(g: build_get_glossary, action: dict, locale: str = "en") -> str:
     """Formats the action string for display.
@@ -91,81 +100,127 @@ def _format_action(g: build_get_glossary, action: dict, locale: str = "en") -> s
     else:
         t = Template(g.get_phrase("UnknownAction", locale))
         return t.substitute(actionType=action_type)
-    
-def _process_odm_response(resp_json, g: build_get_glossary, locale: str):
+
+
+def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtract],
+                          json_response: dict,
+                          g: build_get_glossary,
+                          locale: str) -> str:
     """Handles the response from the ODM decision service by formatting it in a way that the LLM can interpret.
 
     Sample response:
-            {'actions': [{'typeDisc__': 'CommunicateWithClient', 
-                        'explanationCode': 'AC-AUTO-TPL-5', 
-                        'channel': 'email', 
-                        'messageType': 'Proposal'
-                        }, 
-                        {'typeDisc__': 'Reassign', 
-                        'explanationCode': 'AC-AUTO-TPL-5', 
-                        'recipient': 'SpecializedClientRepresentative', 
-                        'suggestion': None}
-                        ], 
-            'missingInfoElements': [], 
-            'outputTraces': [""]}
+            {
+              "actions": [
+                {
+                  "typeDisc__": "SimpleUpsellProposal",
+                  "explanationCode": "AC-HOME-CONT-UP",
+                  "description": "upgrade of the policy to include contents coverage"
+                },
+                {
+                  "typeDisc__": "Voucher",
+                  "explanationCode": "AC-HOME-CONT-VOUCHER",
+                  "description": "Voucher to spend with affiliate provider",
+                  "value": 200.0
+                }
+              ],
+              "missingInfoElements": [],
+              "outputTraces": [],
+              "explanation": [
+                {
+                  "name": "Complaint Handling.Applied coverages.Targeted.Home.AC-HOME-CONT-UP - Upgrade policy to include content",
+                  "type_": "RULE",
+                  "html": "<span><font color=\"#000080\"><b><i>if</i></b></font><br>&nbsp;&nbsp;&nbsp;the subtype of <font color=\"...",
+                  "documentation": "EXPLANATION\n# Upsell rule (AC-HOME-CONT-UP)\nAn upsell to the home policy should be proposed ...\nEND OF EXPLANATION  \nEXPLANATION FORMAT: md"
+                },
+                {
+                  "name": "Complaint Handling.Applied coverages.Targeted.Home.AC-HOME-CONT-VOUCHER - Propose voucher for extra service with affiliate provider",
+                  "type_": "RULE",
+                  "html": "<span><font color=\"#000080\"><b><i>if</i></b></font><br>&nbsp;&nbsp;&nbsp;the subtype of <font color=\"...",
+                  "documentation": "EXPLANATION\n# Voucher rule (AC-HOME-CONT-VOUCHER)\nA voucher should be offered to customers  ...\nEND OF EXPLANATION  \nEXPLANATION FORMAT: md"
+                }
+              ]
             }
-
     """
+    LOGGER.info(f"@@@@> ODM response:")
+    LOGGER.info(f"\n\n {json.dumps(json_response, indent=4)}")
 
-    LOGGER.info(f"@@@@> ODM response:  {resp_json}")
-    if len(resp_json) == 0:
+    response2 = json_response["response"]
+    response2["explanation"] = []
+
+    if decision_center_extract:
+        eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
+        if eal.errors_and_warnings:
+            for e in eal.errors_and_warnings:
+                LOGGER.error(e)
+        for artefact in eal.explanation_artefacts:
+            response2["explanation"].append(artefact.dict())
+
+    if len(response2) == 0:
         return g.get_phrase("NoAction", locale)
     else:
         result = g.get_phrase("analysis_gives", locale)
-        for key in resp_json.keys():
-            value = resp_json[key]
+
+        for key in response2.keys():
+            value = response2[key]
             if key == "actions":
                 result += f"{g.get_phrase('Actions', locale)}:\n"
                 i = 1
                 for action in value:
-                    result += f"{i}.{_format_action(g,action, locale)}\n"
+                    result += f"{i}.{_format_action(g, action, locale)}\n"
                     i += 1
             else:
                 logging.debug(f"** Ignoring key: {key}")
+
         return result
 
 
-def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool, locale: str = "en"):
+def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool,
+                        locale: str = "en"):
     """
     Delegate the next best action to an external decision service
     """
     LOGGER.info(f"\n\n callingDecisionService")
-    print(f"\n\n callDecisionService")
 
-    file_path = './decisions/ds-insurance-pc-claims-nba.json'
+    try:
+        decision_center_extract = DecisionCenterExtract.read_from_file('./decisions/ds-insurance-pc-claims-nba.json')
+    except Exception as e:
+        LOGGER.error(f"An error occurred: {e}")
+        LOGGER.error(f"Rule traceability will be disabled")
+        decision_center_extract = None
 
-    if os.path.isfile(file_path):
-        LOGGER.info("File exists.")
-    else:
-        LOGGER.info("File does not exist.")
-
-    claim =  claim_repo.get_claim(claim_id).model_dump()
+    claim = claim_repo.get_claim(claim_id).model_dump()
     payload = _prepare_odm_payload(claim, client_motive, intentionToLeave)
+
+    if decision_center_extract:
+        set_trace(payload, True)
+
     json_data = jsonable_encoder(payload)
     LOGGER.debug(f"\n\n {json_data}")
+    LOGGER.debug(f"\n\n {json.dumps(json_data, indent=4)}")
     response = requests.post(
         config.owl_best_action_ds_url,
         data=json.dumps(json_data),
         headers={"Content-Type": "application/json"}
     )
-    
+
     if response.status_code == 200:
-        if response.json()["response"] != None:
-            g = build_get_glossary(config.owl_glossary_path) # should be loaded one time 
-            final_response= _process_odm_response(response.json()["response"], g, locale)
+        json_response = response.json()
+
+        if json_response["response"] != None:
+            g = build_get_glossary(config.owl_glossary_path)  # should be loaded one time
+            final_response = _process_odm_response(decision_center_extract, json_response, g, locale)
             return final_response
+        else:
+            LOGGER.error("** Decision service call does not return a response:", response)
+            return "** Decision service call does not return a response"
     else:
         LOGGER.error("** Error during decision service call:", response)
         return "Error during decision service call"
-    
 
-def callDecisionServiceMock(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool, locale: str = "en"):
+
+def callDecisionServiceMock(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool,
+                            locale: str = "en"):
     """Mock function to support unit tests. This is injected via config.yaml with the parameter: owl_agent_decision_service_fct_name"""
     rep = Response()
-    rep.actions=[Action(explanationCode="Propose a Vousher for 100$", typeDisc__= "")]
+    rep.actions = [Action(explanationCode="Propose a Vousher for 100$", typeDisc__="")]
     return rep
