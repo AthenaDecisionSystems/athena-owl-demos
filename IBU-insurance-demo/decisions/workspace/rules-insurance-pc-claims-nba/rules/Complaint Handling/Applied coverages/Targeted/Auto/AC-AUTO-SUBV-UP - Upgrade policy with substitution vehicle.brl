@@ -2,6 +2,15 @@
 <ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
   <name>AC-AUTO-SUBV-UP - Upgrade policy with substitution vehicle</name>
   <uuid>7d623fec-efc0-4f52-bb6a-23885f09821f</uuid>
+  <documentation><![CDATA[EXPLANATION
+# Propose policy upgrade to include loaner vehicle (AC-AUTO-SUBV-UP)
+An upgrade of the policy to include a loaner vehicle clause should be proposed to customers in the following situation:
+- They stated they are not satisfied with the applied coverages
+- Their policy does not include the “loaner vehicle” clause
+- Their propensity to upgrade their policy is at least 0.4 
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition><![CDATA[ if
     the type of 'the policy' is Auto 

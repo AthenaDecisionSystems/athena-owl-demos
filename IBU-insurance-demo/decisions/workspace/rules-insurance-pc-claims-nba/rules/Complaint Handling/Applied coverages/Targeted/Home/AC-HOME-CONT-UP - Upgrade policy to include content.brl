@@ -2,6 +2,17 @@
 <ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
   <name>AC-HOME-CONT-UP - Upgrade policy to include content</name>
   <uuid>396e8392-440b-444a-aa23-81b2fc56831e</uuid>
+  <documentation><![CDATA[EXPLANATION
+# Upsell rule (AC-HOME-CONT-UP)
+An upsell to the home policy should be proposed to customers in the following situation:
+- Their policy covers only house structure, not the content;
+- They recently said they are not satisfied with the applied coverage;
+- The customer’s propensity to upgrade is at least 0.4.
+
+Thanks to this upsell, the customer will avoid similar problems next time.  
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition><![CDATA[if
 	the subtype of 'the policy' is HomeBuildingsOnly  

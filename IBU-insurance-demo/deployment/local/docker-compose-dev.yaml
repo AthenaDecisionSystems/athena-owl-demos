@@ -1,0 +1,94 @@
+services:
+  ibu-backend:
+    hostname: ibu-backend
+    # DEV:  image: athenadecisionsystems/athena-owl-backend:1.0.0
+    # PACK: image: athenadecisionsystems/ibu-insurance:1.0.0
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
+    # DEV:  Default pull_policy
+    # PACK: pull_policy: always
+    # pull_policy: always
+    container_name: ibu-backend
+    ports:
+      - 8002:8000
+    environment:
+      CONFIG_FILE: /app/config/config.yaml
+      #OPENAI_API_KEY: $OPENAI_API_KEY
+    env_file:
+      - .env
+    volumes:
+      - ../../ibu_backend/src/config:/app/config
+      # - ../../.env:/app/.env
+      - ./data/file_content:/app/file_content
+      - ./data/vs_db:/app/vs_db
+      - ../../decisions:/app/decisions
+      - ../../ibu_backend/src/ibu:/app/ibu
+  owl-frontend:
+    hostname: owl-frontend
+    image: athenadecisionsystems/athena-owl-frontend:1.0.0
+    pull_policy: always
+    container_name: owl-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BACKEND_BASE_API=http://localhost:8002/api/v1/
+      - NEXT_PUBLIC_COLLECTION_NAME=ibu_insurance
+      - NEXT_PUBLIC_DEMO_TEXT=*I received this email from my customer. What Next Best Action is recommended?*
+
+        **From**:  Sonya Smith (sonya.smith@thecure.org)
+
+        **To**:  support@ibuinsurance.com
+
+        **Subject**:  Covering my carpet cleaning
+
+        Dear IBU,
+
+        During the recent water leak at my house (cf claim 2), my expensive Moroccan carpet was damaged by the water.  You told me that this damage is not covered by my policy.  I’m very disappointed.  It will be expensive to get it cleaned.  What do you propose?
+
+        Thank you!
+
+        Yours,
+
+        **Sonya Smith**
+
+  insurance-data-mgr:
+    image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0
+    hostname: datamgr
+    container_name: datamgr
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    environment:
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=p0stgrespwd
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://postgres:5432/insurancedb
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p0stgrespwd
+      - POSTGRES_DB=insurancedb
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/claimdb:/var/lib/postgresql/data
+  decisionsvc:
+    image: icr.io/cpopen/odm-k8s/odm:8.12
+    hostname: decisionsvc
+    container_name: decisionsvc
+    user: "1001:0"
+    ports:
+      - 9443:9443
+      - 9060:9060
+    environment:
+      - SAMPLE=false
+      - LICENSE=accept
+    volumes:
+      - ../../decisions/persistence:/config/dbdata/

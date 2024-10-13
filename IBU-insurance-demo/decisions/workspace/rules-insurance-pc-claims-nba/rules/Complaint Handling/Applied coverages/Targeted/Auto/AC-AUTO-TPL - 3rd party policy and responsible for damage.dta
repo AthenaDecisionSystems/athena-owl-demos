@@ -2,6 +2,20 @@
 <ilog.rules.studio.model.dt:DecisionTable xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.dt="http://ilog.rules.studio/model/dt.ecore">
   <name>AC-AUTO-TPL - 3rd party policy and responsible for damage</name>
   <uuid>9b541321-b9e0-4391-8495-0700de01ce67</uuid>
+  <documentation><![CDATA[EXPLANATION
+# Customer responsible for damage rule (AC-AUTO-TPL)
+In case of a complaint of a customer with a third-party auto policy that is responsible for the damage, the complaint should be handled as indicated by the following table:
+
+| Intention to leave | CLTV percentile | Communicate with client         | Explanation   | Reassign to                      | Explanation   |
+|--------------------|-----------------|---------------------------------|---------------|----------------------------------|---------------|
+| No                 | < 55            | AcknowledgmentOfReceipt        | AC-AUTO-TPL-1 | -                                | -             |
+| No                 | ≥ 55            | Proposal                        | AC-AUTO-TPL-2 | SpecializedClientRepresentative | AC-AUTO-TPL-2 |
+| Yes                | < 40            | AcknowledgmentOfReceipt        | AC-AUTO-TPL-3 | -                                | -             |
+| Yes                | [40, 52)        | Proposal                        | AC-AUTO-TPL-4 | -                                | -             |
+| Yes                | ≥ 52            | Proposal                        | AC-AUTO-TPL-5 | SpecializedClientRepresentative | AC-AUTO-TPL-5 |
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition>
 <DT xmlns="http://schemas.ilog.com/Rules/7.0/DecisionTable" Version="7.0">
