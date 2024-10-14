@@ -160,6 +160,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
     else:
         result = g.get_phrase("analysis_gives", locale)
 
+        LOGGER.info(f"@@@@> ODM response2: {response2}")
         for key in response2.keys():
             value = response2[key]
             if key == "actions":
@@ -171,6 +172,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
+        LOGGER.info(f"@@@@> ODM response+explanation: {result}")
         return result
 
 
@@ -180,6 +182,7 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     Delegate the next best action to an external decision service
     """
     LOGGER.info(f"\n\n callingDecisionService")
+    print("FastAPI will start with current directory =", os.getcwd())
 
     try:
         decision_center_extract = DecisionCenterExtract.read_from_file('./decisions/ds-insurance-pc-claims-nba.json')

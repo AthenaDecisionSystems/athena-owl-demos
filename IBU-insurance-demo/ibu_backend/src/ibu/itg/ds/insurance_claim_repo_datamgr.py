@@ -25,8 +25,8 @@ class InsuranceClaimFromDataMgr(InsuranceClaimRepositoryInterface):
         try:
             resp=requests.get(self.data_mgr_url + "/claims/")
             LOGGER.info(resp.json())
-        except:
-            LOGGER.error("Issue contacting the claim repository backend")
+        except Exception as e:
+            LOGGER.error(f"Issue contacting the claim repository backend: {e}")
         return resp.json()
     
     def get_claim(self, id: int) -> Claim:
@@ -37,8 +37,8 @@ class InsuranceClaimFromDataMgr(InsuranceClaimRepositoryInterface):
             ## TO DO align claim structure 
             claim = Claim(**json.loads(resp.text))
             #claim=resp.text
-        except:
-            LOGGER.error("Issue contacting the claim repository backend")
+        except Exception as e:
+            LOGGER.error(f"Issue contacting the claim repository backend: {e}")
         return claim
     
     def get_claim_json(self, id: int) -> str:
