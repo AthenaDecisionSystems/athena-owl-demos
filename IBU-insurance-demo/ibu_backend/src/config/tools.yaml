@@ -10,7 +10,7 @@ tavily:
 ibu_client_by_id:
   tool_name: "Client by ID"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get insurance client information given its unique client identifier id'
+  tool_description: 'get insurance customer information given its unique client identifier id'
   tool_fct_name: get_client_by_id
   tags:
     - internal_tool
@@ -18,15 +18,15 @@ ibu_client_by_id:
 ibu_client_by_name:
   tool_name: "Client by lastname and firstname"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get client information given his or her lastname and firstname'
+  tool_description: 'get customer details given his or her last name and first name'
   tool_fct_name: get_client_by_name
   tags:
     - internal_tool
 
 ibu_claim_by_id:
-  tool_name: "claim by id"
+  tool_name: "claim by id or number"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get insurance claim information given its unique claim identifier id'
+  tool_description: 'get insurance claim details given its unique claim identifier id or number'
   tool_fct_name: get_claim_by_id
   tags:
     - internal_tool
@@ -36,9 +36,8 @@ ibu_best_action:
   tool_name: "Best action for claim processing"
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
-    "perform the next best action given the current state of the insurance claim 
-    knowing its unique claim_id and the current client's motivation.
-    Extract the client motive and whether he has the intention to churn"
+    This is a decision service that provides recommendation based on the company's policies.
+    You input the customer's motivation, risk of churn and the claim_id. You get actions to be taken and business rule's reference.
   tool_fct_name: define_next_best_action_with_decision
   tags:
     - internal_tool

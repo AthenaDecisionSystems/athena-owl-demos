@@ -187,6 +187,19 @@ cd athena-owl-demos/IBU-insurance-demo/ibu_backend
 source setpython.sh
 ```
 
+
+### Run locally
+```sh
+cd athena-owl-demos/IBU-insurance-demo/ibu_backend
+source setpython.sh
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r src/requirements.txt
+cd src
+./start_backend.sh
+```
+
+
 ```sh
 # Run all tests
 pytest -s tests/ut

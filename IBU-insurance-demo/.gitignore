@@ -10,5 +10,6 @@
 **/output/
 **/**.class
 **/venv/
+**/.venv/
 **/rts.mv.db
 **/res.mv.db

@@ -1,3 +1,20 @@
+WatsonxWithTools:
+  name: Watsonx with Tools
+  description: Service based on Watsonx using Mistral Large for tool calling
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  modelClassName: langchain_ibm.ChatWatsonx
+  modelName: mistralai/mistral-large
+  prompt_ref: ibu_insurance_mistral_prompt
+  temperature: 50
+  top_k: 50
+  top_p: 1
+  hidden_to_ui: false
+  tools:
+    - ibu_client_by_name
+    - ibu_claim_by_id
+    - ibu_best_action
+
+
 ibu_agent:
   name: ibu_agent
   description:  OpenAI based agent with tools to support the IBU insurance demo and variable model 
