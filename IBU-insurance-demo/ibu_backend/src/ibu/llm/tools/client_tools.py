@@ -55,17 +55,17 @@ def get_client_by_id(id: int) -> dict:
     return build_or_get_insurance_client_repo().get_client_json(id)
 
 def get_client_by_name(firstname: str, lastname: str) -> dict:
-    """get client information given his or her firstname and lastname"""
+    """get customer details given his or her last name and first name"""
     return build_or_get_insurance_client_repo().get_client_by_name(firstname, lastname)
 
 def get_claim_by_id(id: int) -> dict:
-    """get insurance claim information given its unique claim identifier id"""
+    """get insurance claim details given its unique claim identifier id or number"""
     return build_or_get_instantiate_claim_repo().get_claim_json(id)
 
 def define_next_best_action_with_decision(claim_id : int, client_motive: Motive, intentionToLeave: bool ):
-    """perform the next best action given the current state of the insurance claim knowing 
-    its unique claim_id and the current client motivation.
-    extract the  client motive and if he has the intention to leave
+    """
+    This is a decision service that provides recommendation based on the company's policies.
+    You input the customer's motivation, risk of churn and the claim_id. You get actions to be taken and business rule's reference.
     """
     config = get_config()
     result = globals()[config.owl_agent_decision_service_fct_name](config, build_or_get_instantiate_claim_repo(), claim_id, client_motive, intentionToLeave, "en")
