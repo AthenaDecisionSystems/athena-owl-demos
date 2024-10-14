@@ -2,6 +2,13 @@
 <ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
   <name>QCS-ALL</name>
   <uuid>de082d53-1fb1-4d63-9b32-afa33716628c</uuid>
+  <documentation><![CDATA[EXPLANATION
+# Forward to quality specialist (QCS-ALL)
+Forward to a quality specialist as "QoS Issue - look for ways to improve overall quality" for customers in the following situation:
+- They said they are not satisfied with the quality of customer service  
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition><![CDATA[if
 	the motive of 'the last interaction' is UnsatisfiedWithQualityOfCustomerService 
