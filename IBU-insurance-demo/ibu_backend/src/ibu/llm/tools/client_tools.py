@@ -52,7 +52,11 @@ def build_or_get_instantiate_claim_repo():
 
 def get_client_by_id(id: int) -> dict:
     """get insurance client information given its unique client identifier id"""
-    return build_or_get_insurance_client_repo().get_client_json(id)
+    LOGGER.debug(f"Call service get_client_by_id: id= {id}")
+    result = build_or_get_insurance_client_repo().get_client_json(id)
+    if result == None:
+        return {"error": f"Error: client {id} not found"}
+    return result
 
 def get_client_by_name(firstname: str, lastname: str) -> dict:
     """get customer details given his or her last name and first name"""
@@ -60,15 +64,20 @@ def get_client_by_name(firstname: str, lastname: str) -> dict:
 
 def get_claim_by_id(id: int) -> dict:
     """get insurance claim details given its unique claim identifier id or number"""
-    return build_or_get_instantiate_claim_repo().get_claim_json(id)
+    LOGGER.debug(f"Call service get_claim_by_id: id= {id}")
+    result=build_or_get_instantiate_claim_repo().get_claim_json(id)
+    if result == None:
+        return {"error": f"Error: claim {id} not found"}
+    return result
 
 def define_next_best_action_with_decision(claim_id : int, client_motive: Motive, intentionToLeave: bool ):
     """
     This is a decision service that provides recommendation based on the company's policies.
     You input the customer's motivation, risk of churn and the claim_id. You get actions to be taken and business rule's reference.
     """
+    LOGGER.debug(f"Call Decision Service: claim_id {claim_id} client_motive {client_motive} intentionToLeave {intentionToLeave}")
     config = get_config()
-    result = globals()[config.owl_agent_decision_service_fct_name](config, build_or_get_instantiate_claim_repo(), claim_id, client_motive, intentionToLeave, "en")
+    result = callDecisionService(config, build_or_get_instantiate_claim_repo(), claim_id, client_motive, intentionToLeave, "en")
     return result
 
 
