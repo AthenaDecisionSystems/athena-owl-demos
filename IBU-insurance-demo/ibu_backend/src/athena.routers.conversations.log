@@ -1,0 +1,97 @@
+
+@@@> Logging level: 10, should be 10
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='WatsonxWithTools_1728933810980_temp' thread_id=None chat_history=[]
+
+@@@> Exception in chat conversation with error: 1 validation error for ChatWatsonx
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=True user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=True user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent' thread_id=None chat_history=[]
+
+@@@> Exception in chat conversation with error: 1 validation error for TavilySearchAPIWrapper
+  Value error, Did not find tavily_api_key, please add an environment variable `TAVILY_API_KEY` which contains it, or pass `tavily_api_key` as a named parameter. [type=value_error, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.9/v/value_error
+
+@@@> Exception in chat conversation with error: 1 validation error for TavilySearchAPIWrapper
+  Value error, Did not find tavily_api_key, please add an environment variable `TAVILY_API_KEY` which contains it, or pass `tavily_api_key` as a named parameter. [type=value_error, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.9/v/value_error
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Logging level: 10, should be 10
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_h2q0r0695_1728933804480' agent_id='ibu_agent_1728933905253_temp' thread_id=None chat_history=[]
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
+
+@@@> Logging level: 10, should be 10
+
+@@@> Input from chat UI= locale='en' query='hello' closed_answers=[] reenter_into='' reset=True callWithVectorStore=False user_id='user_ire4d4pm9_1728934512094' agent_id='ibu_agent_1728934530138_temp' thread_id=None chat_history=[]
+
+@@@> Exception in chat conversation with error: 1 validation error for WatsonxLLM
+url
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.9/v/string_type
