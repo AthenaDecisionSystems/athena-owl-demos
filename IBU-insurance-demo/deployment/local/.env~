@@ -1,0 +1,32 @@
+
+PYTHONPATH=$HOME/Code/Athena/athena-owl-core/owl-agent-backend/src
+
+# Define the IBM KEY to access models deployed on WatsonX.ai
+# Joel's IBM API key
+IBM_WATSONX_APIKEY=Y4pdybPV2NtVs-NlmRS8BQOTk-JPLCEvM3ejQGkDT_VU
+IBM_WATSON_PROJECT_ID=c6df4287-6ac9-4ab1-9297-d81b98fd55b5
+IBM_WATSONX_URL=https://eu-de.ml.cloud.ibm.com
+
+# Only when you want to use one of  OpenAI model
+OPENAI_API_KEY=sk-proj-FL7IjoDrng1XqWJxbQUST3BlbkFJbE3ZA5ULv6uYgiPoy8fR
+
+MISTRAL_API_KEY=2lq8dgjTyGoLEdiqXFROyaCtuPpLsyXP
+# Use Tavily to do search on last news, that could be interesting to validate tool calling
+TAVILY_API_KEY=<USE_YOUR_TAVILY_API_KEY>
+# if you want to get traces in Langchain tracing - this is optional
+LANGCHAIN_TRACING_V2=false
+LANGCHAIN_API_KEY=ls__02b716d445cb431f98cbfbe1c3907767
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+
+# If you want to use one of the Anthropic Claude models
+#ANTHROPIC_API_KEY=<USE_YOUR_ANTHROPIC_KEY>
+
+# Joel's Hugging Face API key
+HUGGINGFACEHUB_API_TOKEN=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
+
+# Joel's other API key
+SERPAPI_API_KEY=666d1aef8ca823b9c38e933ea7592892c6c456e586b4c9ce1c2038892dc3dec7
+FIREWORKS_API_KEY=yZBxvHHHGEC9ACZZEgjsSLzRfOHavCutvG0NMMQfGrRrJt21
+TAVILY_API_KEY=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
+
+OWL_CLIENTS: http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003
