@@ -10,7 +10,7 @@ tavily:
 ibu_client_by_id:
   tool_name: "Client by ID"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get insurance customer information given its unique client identifier id'
+  tool_description: 'get insurance customer information given a unique client identifier id'
   tool_fct_name: get_client_by_id
   tags:
     - internal_tool
@@ -18,7 +18,7 @@ ibu_client_by_id:
 ibu_client_by_name:
   tool_name: "Client by lastname and firstname"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get customer details given his or her last name and first name'
+  tool_description: 'get customer details given their last name and first name'
   tool_fct_name: get_client_by_name
   tags:
     - internal_tool
@@ -26,7 +26,7 @@ ibu_client_by_name:
 ibu_claim_by_id:
   tool_name: "claim by id or number"
   tool_class_name: 'ibu.llm.tools.client_tools'
-  tool_description: 'get insurance claim details given its unique claim identifier id or number'
+  tool_description: 'get insurance claim details given a unique claim identifier id or number'
   tool_fct_name: get_claim_by_id
   tags:
     - internal_tool
@@ -36,8 +36,8 @@ ibu_best_action:
   tool_name: "Best action for claim processing"
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
-    This is a decision service that provides recommendation based on the company's policies.
-    You input the customer's motivation, risk of churn and the claim_id. You get actions to be taken and business rule's reference.
+    This is an IBM ODM business rules decision service that provides action recommendation based on the company's policies.
+    You provide the customer's motivation, intention to change to a competitor, and the claim id. The tool provides actions to be taken and which business rule was used to make a decision.
   tool_fct_name: define_next_best_action_with_decision
   tags:
     - internal_tool
@@ -47,7 +47,7 @@ ibu_claim_status_by_user_name:
   tool_name: "Claim status for a give client name"
   tool_class_name: ibu.llm.tools.client_tools
   tool_description: |
-    "get the current insurance claim status of an insured person giving her/his lastname and firstname."
+    "Finds the current insurance claim status of an client given their last name and first name."
   tool_fct_name: get_claim_status_by_user_name  
   tags:
     - internal_tool
@@ -55,7 +55,7 @@ ibu_claim_status_by_user_name:
 rag_insurance_corpus:
   tool_name: "Use RAG on IBU corpus"
   tool_description: |
-    "when asking information about insurance policy, used this tool to get tailored content"
+    "when asked for information about insurance policies, use this tool to get tailored content from uploaded documents"
   tool_class_name: ibu.llm.tools.client_tools
   tool_fct_name: search_corpus
   tags:
