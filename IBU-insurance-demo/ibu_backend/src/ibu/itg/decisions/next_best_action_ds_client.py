@@ -193,7 +193,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
             result = result + "\n" + "<rule>"
             for artefact in eal.explanation_artefacts:
-                result = result + "\n\n" + artefact.hml
+                result = result + "\n\n" + artefact.html
             result = result + "\n\n" + "</rule>"
 
         logging.info(f"_process_odm_response> ODM response with explanation:")
