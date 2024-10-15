@@ -8,7 +8,7 @@ owl_glossary_path: config/glossary.json
 owl_agents_path: config/agents.yaml
 owl_tools_path: config/tools.yaml
 owl_prompts_path: config/prompts.yaml
-owl_prompts_key_name: openai_insurance_with_too
+owl_prompts_key_name: openai_insurance_with_tool
 
 owl_agent_content_collection_name: ibu_insurance
 owl_agent_content_file_path: ../../datastore/file_uploads
@@ -21,7 +21,6 @@ owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_vs_embedding_fct_model: text-embedding-3-large
 owl_agent_llm_history_length: 5
 owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory
-owl_agent_decision_service_fct_name: athena.itg.decisions.nba_ds_dummy.callDecisionService
 owl_best_action_ds_url: http://localhost:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
 owl_agent_default_agent: openai_chain_agent
 

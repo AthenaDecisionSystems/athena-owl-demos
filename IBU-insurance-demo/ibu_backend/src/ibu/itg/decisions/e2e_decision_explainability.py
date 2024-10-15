@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+import re
+
 try:
     mode = "DEV"
     from decision_center_extraction import DecisionCenterExtract, RuleOrDT, \
@@ -14,20 +16,32 @@ except ImportError:
     from ibu.itg.decisions.decision_service_traceability import TraceArtefact, set_trace
 
 
+def extract_explanation(documentation: str) -> str:
+    # Extract the explanation from the documentation
+    pattern = re.compile(r"EXPLANATION(.*?)END OF EXPLANATION", re.DOTALL)
+    result = pattern.search(documentation)
+
+    if result:
+        explanation = result.group(1).strip()
+    else:
+        explanation = ""
+    return explanation
+
 class ExplanationArtefact(BaseModel):
     name: str
     type_: str  # "RULE" or "DT"
     html: str
     documentation: Documentation
+    explanation: str
 
-    # def __init__(self, name: str, type_: str, html: str, documentation: str):
+    # def __init__(self, name: str, type_: str, html: str, documentation: str, explanation: str):
     #     self.name = name
     #     self.type_ = type_  # "RULE" or "DT"
     #     self.html = html
     #     self.documentation = documentation
-
-
-class ExplanationArtefactList(BaseModel):
+    #     self.explanation = explanation
+    
+class ExplanationArtefactList(BaseModel):       
     errors_and_warnings: list[str]
     explanation_artefacts: list[ExplanationArtefact]
 
@@ -43,7 +57,8 @@ class ExplanationArtefactList(BaseModel):
                 print ("type(rule.documentation)",type(rule.documentation))
                 html_artefact = ExplanationArtefact(name=trace_artefact.name, type_=trace_artefact.type_,
                                                     html=rule.html,
-                                                    documentation=rule.documentation)
+                                                    documentation=rule.documentation,
+                                                    explanation=extract_explanation(rule.documentation))
                 explanation_artefacts.append(html_artefact)
             else:
                 errors_and_warnings.append(f"Could not find {trace_artefact.name} in Decision Center extract")
@@ -134,6 +149,7 @@ def test():
             print(f"{html_artefact.name}")
             print(f"html           {html_artefact.html}")
             print(f"documentation  {html_artefact.documentation}")
+            print(f"explanation  {html_artefact.explanation}")
 
         print("*****")
 

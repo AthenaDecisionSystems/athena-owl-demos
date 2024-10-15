@@ -169,6 +169,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
     else:
         result = g.get_phrase("analysis_gives", locale)
 
+        LOGGER.info(f"@@@@> ODM response2: {json.dumps(response2, indent=4)}")
         for key in response2.keys():
             value = response2[key]
             if key == "actions":
@@ -177,6 +178,10 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
                 for action in value:
                     result += f"{i}.{_format_action(g, action, locale)}\n"
                     i += 1
+            elif key== "explanation":
+                result += f"---\n"
+                for explanation in value:
+                    result += f"<explanation>{explanation['explanation']}</explanation>\n"
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
