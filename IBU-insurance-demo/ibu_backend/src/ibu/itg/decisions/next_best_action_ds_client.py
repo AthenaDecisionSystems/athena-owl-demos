@@ -150,7 +150,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
               ]
             }
     """
-    LOGGER.info(f"@@@@> ODM response:")
+    LOGGER.info(f"@@@@_process_odm_response> ODM response:")
     LOGGER.info(f"\n\n {json.dumps(json_response, indent=4)}")
 
     response2 = json_response["response"]
@@ -182,14 +182,23 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
-            if decision_center_extract:
-                eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
-                for artefact in eal.explanation_artefacts:
-                    result = result + "\n" + artefact.documentation.content
+        if decision_center_extract:
+            eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
+            result = result + "\n" + "<explanation>"
+            for artefact in eal.explanation_artefacts:
+                result = result + "\n\n" + artefact.documentation.content
+            result = result + "\n\n" + "</explanation>"
 
-            LOGGER.info("And the result is ...")
-            LOGGER.info(result)
-            LOGGER.info("*********************")
+        if decision_center_extract:
+            eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
+            result = result + "\n" + "<rule>"
+            for artefact in eal.explanation_artefacts:
+                result = result + "\n\n" + artefact.hml
+            result = result + "\n\n" + "</rule>"
+
+        logging.info(f"_process_odm_response> ODM response with explanation:")
+        logging.info(result)
+        logging.info(f"*"*50)
 
         return result
 
@@ -204,8 +213,8 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     try:
         decision_center_extract = DecisionCenterExtract.read_from_file('./decisions/ds-insurance-pc-claims-nba.json')
     except Exception as e:
-        LOGGER.error(f"An error occurred: {e}")
-        LOGGER.error(f"Rule traceability will be disabled")
+        LOGGER.error(f"callDecisionService> An error occurred: {e}")
+        LOGGER.error(f"callDecisionService> Rule traceability will be disabled")
         decision_center_extract = None
 
     claim = claim_repo.get_claim(claim_id).model_dump()
@@ -215,8 +224,8 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
         set_trace(payload, True)
 
     json_data = jsonable_encoder(payload)
-    LOGGER.debug(f"\n\n {json_data}")
-    LOGGER.debug(f"\n\n {json.dumps(json_data, indent=4)}")
+    LOGGER.debug(f"\n\ncallDecisionService>/n {json_data}")
+    LOGGER.debug(f"\n\ncallDecisionService>/n {json.dumps(json_data, indent=4)}")
     response = requests.post(
         config.owl_best_action_ds_url,
         data=json.dumps(json_data),
@@ -230,16 +239,16 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
         if json_response2 is not None:
             g = build_get_glossary(config.owl_glossary_path)  # should be loaded one time
             final_response = _process_odm_response(decision_center_extract, json_response, g, locale)
-            LOGGER.info("final_response")
+            LOGGER.info("callDecisionService> final_response")
             LOGGER.info(final_response)
-            LOGGER.info(f"\n\nAfter post processing:")
+            LOGGER.info(f"\n\ncallDecisionService> After post processing:")
             LOGGER.info(f"\n\n{json.dumps(json_response2, indent=4)}")
             return final_response
         else:
-            LOGGER.error("** Decision service call does not return a response:", response)
+            LOGGER.error("callDecisionService> ** Decision service call does not return a response:", response)
             return "** Decision service call does not return a response"
     else:
-        LOGGER.error("** Error during decision service call:", response)
+        LOGGER.error("callDecisionService> ** Error during decision service call:", response)
         return "Error during decision service call"
 
 
