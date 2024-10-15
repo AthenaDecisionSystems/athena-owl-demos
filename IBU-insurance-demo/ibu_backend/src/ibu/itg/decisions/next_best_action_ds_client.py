@@ -185,6 +185,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
+        LOGGER.info(f"@@@@> ODM response+explanation: {result}")
         return result
 
 

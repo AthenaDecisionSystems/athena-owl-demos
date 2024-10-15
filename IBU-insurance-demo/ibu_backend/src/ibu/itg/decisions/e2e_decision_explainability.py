@@ -31,7 +31,7 @@ class ExplanationArtefact(BaseModel):
     name: str
     type_: str  # "RULE" or "DT"
     html: str
-    documentation: Documentation
+    documentation: str
     explanation: str
 
     # def __init__(self, name: str, type_: str, html: str, documentation: str, explanation: str):
