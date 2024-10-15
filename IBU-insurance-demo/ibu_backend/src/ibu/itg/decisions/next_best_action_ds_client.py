@@ -181,7 +181,7 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             elif key== "explanation":
                 result += f"---\n"
                 for explanation in value:
-                    result += f"<explanation>{explanation['explanation']}</explanation>\n"
+                    result += f"<explanation>{explanation['documentation'].content}</explanation>\n"
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
