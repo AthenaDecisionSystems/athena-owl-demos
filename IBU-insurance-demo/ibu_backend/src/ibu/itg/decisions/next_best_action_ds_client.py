@@ -7,17 +7,26 @@ from typing import Optional
 
 import requests, logging, json
 from importlib import import_module
-from ibu.itg.ds.ComplaintHandling_generated_model import *
+
+try:
+    mode = "DEV"
+    from ibu_backend.src.ibu.itg.ds.ComplaintHandling_generated_model import *
+    from ibu_backend.src.ibu.app_settings import get_config
+    from ibu_backend.src.ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract
+    from ibu_backend.src.ibu.itg.decisions.decision_service_traceability import set_trace
+    from ibu_backend.src.ibu.itg.decisions.e2e_decision_explainability import ExplanationArtefactList
+except ImportError:
+    mode = "PACK"
+    from ibu.itg.ds.ComplaintHandling_generated_model import *
+    from ibu.app_settings import get_config
+    from ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract
+    from ibu.itg.decisions.decision_service_traceability import set_trace
+    from ibu.itg.decisions.e2e_decision_explainability import ExplanationArtefactList
+    from athena.glossary.glossary_mgr import build_get_glossary
+
 from fastapi.encoders import jsonable_encoder
-from athena.glossary.glossary_mgr import build_get_glossary
-from ibu.app_settings import get_config
 from string import Template
 
-from ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract
-
-from ibu.itg.decisions.decision_service_traceability import set_trace
-
-from ibu.itg.decisions.e2e_decision_explainability import ExplanationArtefactList
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -71,9 +80,9 @@ def _format_action(g: build_get_glossary, action: dict, locale: str = "en") -> s
     """Formats the action string for display.
 
     Sample action:
-    {'typeDisc__': 'CommunicateWithClient', 
-    'explanationCode': 'AC-AUTO-TPL-5', 
-    'channel': 'email', 
+    {'typeDisc__': 'CommunicateWithClient',
+    'explanationCode': 'AC-AUTO-TPL-5',
+    'channel': 'email',
     'messageType': 'Proposal'
     }
 
@@ -160,7 +169,6 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
     else:
         result = g.get_phrase("analysis_gives", locale)
 
-        LOGGER.info(f"@@@@> ODM response2: {response2}")
         for key in response2.keys():
             value = response2[key]
             if key == "actions":
@@ -172,7 +180,6 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
-        LOGGER.info(f"@@@@> ODM response+explanation: {result}")
         return result
 
 
@@ -182,7 +189,6 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     Delegate the next best action to an external decision service
     """
     LOGGER.info(f"\n\n callingDecisionService")
-    print("FastAPI will start with current directory =", os.getcwd())
 
     try:
         decision_center_extract = DecisionCenterExtract.read_from_file('./decisions/ds-insurance-pc-claims-nba.json')
@@ -208,10 +214,13 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
 
     if response.status_code == 200:
         json_response = response.json()
+        json_response2 = json_response["response"]
 
-        if json_response["response"] != None:
+        if json_response2 is not None:
             g = build_get_glossary(config.owl_glossary_path)  # should be loaded one time
             final_response = _process_odm_response(decision_center_extract, json_response, g, locale)
+            LOGGER.info(f"\n\nAfter post processing:")
+            LOGGER.info(f"\n\n{json.dumps(json_response2, indent=4)}")
             return final_response
         else:
             LOGGER.error("** Decision service call does not return a response:", response)

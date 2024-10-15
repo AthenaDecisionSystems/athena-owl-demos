@@ -76,7 +76,12 @@ class TraceArtefact:
 
 
 if __name__ == "__main__":
-    from ibu.itg.decisions.call_api import Connection
+    try:
+        mode = "DEV"
+        from call_api import Connection
+    except ImportError:
+        mode = "PACK"
+        from ibu.itg.decisions.call_api import Connection
 
 
     def call_decision_service(connection: Connection, rule_app: str, ruleset: str, request_payload: dict) -> dict:
@@ -88,7 +93,7 @@ if __name__ == "__main__":
         from scenarios import scenario_passengers_1, scenario_ibu_1
         scenario = scenario_ibu_1
         set_trace(scenario.request_payload, True)
-        response_json = call_decision_service(connection=Connection(
+        response_json: dict = call_decision_service(connection=Connection(
             base_url='http://localhost:9060/DecisionService/rest',
             username='odmAdmin',
             password='odmAdmin',

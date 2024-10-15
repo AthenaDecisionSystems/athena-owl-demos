@@ -1,16 +1,21 @@
-# Call update_forward_refs()
-# Branch
-# Rule at top level package
-
-
-from typing import Optional, Callable
-
-from abc import ABC, abstractmethod
-from pydantic import BaseModel, json
-
+# TODO:
+# - Branch in Decision Center
+# - Rule at top level package
+import os
 # Explore the REST API: http://localhost:9060/decisioncenter-api/swagger-ui/index.html
 
-from ibu.itg.decisions.call_api import Connection
+
+from typing import Optional
+
+from abc import ABC, abstractmethod
+from pydantic import BaseModel
+
+try:
+    mode = "DEV"
+    from call_api import Connection
+except ImportError:
+    mode = "PACK"
+    from ibu.itg.decisions.call_api import Connection
 
 
 # MODEL
@@ -140,7 +145,15 @@ class Project(Artefact):
 
         all_rules_and_dts: list[RuleOrDT] = [
             RuleOrDT(id=r["id"], name=r["name"], fully_qualified_name=r["name"], rule_package=r["rulePackage"],
-                     html=r["html"], documentation=ensure_not_none(r["documentation"])) for r in rules_and_dts]
+                     html=r["html"],
+                     documentation=Documentation.parse_raw_documentation(ensure_not_none(r["documentation"]))) for r in
+            rules_and_dts]
+
+        for r in rules_and_dts:
+            raw_documentation = ensure_not_none(r["documentation"])
+            (content, format2) = Documentation.parse_raw_documentation(raw_documentation)
+            print("content -> ", content)
+            print("format -> ", format2)
 
         for rule_or_dt in all_rules_and_dts:
             for folder in self.folders:
@@ -175,10 +188,65 @@ class Folder(Artefact):
             rule_or_dt.fully_qualified_name = self.fully_qualified_name + "." + rule_or_dt.name
 
 
+class Documentation(BaseModel):
+    content: str
+    format: str
+
+
+    @staticmethod
+    def parse_raw_documentation(raw_documentation: str) -> 'Documentation':  # returns (content, format)
+        lines: list[str] = raw_documentation.strip().splitlines()
+
+        # Initialize variables
+        first_block = []
+        third_block = []
+        format_line = None
+        begin_found = False
+        end_found = False
+        print("ok0")
+
+        # States
+        current_block = 'first'
+
+        for line in lines:
+            if current_block == 'first':
+                if line.strip() == "EXPLANATION":
+                    begin_found = True
+                    current_block = 'third'  # Move to third block
+                else:
+                    first_block.append(line.strip())
+
+            elif current_block == 'third':
+                if line.strip() == "END OF EXPLANATION":
+                    end_found = True
+                    current_block = 'fifth'
+                else:
+                    third_block.append(line.strip())
+
+            elif current_block == 'fifth':
+                if line.startswith("EXPLANATION FORMAT:"):
+                    format_line = line[len("EXPLANATION FORMAT:"):].strip()
+        print("ok1")
+
+        # Check for errors
+        if not begin_found:
+            print("Error: 'EXPLANATION' keyword not found.")
+            content, format2 = raw_documentation, "txt"
+        elif not end_found:
+            print("Error: 'END OF EXPLANATION' keyword not found.")
+            content, format2 = raw_documentation, "txt"
+        elif format_line is None:  # None or empty string ("")
+            content, format2 = raw_documentation, "txt"
+        else:
+            content, format2 = '\n'.join(third_block), format_line
+        print("ok10")
+        return Documentation(content=content, format=format2)
+
+
 class RuleOrDT(Artefact):
     rule_package: str
     html: str
-    documentation: str
+    documentation: Documentation
 
     # @override
     def get_direct_children(self) -> list[Artefact]:
@@ -193,21 +261,26 @@ def test1():
         verbose=True
     )
 
-    try:
-        decision_service_name = 'ds-insurance-pc-claims-nba'
-        decision_center_extract0 = DecisionCenterExtract.create(decision_service_name, connection)
+    # try:
+    print("Current Directory:", os.getcwd())
 
-        path = f'json/{decision_service_name}.json'
-        print("a")
-        decision_center_extract0.save_to_file(path)
-        print("b")
-        decision_center_extract = DecisionCenterExtract.read_from_file(path)
-        print("c")
+    decision_service_name = 'ds-insurance-pc-claims-nba'
+    decision_center_extract0 = DecisionCenterExtract.create(decision_service_name, connection)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        print("Quitting gently")
-        return
+    if mode == "DEV":
+        path = f'../../../../../decisions/{decision_service_name}.json'
+    else:
+        path = f'{decision_service_name}.json'
+    print("a")
+    decision_center_extract0.save_to_file(path)
+    print("b")
+    decision_center_extract = DecisionCenterExtract.read_from_file(path)
+    print("c")
+
+    # except Exception as e:
+    #     print(f"An error occurred: {e}")
+    #     print("Quitting gently")
+    #     return
 
     decision_center_extract.print()
 
@@ -234,3 +307,4 @@ DecisionService.update_forward_refs()
 Project.update_forward_refs()
 Folder.update_forward_refs()
 RuleOrDT.update_forward_refs()
+Documentation.update_forward_refs()

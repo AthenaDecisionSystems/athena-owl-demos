@@ -3,15 +3,22 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract, RuleOrDT
-from ibu.itg.decisions.decision_service_traceability import TraceArtefact, set_trace
+try:
+    mode = "DEV"
+    from decision_center_extraction import DecisionCenterExtract, RuleOrDT, \
+        Documentation
+    from decision_service_traceability import TraceArtefact, set_trace
+except ImportError:
+    mode = "PACK"
+    from ibu.itg.decisions.decision_center_extraction import DecisionCenterExtract, RuleOrDT, Documentation
+    from ibu.itg.decisions.decision_service_traceability import TraceArtefact, set_trace
 
 
 class ExplanationArtefact(BaseModel):
     name: str
     type_: str  # "RULE" or "DT"
     html: str
-    documentation: str
+    documentation: Documentation
 
     # def __init__(self, name: str, type_: str, html: str, documentation: str):
     #     self.name = name
@@ -33,6 +40,7 @@ class ExplanationArtefactList(BaseModel):
             rule: Optional[RuleOrDT] = decision_center_extract.find_rule_or_dt_by_fully_qualified_name(
                 trace_artefact.name)
             if rule:
+                print ("type(rule.documentation)",type(rule.documentation))
                 html_artefact = ExplanationArtefact(name=trace_artefact.name, type_=trace_artefact.type_,
                                                     html=rule.html,
                                                     documentation=rule.documentation)
@@ -69,7 +77,10 @@ def test():
             decision_center_extract = DecisionCenterExtract.create(decision_service_name, connection_dc)
             decision_center_extract.print()
         else:
-            path = f'json/{decision_service_name}.json'
+            if mode == "DEV":
+                path = f'../../../../../decisions/{decision_service_name}.json'
+            else:
+                path = f'{decision_service_name}.json'
             decision_center_extract = DecisionCenterExtract.read_from_file(path)
 
     except Exception as e:
