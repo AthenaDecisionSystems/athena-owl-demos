@@ -52,6 +52,17 @@ class Test_ibu_agent(unittest.TestCase):
         print(f"\n\t--> {rep}")
         assert "information" in rep.messages[0].content.lower()
 
+    def test_calling_ibu_agent_with_hello(self):
+        print("\n--- test to debug something specific")
+        query="hello"
+        cc=self.define_conversation_control(query, "ibu_agent")
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
+        assert rep.messages[0].content
+        cc.chat_history=rep.chat_history
+        rep = get_or_start_conversation(cc)
+        print(f"\n\t--> {rep}")
+
     def test_2_classify_agent_for_complaint_query(self):
         print("\n--- test_a_complaint_query to classify the query to complaint")
         query="My name is Sonya Smith, I have problem with my claim 2 for my water damage, I still did not get a status from you since 2 months  "
