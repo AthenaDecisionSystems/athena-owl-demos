@@ -14,6 +14,23 @@ ibu_agent:
     - ibu_best_action
     - rag_insurance_corpus
 
+ibu_agent2:
+  name: IBU Insurance Agent
+  description:  OpenAI based agent with tools to support the IBU insurance demo and variable model 
+  runner_class_name: ibu.llm.agents.ibu_agent_lg2.IBUInsuranceAgent
+  hidden_to_ui: false
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+    - ibu_client_by_id
+    - ibu_client_by_name
+    - ibu_claim_by_id
+    - ibu_claim_status_by_user_name
+    - ibu_best_action
+    - tavily
+    - rag_insurance_corpus
+
 ibu_classify_query_agent:
   name: IBU Classify Query Agent
   description: OpenAI Agent to classify a query as Information or Complaint
@@ -76,18 +93,3 @@ ibu_complaint_agent:
     - ibu_best_action
     - rag_insurance_corpus
 
-WatsonxWithTools:
-  name: Watsonx with Tools
-  description: Service based on Watsonx using Mistral Large for tool calling
-  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
-  modelClassName: langchain_ibm.ChatWatsonx
-  modelName: mistralai/mistral-large
-  prompt_ref: ibu_insurance_mistral_prompt
-  temperature: 0
-  top_k: 50
-  top_p: 1
-  hidden_to_ui: false
-  tools:
-    - ibu_client_by_name
-    - ibu_claim_by_id
-    - ibu_best_action
