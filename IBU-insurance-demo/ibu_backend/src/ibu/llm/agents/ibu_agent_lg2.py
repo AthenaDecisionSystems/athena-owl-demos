@@ -4,7 +4,7 @@ Copyright 2024 Athena Decision Systems
 """
 import json
 import logging
-from typing import Annotated, Any, Optional, Literal, List
+from typing import Annotated, Any, Optional, Literal, List, Union
 from typing_extensions import TypedDict
 import langchain
 from langchain_core.prompts import BasePromptTemplate
@@ -51,6 +51,7 @@ class AgentState(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     documents: List[str]
     input: str
+    path: str
 
 def define_classifier_model():
     #return get_agent_manager().build_agent_runner("ibu_classify_query_agent","en")
@@ -60,7 +61,8 @@ def define_information_model():
     return get_agent_manager().build_agent_runner("ibu_information_agent","en")
 
 def define_complaint_agent():
-    return get_agent_manager().build_agent_runner("ibu_complaint_agent","en")
+    agent_runner = get_agent_manager().build_agent_runner("ibu_complaint_agent2","en")
+    return agent_runner.get_runnable().agent
 
 def format_docs(docs):
     list_messages = []  
@@ -102,7 +104,17 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             "process_complaint",
             tools_condition
         )
+        graph_builder.add_conditional_edges(
+            "tools",
+            self._assess_tools_condition,
+            {
+                "information": "gather_information",
+                "complaint": "process_complaint",
+                "other": END
+            },
+        )
         graph_builder.add_edge("tools", "process_complaint")
+        graph_builder.add_edge("tools", "gather_information")
         self.checkpointer=MemorySaver()
         self.graph = graph_builder.compile(checkpointer=self.checkpointer)
 
@@ -139,7 +151,7 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             return "complaint"
         else:
             return "other"
-        # TODO Decide what to do if none of this 
+
     
     def process_complaint(self, state):  
         messages = state['messages']
@@ -149,14 +161,31 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         else:
             state["documents"] = []
         documents = state["documents"]
-        message = self.complaint_model.invoke({"input": [question],
+        messages = self.complaint_model.runnable.invoke({"input": [question],
                                                "context": format_docs(documents),
-                                               "chat_history": messages},
-                                                self.config["configurable"]["thread_id"])
-        if message.get("output"):
-            return {'messages': [AIMessage(content=message["output"])]}
-        return {'messages': [message]}
+                                               "chat_history": messages,
+                                                "intermediate_steps": [] }
+                                               )
+        if not self.use_decision_svc:
+            for msg in messages:
+                if msg.tool == "ibu_best_action":
+                    messages.remove(msg)
+
+        return {'messages': messages,'path': 'complaint'}
     
+    def _assess_tools_condition(self,
+                state: Union[list[AnyMessage], dict[str, Any]],
+                ) -> Literal["tools", "__end__"]:
+        if messages := state.get("messages", []):
+            ai_message = messages[-1]
+        else:
+            raise ValueError(f"No messages found in input state to tool_edge: {state}")
+        if hasattr(ai_message, "tool_calls") and len(ai_message.tool_calls) > 0:
+            return "tools"
+        else:
+            return state.get("path")
+    
+
     # ==================== overrides =============================
     def invoke(self, request, thread_id: Optional[str], **kwargs) -> dict[str, Any] | Any:
         if kwargs["vector_store"]:
