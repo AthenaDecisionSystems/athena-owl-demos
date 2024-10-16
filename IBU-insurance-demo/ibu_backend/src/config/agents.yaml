@@ -31,6 +31,17 @@ ibu_agent2:
     - tavily
     - rag_insurance_corpus
 
+ibu_agent3:
+  name: IBU Insurance Agent 3.0 (Hybrid)
+  description:  OpenAI based agent with tools and trustable decisions
+  runner_class_name: ibu.llm.agents.ibu_agent_lg3.IBUInsuranceAgent
+  hidden_to_ui: false
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  tools:
+    - ibu_client_by_id
+
 ibu_classify_query_agent:
   name: IBU Classify Query Agent
   description: OpenAI Agent to classify a query as Information or Complaint
@@ -74,6 +85,20 @@ ibu_information_agent:
     - tavily
     - rag_insurance_corpus
 
+extract_info_to_decide:
+  name: Extract information need by the next best action decision service
+  description: OpenAI agent to extract data from input query
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  modelClassName: langchain_openai.ChatOpenAI
+  modelName: gpt-4o-2024-08-06
+  prompt_ref: extract_info_to_decide_prompt
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  hidden_to_ui: true
+  tools:
+    - ibu_client_by_id
+
 ibu_complaint_agent:
   name: RAG with Decision Agent
   description: OpenAI IBU agent with RAG and insurance tools with decision service
@@ -93,3 +118,21 @@ ibu_complaint_agent:
     - ibu_best_action
     - rag_insurance_corpus
 
+ibu_complaint_agent2:
+  name: RAG with Decision Agent
+  description: OpenAI IBU agent with RAG and insurance tools with decision service
+  runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
+  modelClassName: langchain_openai.ChatOpenAI
+  modelName: gpt-4o-2024-08-06
+  prompt_ref: openai_insurance_with_tool
+  temperature: 0
+  top_k: 1
+  top_p: 1
+  hidden_to_ui: true
+  tools:
+    - ibu_client_by_id
+    - ibu_client_by_name
+    - ibu_claim_by_id
+    - ibu_claim_status_by_user_name
+    - ibu_best_action
+    - rag_insurance_corpus

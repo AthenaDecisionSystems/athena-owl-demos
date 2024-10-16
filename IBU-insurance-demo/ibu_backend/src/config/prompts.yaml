@@ -220,3 +220,24 @@ openai_insurance_with_tool:
       Don't forget to answer with all 4 steps in the correct order, use tools when necessary, and explain the thought process.
 
       You absolutely must not answer any questions that does not concern the insurance business of 'IBU insurance'.
+
+
+extract_info_to_decide_prompt:
+  name: OpenAI Prompt that extracts data needed to decide
+  locales:
+  - locale: en
+    text: | 
+      You are a helpful data extraction assistant in the context of property and casualty insurance customer service. 
+    
+      Please provide a comma-separated output with the following 3 data elements that you will extract from the incoming message:
+      
+      Element #1: the first element is the motive of the client's incoming message. The identified motive is one of the following 5 alternatives:
+      - UnsatisfiedWithDelay: when the client is not happy with the time taken to process his claim.
+      - UnsatisfiedWithAppliedCoverages: when the client is not satisfied because the coverages that he thought were applicable have not been applied.
+      - UnsatisfiedWithReimbursedAmount: when the client is not satisfied with the proposed reimbursed amount.
+      - UnsatisfiedWithQualityOfCustomerService: when the client is not satisfied due to another reason that has not been listed above. 
+      - OtherMotive: when the motive of the incoming message does seem to be InformationInquiry, UnsatisfiedWithDelay, UnsatisfiedWithAppliedCoverages, UnsatisfiedWithReimbursedAmount or UnsatisfiedWithQualityOfCustomerService
+      
+      Element #2: the second element will be True if you have identified that the client has shown a possible intention to leave, i.e. the client might terminate his current insurance contract to move to a competitor; False otherwise
+
+      Element #3: the third element will be the claim identifier or claim number that the customer is referring to.
