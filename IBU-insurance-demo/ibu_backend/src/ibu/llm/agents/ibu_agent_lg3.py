@@ -3,6 +3,8 @@ Copyright 2024 Athena Decision Systems
 @author Jerome Boyer
 """
 import json
+from fastapi.encoders import jsonable_encoder
+
 import logging
 from typing import Annotated, Any, Optional, Literal, List, Union
 from typing_extensions import TypedDict
@@ -25,9 +27,9 @@ from athena.llm.tools.tool_mgr import OwlToolEntity
 from athena.routers.dto_models import ConversationControl, ResponseControl
 from ibu.app_settings import get_config
 
-from ibu.itg.ds.ComplaintHandling_generated_model import Motive
+from ibu.itg.ds.ComplaintHandling_generated_model import Motive, Claim
 from pydantic import BaseModel
-from ibu.itg.decisions.next_best_action_ds_client import callDecisionService
+from ibu.itg.decisions.next_best_action_ds_client import callDecisionServiceWithClaim
 from ibu.llm.tools.client_tools import build_or_get_instantiate_claim_repo
 
 
@@ -41,6 +43,20 @@ for tool calling and then let one of the Tool node performing the function execu
 Use memory to keep state of the conversation
 """  
 
+
+"""
+TODO:
+- RAG only scenario must not call the DS and if possible, hallucinate (no mention to voucher)   ====> EXCEPTION
+- DS only scenario must provide a clear recommendations with all the 4 steps and the explanations
+- improve output content
+- subsequent queries, e.g. what are the affiliated providers? => issue with API key on JC machine
+- as a user, I want to know the nodes executed in the graph and why a particular was followed
+- improve output style. we can use md and we could leverage: StyledMessage?
+
+-----
+- as a developer, I want a fine-grained view of the execution
+
+"""
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
@@ -72,6 +88,8 @@ class AgentState(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     documents: List[str]
     complaint_info: Union[None, ComplaintInfo]
+    claim: Union[None, Claim]
+    #node_history: List[str]
     input: str
     path: str
 
@@ -97,6 +115,20 @@ def format_docs(docs):
         list_messages.append(doc.page_content)
     return list_messages
 
+
+def verbalize_en(motive: Motive) -> str:
+    if motive == Motive.UnsatisfiedWithDelay:
+        return 'is that the customer is unsatisfied with the delay of claim processing'
+    elif motive == Motive.UnsatisfiedWithReimbursedAmount:
+        return 'is that the customer is unsatisfied with the reimbursed amount'
+    elif motive == Motive.UnsatisfiedWithAppliedCoverages:
+        return 'is that the customer is unsatisfied with the applied coverages'
+    elif motive == Motive.UnsatisfiedWithQualityOfCustomerService:
+        return 'is that the customer if unsatisfied with the quality of customer service'
+    elif motive == Motive.InformationInquiry:
+        return 'is that the customer makes an information inquiry'
+    else:
+        return "has not been classified specifically."
 
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
 
@@ -139,22 +171,6 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         self.graph = graph_builder.compile(checkpointer=self.checkpointer)
 
    
-    def process_information_query(self, state):
-        question = state["input"].content
-        messages = state['messages']
-        #uestion= messages[-1]
-        if self.use_vector_store and self.rag_retriever:
-            state["documents"] = self.rag_retriever.invoke(question)
-        else:
-            state["documents"] = []
-        documents = state["documents"]
-
-        message = self.information_q_model.invoke({"input": [question], 
-                                                   "context": format_docs(documents),
-                                                   "chat_history": messages},
-                                                    self.config["configurable"]["thread_id"]) # dict
-        return {'messages': [AIMessage(content=message["output"])]}
-    
     def process_classify_query(self, state: AgentState):
         messages = state['messages']
         question = state["input"].content
@@ -167,7 +183,6 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
             LOGGER.debug("---ROUTE QUESTION TO INFORMATION---")
             return "information"
         elif "complaint"  in message.lower():
-            self.use_decision_svc = True
             if self.use_decision_svc:
                 LOGGER.debug("---ROUTE QUESTION TO Complaint handling with decision ---")
                 return "complaint_with_decision"
@@ -177,21 +192,62 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         else:
             return "other"
 
-    
-    def process_complaint(self, state):  
-        messages = state['messages']
+    def process_information_query(self, state):
+        LOGGER.info("--- graph.process_information_query")
+
         question = state["input"].content
+        messages = state['messages']
+
+        #uestion= messages[-1]
         if self.use_vector_store and self.rag_retriever:
             state["documents"] = self.rag_retriever.invoke(question)
         else:
             state["documents"] = []
         documents = state["documents"]
+
+        LOGGER.info("BEFORE RAG in process_information_query")
+        message = self.information_q_model.invoke({"input": [question], 
+                                                   "context": format_docs(documents),
+                                                   "chat_history": messages},
+                                                    self.config["configurable"]["thread_id"]) # dict
+        LOGGER.info("AFTER RAG in process_information_query")
+        return {'messages': [AIMessage(content=message["output"])]}
+    
+    
+    def process_complaint(self, state):  
+        LOGGER.info("--- graph.process_complaint")
+        messages = state['messages']
+        question = state["input"].content
+        if self.use_vector_store and self.rag_retriever:
+            LOGGER.info("We have founded some documents")
+            state["documents"] = self.rag_retriever.invoke(question)
+        else:
+            LOGGER.warning("We have not founded any documents for the RAG")
+            state["documents"] = []
+        documents = state["documents"]
+
+        LOGGER.info("BEFORE RAG in process_complaint")
+        LOGGER.info(f"question: {question}")
+        LOGGER.info(f"format_docs(documents): {format_docs(documents)}")
+        LOGGER.info(f"messages: {messages}")
+        LOGGER.info(f"self.config['configurable']['thread_id']: {self.config['configurable']['thread_id']}")
+
+        """
         messages = self.complaint_model.runnable.invoke({"input": [question],
                                                "context": format_docs(documents),
                                                "chat_history": messages,
                                                 "intermediate_steps": [] }
                                                )
+        """
+        messages = self.complaint_model.runnable.invoke({
+                                                    "input": [question], 
+                                                    "context": format_docs(documents),
+                                                    "chat_history": messages,
+                                                    "intermediate_steps": [] 
+                                                   },
+                                                    self.config["configurable"]["thread_id"]) # dict
         
+        LOGGER.info("AFTER RAG in process_complaint")        
         return {'messages': messages,'path': 'complaint'}
     
     def extract_info(self, state):  
@@ -206,6 +262,9 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                                 "intermediate_steps": [] }
                                                )
 
+        # TODO: wish for the Athena Agent Framework
+        # Creating an instance of a ComplaintInfo object could be the job of a PydanticOutputParser
+        # As a developer, I want to be able to specify an output parser for an agent declaratively by adding a line in the agents.yaml file.
         output_elements = result.return_values['output'].split(',')
         motive = output_elements[0]
         intention_to_leave = output_elements[1] == "True"
@@ -223,13 +282,40 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         LOGGER.info(f"--- Calling the decision service with claim {state['complaint_info'].claim_id} ---")
 
         config = get_config()
-        result = callDecisionService(config, build_or_get_instantiate_claim_repo(), state['complaint_info'].claim_id, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
+        claim_data_repo = build_or_get_instantiate_claim_repo()
 
-        LOGGER.info(result)
+        load_claim = False
+        print(state)
+        if 'claim' in state.keys() and state['claim'] != None:
+            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is already in the LG context")
+            claim = state['claim']
+        else:
+            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is loaded from the backend data APIs")
+            claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
+            load_claim = True
+    
+        result = callDecisionServiceWithClaim(config, claim, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
 
-        return {
-            'messages': "Sonya Smith nous fait chier, elle arrête pas de se plaindre"
-        }
+        LOGGER.info("-------------")
+        LOGGER.info(f"claim type: {type(claim)}")
+        LOGGER.info(f"result: {result}")
+
+        claim_json_data = jsonable_encoder(claim)
+
+        step1 = f"STEP 1: the reason for the incoming communication {verbalize_en(state['complaint_info'].motive)}.\n\n"
+        step2 = f"STEP 2: the customer has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
+        step3 = f"STEP 3: the claim id used as reference is #{state['complaint_info'].claim_id}.\n {json.dumps(claim_json_data, indent=4)}\n\n"
+
+        if load_claim:
+            return {
+                'messages': step1 + step2 + step3 + "STEP 4: " + result,
+                'claim': claim
+            }
+        else:
+            return {
+                'messages': step1 + step2 + step3 + "STEP 4: " + result
+            }
+
 
 
     # ==================== overrides =============================

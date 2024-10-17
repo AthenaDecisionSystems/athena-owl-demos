@@ -203,12 +203,13 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
         return result
 
 
-def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool,
-                        locale: str = "en"):
-    """
-    Delegate the next best action to an external decision service
-    """
-    LOGGER.info(f"\n\n callingDecisionService")
+def callDecisionServiceWithClaim(config, 
+                                 claim: Claim, 
+                                 client_motive: Motive, 
+                                 intentionToLeave: bool,
+                                 locale: str = "en"):
+
+    payload = _prepare_odm_payload(claim, client_motive, intentionToLeave)
 
     try:
         decision_center_extract = DecisionCenterExtract.read_from_file('./decisions/ds-insurance-pc-claims-nba.json')
@@ -216,10 +217,7 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
         LOGGER.error(f"callDecisionService> An error occurred: {e}")
         LOGGER.error(f"callDecisionService> Rule traceability will be disabled")
         decision_center_extract = None
-
-    claim = claim_repo.get_claim(claim_id).model_dump()
-    payload = _prepare_odm_payload(claim, client_motive, intentionToLeave)
-
+        
     if decision_center_extract:
         set_trace(payload, True)
 
@@ -250,6 +248,21 @@ def callDecisionService(config, claim_repo, claim_id: int, client_motive: Motive
     else:
         LOGGER.error("callDecisionService> ** Error during decision service call:", response)
         return "Error during decision service call"
+    
+    
+def callDecisionService(config, 
+                        claim_repo, 
+                        claim_id: int, 
+                        client_motive: Motive, 
+                        intentionToLeave: bool,
+                        locale: str = "en"):
+    """
+    Delegate the next best action to an external decision service
+    """
+    LOGGER.info(f"\n\n callingDecisionService")
+
+    claim = claim_repo.get_claim(claim_id).model_dump()
+    return callDecisionServiceWithClaim(config, claim, client_motive, intentionToLeave, locale)
 
 
 def callDecisionServiceMock(config, claim_repo, claim_id: int, client_motive: Motive, intentionToLeave: bool,
