@@ -46,26 +46,45 @@ Use memory to keep state of the conversation
 
 """
 TODO:
-- RAG only scenario must not call the DS and if possible, hallucinate (no mention to voucher)   ====> EXCEPTION
-- DS only scenario must provide a clear recommendations with all the 4 steps and the explanations
+- Explain that we are in a scenario where the expected action is a Voucher according to the retention rules
+- Provide scenario script
+x RAG only scenario must not call the DS and if possible, hallucinate (no mention to voucher)
+x DS scenario must provide a clear recommendations with all the 4 steps and the explanations
+x DS and RAG scenario for subsequent queries, e.g. what are the affiliated providers?
+- update the Voucher rule in ODM and the explanation in the documentation
 - improve output content
-- subsequent queries, e.g. what are the affiliated providers? => issue with API key on JC machine
-- as a user, I want to know the nodes executed in the graph and why a particular was followed
-- improve output style. we can use md and we could leverage: StyledMessage?
+- show list of documents in the vector store: Jerome + Joel
+- user role to see all the frontend pages simultaneously: Joel
 
 -----
+- when is the langgraph context reinitialized? when we provide a new thread_id
+- improve output style. we can use md and we could leverage: StyledMessage?
+- as a user, I want to know the nodes executed in the graph and why a particular path was followed
 - as a developer, I want a fine-grained view of the execution
 
 """
+
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 LOGGER = logging.getLogger(__name__)
+
+class RedInfoFormatter(logging.Formatter):
+    def format(self, record):
+        if record.levelno == logging.INFO:
+            record.msg = f"\033[91m{record.msg}\033[0m"  # ANSI escape code for red
+        return super().format(record)
+
+# Modify the logger to use the RedInfoFormatter for INFO level logs
+handler = logging.StreamHandler()
+handler.setFormatter(RedInfoFormatter('%(asctime)s %(levelname)-8s %(message)s'))
+LOGGER.addHandler(handler)
+
 if get_config().logging_level == "DEBUG":
     langchain.debug=True
-    LOGGER.setLevel(logging.DEBUG)
+    LOGGER.setLevel(logging.DEBUG)    
 
 
 """ motive
@@ -102,7 +121,8 @@ def define_information_model():
 
 def define_complaint_agent():
     agent_runner = get_agent_manager().build_agent_runner("ibu_complaint_agent2","en")
-    return agent_runner.get_runnable().agent
+    return agent_runner
+    #return agent_runner.get_runnable().agent
 
 
 def define_extract_info_agent():
@@ -198,28 +218,37 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         question = state["input"].content
         messages = state['messages']
 
-        #uestion= messages[-1]
         if self.use_vector_store and self.rag_retriever:
+            LOGGER.info("We are accessing the vector store to look for some documents")
             state["documents"] = self.rag_retriever.invoke(question)
         else:
+            LOGGER.warning("We have not founded any documents for the RAG")
             state["documents"] = []
         documents = state["documents"]
 
         LOGGER.info("BEFORE RAG in process_information_query")
-        message = self.information_q_model.invoke({"input": [question], 
+        LOGGER.info(f"question: {question}")
+        LOGGER.info(f"format_docs(documents): {format_docs(documents)}")
+        LOGGER.info(f"messages: {messages}")
+        LOGGER.info(f"self.config['configurable']['thread_id']: {self.config['configurable']['thread_id']}")
+        message = self.information_q_model.invoke({
+                                                    "input": [question], 
                                                    "context": format_docs(documents),
-                                                   "chat_history": messages},
-                                                    self.config["configurable"]["thread_id"]) # dict
+                                                   "chat_history": messages
+                                                  },
+                                                  self.config["configurable"]["thread_id"])
         LOGGER.info("AFTER RAG in process_information_query")
         return {'messages': [AIMessage(content=message["output"])]}
     
     
     def process_complaint(self, state):  
         LOGGER.info("--- graph.process_complaint")
-        messages = state['messages']
+
         question = state["input"].content
+        messages = state['messages']
+
         if self.use_vector_store and self.rag_retriever:
-            LOGGER.info("We have founded some documents")
+            LOGGER.info("We are accessing the vector store to look for some documents")
             state["documents"] = self.rag_retriever.invoke(question)
         else:
             LOGGER.warning("We have not founded any documents for the RAG")
@@ -232,23 +261,16 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         LOGGER.info(f"messages: {messages}")
         LOGGER.info(f"self.config['configurable']['thread_id']: {self.config['configurable']['thread_id']}")
 
-        """
-        messages = self.complaint_model.runnable.invoke({"input": [question],
-                                               "context": format_docs(documents),
-                                               "chat_history": messages,
-                                                "intermediate_steps": [] }
-                                               )
-        """
-        messages = self.complaint_model.runnable.invoke({
+        chat_history = messages
+        message = self.complaint_model.invoke({
                                                     "input": [question], 
                                                     "context": format_docs(documents),
-                                                    "chat_history": messages,
-                                                    "intermediate_steps": [] 
-                                                   },
-                                                    self.config["configurable"]["thread_id"]) # dict
+                                                    "chat_history": chat_history #, "intermediate_steps": [] 
+                                                    },
+                                                    self.config["configurable"]["thread_id"])
         
         LOGGER.info("AFTER RAG in process_complaint")        
-        return {'messages': messages,'path': 'complaint'}
+        return {'messages': [AIMessage(content=message["output"])]}
     
     def extract_info(self, state):  
         LOGGER.warning("--- Extracting information ---")

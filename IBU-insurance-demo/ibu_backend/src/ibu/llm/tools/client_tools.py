@@ -97,8 +97,10 @@ def get_claim_status_by_user_name(firstname: str, lastname: str):
 
 
 def search_corpus(query: str):
+    LOGGER.info(f"/// search_corpus with query: {query}")
     content_mgt= get_content_mgr()
-    return content_mgt.search(get_config().owl_agent_content_collection_name, query,3)
+    LOGGER.info(f"/// owl_agent_content_collection_name: {get_config().owl_agent_content_collection_name}")
+    return content_mgt.search(get_config().owl_agent_content_collection_name, query,1)
 
         
 class IbuInsuranceToolInstanceFactory(DefaultToolInstanceFactory):
