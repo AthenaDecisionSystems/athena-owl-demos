@@ -53,8 +53,8 @@ TODO:
 x RAG only scenario must not call the DS and if possible, hallucinate (no mention to voucher)
 x DS scenario must provide a clear recommendations with all the 4 steps and the explanations
 x DS and RAG scenario for subsequent queries, e.g. what are the affiliated providers?
-- update the Voucher rule in ODM and the explanation in the documentation
-- improve output content (customer situation): JC
+x update the Voucher rule in ODM and the explanation in the documentation
+x improve output content (customer situation): JC
 - show list of documents in the vector store: Jerome + Joel
 - fix bug reported by Harley
 x RAG only does not return affiliated providers (lack of context?)
@@ -404,16 +404,10 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         config = get_config()
         claim_data_repo = build_or_get_instantiate_claim_repo()
 
-        load_claim = False
-        print(state)
-        if 'claim' in state.keys() and state['claim'] != None:
-            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is already in the LG context")
-            claim = state['claim']
-        else:
-            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is loaded from the backend data APIs")
-            claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
-            load_claim = True
-    
+        print(state)    
+        LOGGER.info(f"---- claim {state['complaint_info'].claim_id} will be loaded from the backend data APIs")
+        claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
+
         result = callDecisionServiceWithClaim(config, claim, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
 
         LOGGER.info("-------------")
@@ -427,16 +421,10 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         step2 = f"**CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
         step3 = f"**CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
 
-        if load_claim:
-            return {
-                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
-                'claim': claim
-            }
-        else:
-            return {
-                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
-            }
-
+        return {
+            'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+            'claim': claim
+        }
 
 
     # ==================== overrides =============================
@@ -466,4 +454,3 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                 decision_svc = controller.callWithDecisionService)   # AIMessage
         resp = self.build_response(controller,agent_resp)
         return resp
-    
