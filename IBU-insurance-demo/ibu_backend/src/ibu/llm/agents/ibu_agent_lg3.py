@@ -404,9 +404,15 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         config = get_config()
         claim_data_repo = build_or_get_instantiate_claim_repo()
 
-        print(state)    
-        LOGGER.info(f"---- claim {state['complaint_info'].claim_id} will be loaded from the backend data APIs")
-        claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
+        load_claim = False
+        print(state)
+        if 'claim' in state.keys() and state['claim'] != None and state['claim'].id == state['complaint_info'].claim_id:
+            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is already in the LG context")
+            claim = state['claim']
+        else:
+            LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is loaded from the backend data APIs")
+            claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
+            load_claim = True
 
         result = callDecisionServiceWithClaim(config, claim, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
 
@@ -421,10 +427,16 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         step2 = f"**CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
         step3 = f"**CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
 
-        return {
-            'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
-            'claim': claim
-        }
+        if load_claim:
+            return {
+                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+                'claim': claim
+            }
+        else:
+            return {
+                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+            }
+
 
 
     # ==================== overrides =============================
@@ -454,3 +466,4 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
                                 decision_svc = controller.callWithDecisionService)   # AIMessage
         resp = self.build_response(controller,agent_resp)
         return resp
+    
