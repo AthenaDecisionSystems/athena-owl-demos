@@ -52,9 +52,9 @@ x RAG only scenario must not call the DS and if possible, hallucinate (no mentio
 x DS scenario must provide a clear recommendations with all the 4 steps and the explanations
 x DS and RAG scenario for subsequent queries, e.g. what are the affiliated providers?
 - update the Voucher rule in ODM and the explanation in the documentation
-- improve output content
+- improve output content (customer situation): JC
 - show list of documents in the vector store: Jerome + Joel
-- user role to see all the frontend pages simultaneously: Joel
+x user role to see all the frontend pages simultaneously: Joel
 
 -----
 - when is the langgraph context reinitialized? when we provide a new thread_id
@@ -138,17 +138,17 @@ def format_docs(docs):
 
 def verbalize_en(motive: Motive) -> str:
     if motive == Motive.UnsatisfiedWithDelay:
-        return 'is that the customer is unsatisfied with the delay of claim processing'
+        return 'is unsatisfied with the delay of claim processing'
     elif motive == Motive.UnsatisfiedWithReimbursedAmount:
-        return 'is that the customer is unsatisfied with the reimbursed amount'
+        return 'is unsatisfied with the reimbursed amount'
     elif motive == Motive.UnsatisfiedWithAppliedCoverages:
-        return 'is that the customer is unsatisfied with the applied coverages'
+        return 'is unsatisfied with the applied coverages'
     elif motive == Motive.UnsatisfiedWithQualityOfCustomerService:
-        return 'is that the customer if unsatisfied with the quality of customer service'
+        return 'is unsatisfied with the quality of customer service'
     elif motive == Motive.InformationInquiry:
-        return 'is that the customer makes an information inquiry'
+        return 'makes an information inquiry'
     else:
-        return "has not been classified specifically."
+        return "communication has not been classified specifically."
 
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
 
@@ -322,20 +322,23 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         LOGGER.info(f"claim type: {type(claim)}")
         LOGGER.info(f"result: {result}")
 
+        first_name = claim.policy.client.firstName
+        last_name = claim.policy.client.lastName
+
         claim_json_data = jsonable_encoder(claim)
 
-        step1 = f"STEP 1: the reason for the incoming communication {verbalize_en(state['complaint_info'].motive)}.\n\n"
-        step2 = f"STEP 2: the customer has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
-        step3 = f"STEP 3: the claim id used as reference is #{state['complaint_info'].claim_id}.\n {json.dumps(claim_json_data, indent=4)}\n\n"
+        step1 = f"- **REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
+        step2 = f"- **CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
+        step3 = f"- **CUSTOMER SITUATION:** the claim id used as reference is #{state['complaint_info'].claim_id}.\n {json.dumps(claim_json_data, indent=4)}\n\n"
 
         if load_claim:
             return {
-                'messages': step1 + step2 + step3 + "STEP 4: " + result,
+                'messages': step1 + step2 + step3 + "- **RECOMMENDED ACTIONS:** " + result,
                 'claim': claim
             }
         else:
             return {
-                'messages': step1 + step2 + step3 + "STEP 4: " + result
+                'messages': step1 + step2 + step3 + "- 4: " + result
             }
 
 
