@@ -45,7 +45,7 @@ com.athena.insurance.claims.datamodel.ClaimSettlementOffer.deductibleTotal#phras
 
 # com.athena.insurance.claims.datamodel.Client
 com.athena.insurance.claims.datamodel.Client#concept.label = client
-com.athena.insurance.claims.datamodel.Client.cltvPercentile#phrase.navigation = {CTLV percentile} of {this}
+com.athena.insurance.claims.datamodel.Client.cltvPercentile#phrase.navigation = {CLTV percentile} of {this}
 com.athena.insurance.claims.datamodel.Client.dateOfBirth#phrase.action = set the date of birth of {this} to {date of birth}
 com.athena.insurance.claims.datamodel.Client.dateOfBirth#phrase.navigation = {date of birth} of {this}
 com.athena.insurance.claims.datamodel.Client.firstContractDate#phrase.navigation = {first contract date} of {this}
@@ -79,8 +79,8 @@ com.athena.insurance.claims.datamodel.InsurancePolicy.client#phrase.action = set
 com.athena.insurance.claims.datamodel.InsurancePolicy.client#phrase.navigation = {client} of {this}
 com.athena.insurance.claims.datamodel.InsurancePolicy.coverages#phrase.action = set the coverages of {this} to {coverage}
 com.athena.insurance.claims.datamodel.InsurancePolicy.coverages#phrase.navigation = {coverage} of {this}
-com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.action = set the effective date of {this} to {effective date}
-com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.navigation = {effective date} of {this}
+com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.action = set the effective date of {this} to {activation date}
+com.athena.insurance.claims.datamodel.InsurancePolicy.effectiveDate#phrase.navigation = {activation date} of {this}
 com.athena.insurance.claims.datamodel.InsurancePolicy.expirationDate#phrase.action = set the expiration date of {this} to {expiration date}
 com.athena.insurance.claims.datamodel.InsurancePolicy.expirationDate#phrase.navigation = {expiration date} of {this}
 com.athena.insurance.claims.datamodel.InsurancePolicy.id#phrase.navigation = {id} of {this}

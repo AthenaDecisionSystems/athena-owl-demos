@@ -2,6 +2,13 @@
 <ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
   <name>RA-DEFAULT</name>
   <uuid>cb1afd91-aeab-45a5-85da-fa291cd771db</uuid>
+  <documentation><![CDATA[EXPLANATION
+### Reassign to claims expert (RA-DEFAULT)
+Forward the complaint to a claims expert when customers are in the following situation:
+- They recently said they are not satisfied with the reimbursed amount;  
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition><![CDATA[if
 	the motive of 'the last interaction' is UnsatisfiedWithReimbursedAmount 

@@ -3,7 +3,7 @@
   <name>AC-HOME-CONT-UP - Upgrade policy to include content</name>
   <uuid>396e8392-440b-444a-aa23-81b2fc56831e</uuid>
   <documentation><![CDATA[EXPLANATION
-# Upsell rule (AC-HOME-CONT-UP)
+### Upsell rule (AC-HOME-CONT-UP)
 An upsell to the home policy should be proposed to customers in the following situation:
 - Their policy covers only house structure, not the content;
 - They recently said they are not satisfied with the applied coverage;
@@ -17,6 +17,7 @@ EXPLANATION FORMAT: md]]></documentation>
   <definition><![CDATA[if
 	the subtype of 'the policy' is HomeBuildingsOnly  
 	and the motive of 'the last interaction' is UnsatisfiedWithAppliedCoverages 
+	and the propensity to upgrade policy of 'the client' is at least 0.4
 then
 	append upsell proposal "upgrade of the policy to include contents coverage" 
 		with explanation "AC-HOME-CONT-UP" ;]]></definition>

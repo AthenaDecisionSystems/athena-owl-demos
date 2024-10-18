@@ -3,7 +3,7 @@
   <name>HD-CCOM</name>
   <uuid>1043c6e8-74de-4fe7-ae1d-120803de32e6</uuid>
   <documentation><![CDATA[EXPLANATION
-# Handling delays in answering to customer - communication (HD-CCOM)
+### Handling delays in answering to customer - communication (HD-CCOM)
 | Delta vs target duration | Message to client       | Explanation | Reassign to                     |
 |--------------------------|-------------------------|-------------|---------------------------------|
 | ≥ 10                     | ApologyOnly             | HD-CCOM1    | SpecializedClientRepresentative |

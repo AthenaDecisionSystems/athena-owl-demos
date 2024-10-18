@@ -3,7 +3,7 @@
   <name>AC-AUTO-SUBV-DISC - Discount on substitution vehicle</name>
   <uuid>d68257f3-c375-4da1-8e38-c013de47753b</uuid>
   <documentation><![CDATA[EXPLANATION
-# Discount on loaner vehicle (AC-AUTO-SUBV-DISC)
+### Discount on loaner vehicle (AC-AUTO-SUBV-DISC)
 A discount on a loaner vehicle should be granted to customers in the following situation:
 - They stated they are not satisfied with the applied coverages
 - Their policy does not include the “loaner vehicle” clause
@@ -20,15 +20,14 @@ EXPLANATION FORMAT: md]]></documentation>
   <locale>en_US</locale>
   <definition><![CDATA[definitions
 	set 'the profitability threshold' to 50 ;
-	set 'extraDiscountForProfit' to (the CTLV percentile of 'the client' - 'the profitability threshold') / 2 ;
+	set 'extraDiscountForProfit' to ( the CLTV percentile of 'the client' - 'the profitability threshold' ) / 2 ;
 	set 'extraDiscountForChurner' to (when the last interaction of 'the complaint' shows intention to leave : 10 otherwise 0 ) ; 
 if
     the type of 'the policy' is Auto 
 	and the motive of 'the last interaction' is UnsatisfiedWithAppliedCoverages   
 	and there is no option in the options of 'the policy' 
 		where this option is SubstitutionVehicle , 
-	and the CTLV percentile of 'the client' is at least 'the profitability threshold' 
+	and the CLTV percentile of 'the client' is at least 'the profitability threshold' 
 then
-	discount "SubstitutionVehicle" by 10 + extraDiscountForProfit + extraDiscountForChurner % 
-		with explanation "AC-AUTO-SUBV-DISC" ;]]></definition>
+	discount "SubstitutionVehicle" by 10 + extraDiscountForProfit + extraDiscountForChurner % with explanation "AC-AUTO-SUBV-DISC" ;]]></definition>
 </ilog.rules.studio.model.brl:ActionRule>

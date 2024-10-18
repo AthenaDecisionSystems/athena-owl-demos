@@ -3,7 +3,7 @@
   <name>AC-AUTO-TPL - 3rd party policy and responsible for damage</name>
   <uuid>9b541321-b9e0-4391-8495-0700de01ce67</uuid>
   <documentation><![CDATA[EXPLANATION
-# Customer responsible for damage rule (AC-AUTO-TPL)
+### Customer responsible for damage rule (AC-AUTO-TPL)
 In case of a complaint of a customer with a third-party auto policy that is responsible for the damage, the complaint should be handled as indicated by the following table:
 
 | Intention to leave | CLTV percentile | Communicate with client         | Explanation   | Reassign to                      | Explanation   |
@@ -40,7 +40,7 @@ if
         </ConditionDefinition>
         <ConditionDefinition Id="C1">
           <ExpressionDefinition>
-            <Text><![CDATA[the CTLV percentile of 'the client' is <a number>]]></Text>
+            <Text><![CDATA[the CLTV percentile of 'the client' is <a number>]]></Text>
           </ExpressionDefinition>
         </ConditionDefinition>
       </ConditionDefinitions>

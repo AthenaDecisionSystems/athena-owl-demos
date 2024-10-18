@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ilog.rules.studio.model.brl:ActionRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ilog.rules.studio.model.brl="http://ilog.rules.studio/model/brl.ecore">
+  <name>AC-HOME-CONT-SMALL-VOUCHER</name>
+  <uuid>56fb022b-3b5a-4c3b-97b8-398186169b77</uuid>
+  <documentation><![CDATA[EXPLANATION
+### Voucher rule (AC-HOME-CONT-SMALL-VOUCHER)
+
+A voucher with a market value of up to 100€ should be offered to customers in the following situation:
+- Their policy covers only home structures, not the content ;
+- The reason of their interaction is that they are not satisfied with the coverage;
+- Their CLTV percentile is at least 50 and less than 60.
+
+END OF EXPLANATION  
+EXPLANATION FORMAT: md]]></documentation>
+  <locale>en_US</locale>
+  <definition><![CDATA[if
+	the subtype of 'the policy' is HomeBuildingsOnly  
+	and	the motive of 'the last interaction' is UnsatisfiedWithAppliedCoverages
+	and the CLTV percentile of 'the client' is at least 50 and less than 60
+then
+	append voucher of value 100 € with description "Voucher to spend with affiliate provider" 
+		and explanation code "AC-HOME-CONT-SMALL-VOUCHER" ;]]></definition>
+</ilog.rules.studio.model.brl:ActionRule>

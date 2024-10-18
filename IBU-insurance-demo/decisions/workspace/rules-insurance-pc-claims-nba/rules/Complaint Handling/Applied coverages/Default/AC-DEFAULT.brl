@@ -3,7 +3,7 @@
   <name>AC-DEFAULT</name>
   <uuid>cc204948-b4fe-42ed-8cda-f951d3ebf540</uuid>
   <documentation><![CDATA[EXPLANATION
-# Reassign to claims expert (AC-DEFAULT)
+### Reassign to claims expert (AC-DEFAULT)
 Forward the complaint to a claims expert with a prioritization alarm when customers are in the following situation:
 - They recently said they are not satisfied with the applied coverage  
 
