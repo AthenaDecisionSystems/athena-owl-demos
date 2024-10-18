@@ -54,6 +54,8 @@ x DS and RAG scenario for subsequent queries, e.g. what are the affiliated provi
 - update the Voucher rule in ODM and the explanation in the documentation
 - improve output content (customer situation): JC
 - show list of documents in the vector store: Jerome + Joel
+- fix bug reported by Harley
+x RAG only does not return affiliated providers (lack of context?)
 x user role to see all the frontend pages simultaneously: Joel
 
 -----
@@ -149,6 +151,19 @@ def verbalize_en(motive: Motive) -> str:
         return 'makes an information inquiry'
     else:
         return "communication has not been classified specifically."
+    
+
+def summarize_customer_situation(claim: Claim) -> str:
+    policy = claim.policy
+    client = policy.client
+
+    claim_json_data = jsonable_encoder(claim)
+
+    result = f"""\n\nclient data {json.dumps(jsonable_encoder(client), indent=4)}
+    \n\npolicy data {json.dumps(jsonable_encoder(policy), indent=4)}
+    \n\nthe claim id used as reference is #{claim.id}.\n\n"""
+
+    return result
 
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
 
@@ -325,11 +340,9 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         first_name = claim.policy.client.firstName
         last_name = claim.policy.client.lastName
 
-        claim_json_data = jsonable_encoder(claim)
-
         step1 = f"- **REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
         step2 = f"- **CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
-        step3 = f"- **CUSTOMER SITUATION:** the claim id used as reference is #{state['complaint_info'].claim_id}.\n {json.dumps(claim_json_data, indent=4)}\n\n"
+        step3 = f"- **CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
 
         if load_claim:
             return {

@@ -28,13 +28,15 @@
 
 [Third Party Policies	5](#third-party-policies)
 
-[**House Insurance	7**](#home-insurance)
+[**Home Insurance	7**](#home-insurance)
 
 [Property Coverage	7](#property-coverage)
 
 [Belongings Coverage	7](#belongings-coverage)
 
-[**Default retention rules	8**](#default-retention-rules)
+[**Generic retention rules about deductibles	7**](#generic-retention-rules-about-deductibles)
+
+[**Default retention rules	9**](#default-retention-rules)
 
 # 
 
@@ -112,6 +114,47 @@ An upgrade of the policy to include a loaner vehicle clause should be proposed t
 
 ## Third Party Policies {#third-party-policies}
 
+**Broken rear window coverage (AC-AUTO-REAR-WINDOW)**  
+Forward the complaint to a specialized client representative as "coverage issue" for customers in the following situation:
+
+- The customer has a third-party auto policy  
+- They said they are not satisfied with the applied coverages  
+- Their claims is about a broken rear window  
+- their CLTV percentile of 'the client' is at least 40
+
+**Broken front window coverage (AC-AUTO-FRONT-WINDOW)**  
+Forward the complaint to a specialized client representative as "coverage issue" for customers in the following situation:
+
+- The customer has a third-party auto policy  
+- They said they are not satisfied with the applied coverages  
+- Their claims is about a broken front window  
+- their CLTV percentile of 'the client' is at least 40
+
+
+**Broken exhaust pipe coverage (AC-AUTO-PIPE)**  
+Forward the complaint to a specialized client representative as "coverage issue" for customers in the following situation:
+
+- The customer has a third-party auto policy  
+- They said they are not satisfied with the applied coverages  
+- Their claims is about a broken exhaust pipe  
+- their CLTV percentile of 'the client' is at least 40
+
+**Broken gearbox coverage (AC-AUTO-GEARBOX)**  
+Forward the complaint to a specialized client representative as "coverage issue" for customers in the following situation:
+
+- The customer has a third-party auto policy  
+- They said they are not satisfied with the applied coverages  
+- Their claims is about a broken gearbox  
+- their CLTV percentile of 'the client' is at least 40
+
+**Broken bumper coverage (AC-AUTO-BUMPER)**  
+Forward the complaint to a specialized client representative as "coverage issue" for customers in the following situation:
+
+- The customer has a third-party auto policy  
+- They said they are not satisfied with the applied coverages  
+- Their claims is about a broken bumper  
+- their CLTV percentile of 'the client' is at least 40
+
 **Customer responsible for damage rule (AC-AUTO-TPL)**
 
 In case of a complaint of a customer with a third-party auto policy that is responsible for the damage, the complaint should be handled as indicated by the following tables:
@@ -126,20 +169,12 @@ In case of a complaint of a customer with a third-party auto policy that is resp
 
 ## Belongings Coverage {#belongings-coverage}
 
-**Example of a claim related to water damage:**
-
-* Water damage inside an individual house due to a broken pipe.  
-* Insurance expert has established that the insurance policy does not cover damaged carpets (stains).  
-* The customer is unsatisfied (given that these carpets have sentimental value).
-
-In such a situation and if the customer is profitable, a voucher should be provided. The actual voucher rule is as follows:
-
 **Voucher rule (AC-HOME-CONT-VOUCHER)**
 
 A voucher should be offered to customers in the following situation:
 
 - Their policy covers only home structures, not the content ;  
-- The reason of their interaction is that they are not satisfied with the applied coverages;  
+- The reason of their interaction is that they are not satisfied with the coverage;  
 - Their CLTV percentile is at least 60\.
 
 The market value of the voucher should be up to 200€ and can be used with one of our affiliate providers.
@@ -150,19 +185,17 @@ This can be applied to:
 * Repair services  
 * Etc
 
-\*The value of the voucher can  be calculated depending on the cost of the repair and the CLTV percentile of the customer \=\> make it a decision table
-
 **Upsell rule (AC-HOME-CONT-UP)**
 
 An upsell to the home policy should be proposed to customers in the following situation:
 
 - Their policy covers only house structure, not the content;  
-- They recently said they are not satisfied with the applied coverage;  
+- They recently said they are not satisfied with the coverage;  
 - The customer’s propensity to upgrade is at least 0.4.
 
 Thanks to this upsell, the customer will avoid similar problems next time.
 
-# Generic retention rules about deductibles
+# Generic retention rules about deductibles {#generic-retention-rules-about-deductibles}
 
 **Handling complaint about reimbursed amount related to high deductible (RA-DED-UP)**
 
