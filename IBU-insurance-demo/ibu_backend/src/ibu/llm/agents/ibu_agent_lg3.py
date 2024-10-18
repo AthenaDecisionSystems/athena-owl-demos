@@ -5,6 +5,8 @@ Copyright 2024 Athena Decision Systems
 import json
 from fastapi.encoders import jsonable_encoder
 
+import re
+
 import logging
 from typing import Annotated, Any, Optional, Literal, List, Union
 from typing_extensions import TypedDict
@@ -152,17 +154,98 @@ def verbalize_en(motive: Motive) -> str:
     else:
         return "communication has not been classified specifically."
     
+def removekey(d, key):
+    del d[key]
+    return d
+
+def format_date(s: str) -> str:
+    return s.split('T')[0]
+
+def reformat_camel_case(s: str) -> str:
+    new_string=""
+    for i in s:
+        if i.isupper():
+            new_string+=" "+i.lower()
+        else:
+            new_string+=i
+    return new_string
 
 def summarize_customer_situation(claim: Claim) -> str:
     policy = claim.policy
     client = policy.client
 
     claim_json_data = jsonable_encoder(claim)
+    policy_json_data = jsonable_encoder(policy)
+    client_json_data = jsonable_encoder(client)
 
-    result = f"""\n\nclient data {json.dumps(jsonable_encoder(client), indent=4)}
-    \n\npolicy data {json.dumps(jsonable_encoder(policy), indent=4)}
-    \n\nthe claim id used as reference is #{claim.id}.\n\n"""
+    removekey(claim_json_data, 'policy')
+    removekey(policy_json_data, 'client')
 
+    result = "\n\nClient data:\n\n"
+
+    for key in client_json_data:
+        if key == 'id':
+            pass
+        elif "date" in key or "Date" in key:
+            result = result + f"  - {reformat_camel_case(key)}: {format_date(client_json_data[key])}\n"
+        else:
+            result = result + f"  - {reformat_camel_case(key)}: {client_json_data[key]}\n"
+
+    result = result + "\nPolicy data:\n\n"
+
+    for key in policy_json_data:
+        if key == 'id':
+            pass
+        elif "date" in key or "Date" in key:
+            result = result + f"  - {reformat_camel_case(key)}: {format_date(policy_json_data[key])}\n"
+        elif key == 'coverages':
+            result = result + f"  - {reformat_camel_case(key)}:\n"
+
+            
+            coverage_per_object = {}                
+            for cov in policy_json_data['coverages']:
+                if cov['insurableObject']['type'] not in coverage_per_object:
+                    coverage_per_object[cov['insurableObject']['type']] = {
+                        'description': cov['insurableObject']['description'],
+                        'deductible': str(cov['deductible']) + "€",
+                        'coverages': [cov['code']]
+                    }
+                else:
+                    coverage_per_object[cov['insurableObject']['type']]['coverages'].append(cov['code'])
+
+            for cov_key in coverage_per_object.keys():
+                coverage_list = ", ".join(coverage_per_object[cov_key]['coverages'])
+                result = result + f"    - {coverage_per_object[cov_key]['description']}: deductible = {coverage_per_object[cov_key]['deductible']}; coverages = {coverage_list}\n"
+
+        else:
+            result = result + f"  - {reformat_camel_case(key)}: {policy_json_data[key]}\n"
+
+    result = result + "\nClaim data:\n\n"
+
+    for key in claim_json_data:
+        if key == 'id':
+            pass
+        elif "date" in key or "Date" in key:
+            result = result + f"  - {reformat_camel_case(key)}: {format_date(claim_json_data[key])}\n"
+        elif key == 'damages':
+            result = result + f"  - {reformat_camel_case(key)}:\n"
+            for damage in claim_json_data['damages']:
+                result = result + f"    - {damage['description']}\n"
+        elif key == 'settlementOffer':
+            result = result + f"  - settlement offer:\n"
+            for so_key in claim_json_data[key]:
+                if "date" in so_key or "Date" in so_key:
+                    result = result + f"    - {reformat_camel_case(so_key)}: {format_date(claim_json_data[key][so_key])}\n"
+                elif so_key == 'actualCoverages':
+                    result = result + f"    - actual coverages:\n"
+                    for ac_key in claim_json_data[key][so_key]:
+                        result = result + f"      - {ac_key['description']}, deductible: {ac_key['deductible']}\n"
+                elif so_key != 'claim':
+                    result = result + f"    - {reformat_camel_case(so_key)}: {claim_json_data[key][so_key]}\n"
+        else:
+            result = result + f"  - {reformat_camel_case(key)}: {claim_json_data[key]}\n"
+
+    result = result + "\n\n"
     return result
 
 class IBUInsuranceAgent(OwlAgentDefaultRunner):
@@ -340,18 +423,18 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         first_name = claim.policy.client.firstName
         last_name = claim.policy.client.lastName
 
-        step1 = f"- **REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
-        step2 = f"- **CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
-        step3 = f"- **CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
+        step1 = f"**REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
+        step2 = f"**CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
+        step3 = f"**CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
 
         if load_claim:
             return {
-                'messages': step1 + step2 + step3 + "- **RECOMMENDED ACTIONS:** " + result,
+                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
                 'claim': claim
             }
         else:
             return {
-                'messages': step1 + step2 + step3 + "- 4: " + result
+                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
             }
 
 

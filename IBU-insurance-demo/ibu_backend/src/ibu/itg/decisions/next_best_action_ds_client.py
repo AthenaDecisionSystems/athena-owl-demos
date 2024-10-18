@@ -169,16 +169,13 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
     if len(response2) == 0:
         return g.get_phrase("NoAction", locale)
     else:
-        result = g.get_phrase("analysis_gives", locale)
+        result = "\n\nThe analysis of the customer situation leads to these retention actions:\n\n"
 
         for key in response2.keys():
             value = response2[key]
             if key == "actions":
-                result += f"{g.get_phrase('Actions', locale)}:\n"
-                i = 1
                 for action in value:
-                    result += f"{i}.{_format_action(g, action, locale)}\n"
-                    i += 1
+                    result += f"- {_format_action(g, action, locale)}\n"
             else:
                 logging.debug(f"** Ignoring key: {key}")
 
