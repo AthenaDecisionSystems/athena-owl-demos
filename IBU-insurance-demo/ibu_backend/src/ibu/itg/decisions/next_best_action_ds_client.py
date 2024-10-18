@@ -186,14 +186,15 @@ def _process_odm_response(decision_center_extract: Optional[DecisionCenterExtrac
             eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
             result = result + "\n" + "<explanation>"
             for artefact in eal.explanation_artefacts:
-                result = result + "\n\n" + artefact.documentation.content
+                result = result + "\n\n" + artefact.documentation.content + "\n-----\n"
             result = result + "\n\n" + "</explanation>"
 
         if decision_center_extract:
             eal: ExplanationArtefactList = ExplanationArtefactList.build(decision_center_extract, json_response)
             result = result + "\n" + "<rule>"
             for artefact in eal.explanation_artefacts:
-                result = result + "\n\n" + artefact.html
+                parts = artefact.name.split('.')
+                result =  result + "\n\n" + "<h4>" + parts[-1] + "</h4><br/>" + artefact.html + "<hr/>"
             result = result + "\n\n" + "</rule>"
 
         logging.info(f"_process_odm_response> ODM response with explanation:")
