@@ -63,7 +63,7 @@ public class ClaimRepositoryResource {
         }
         claimRepository.delete(entity);
         return Response.status(204).build();
-    }
+    } 
 
     @Provider
     public static class ErrorMapper implements ExceptionMapper<Exception> {
