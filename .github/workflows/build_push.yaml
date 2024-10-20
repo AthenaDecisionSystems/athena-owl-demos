@@ -1,20 +1,16 @@
 name: Build and Publish ibu_backend image to docker
 env:
-  IMAGE_NAME: ibu-insurance-data-mgr
+  IMAGE_NAME: ibu-insurance
   IMAGE_TAG: latest
 on:
   push:
     branches: [ main ] 
-    paths-ignore:
-      - 'docs/**'
-      - '.vscode/**'
-      - 'tools/**'
+    paths:
+      - 'IBU-insurance-demo/ibu_backend/src'
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - 'docs/**'
-      - '.vscode/**'
-      - 'tools/**'
+    paths:
+      - 'IBU-insurance-demo/ibu_backend/src'
 jobs:
   validate-docker-secrets:
     runs-on: ubuntu-latest

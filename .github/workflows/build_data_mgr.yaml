@@ -5,16 +5,12 @@ env:
 on:
   push:
     branches: [ main ] 
-    paths-ignore:
-      - 'docs/**'
-      - '.vscode/**'
-      - 'tools/**'
+    paths:
+      - 'IBU-insurance-demo/datamgt/code'
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - 'docs/**'
-      - '.vscode/**'
-      - 'tools/**'
+    paths:
+      - 'IBU-insurance-demo/datamgt/code'
 
 jobs:
   validate-docker-secrets:
