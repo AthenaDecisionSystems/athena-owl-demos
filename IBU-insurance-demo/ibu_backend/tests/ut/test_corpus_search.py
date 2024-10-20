@@ -43,7 +43,7 @@ class Test_ibu_agent_rag(unittest.TestCase):
         service = get_content_mgr()
         fd=FileDescription()
         fd.name="Claims-complaint-rules"
-        fd.file_name="IBU_policies_2.md"
+        fd.file_name="Property and Casualty Insurance - Retention Rules - voucher one page.docx.md"
         fd.file_base_uri="../scenarios"
         fd.type="md"
         fd.collection_name=get_config().owl_agent_content_collection_name
@@ -58,6 +58,6 @@ class Test_ibu_agent_rag(unittest.TestCase):
         cc=self.define_conversation_control_for_test(query,"ibu_agent")
         rep = get_or_start_conversation(cc)
         print(f"\n\t--> {rep}")
-        assert "limited to 45% of the repair cost" in rep.messages[0].content.lower()
+        assert "policy for water damage does not cover the content" in rep.messages[0].content.lower()
         service = get_content_mgr()
         service.clear_collection(get_config().owl_agent_content_collection_name)

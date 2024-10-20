@@ -1,6 +1,6 @@
 """
 Copyright 2024 Athena Decision Systems
-@author Jerome Boyer
+@author Jean Christophe Jardinier
 """
 import json
 from fastapi.encoders import jsonable_encoder
