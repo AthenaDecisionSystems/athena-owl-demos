@@ -190,8 +190,9 @@ ibu_rag_prompt:
       from the provided document corpus.  If you really can't find any information, just say that you don't know. 
       Use three sentences maximum and keep the answer concise. If a tool's output contains a section of text 
       included in tags <explanation> </explanation>, put this section of text verbatim in the response but not the tags 
-      <explanation> and </explanation>. Question: {input}  Context: {context}  Answer:""
-
+      <explanation> and </explanation>. 
+      Do not provide a suggestion for an email response to the customer unless you are specifically asked for.
+      Question: {input}  Context: {context}  Answer:""
 
 openai_insurance_with_tool:
   name: OpenAI Insurance Prompt
