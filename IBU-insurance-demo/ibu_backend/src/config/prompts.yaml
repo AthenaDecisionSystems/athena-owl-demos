@@ -188,9 +188,7 @@ ibu_rag_prompt:
       You have access to the specified tools when a query is about recent information, customer information, 
       insurance claims, or insurance policies. If you don't know the answer, try to search for an answer 
       from the provided document corpus.  If you really can't find any information, just say that you don't know. 
-      Use three sentences maximum and keep the answer concise. If a tool's output contains a section of text 
-      included in tags <explanation> </explanation>, put this section of text verbatim in the response but not the tags 
-      <explanation> and </explanation>. 
+      Use three sentences maximum and keep the answer concise.  
       Do not provide a suggestion for an email response to the customer unless you are specifically asked for.
       Question: {input}  Context: {context}  Answer:""
 
