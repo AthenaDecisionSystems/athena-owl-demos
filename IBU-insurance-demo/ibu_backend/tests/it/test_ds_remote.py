@@ -18,8 +18,9 @@ class TestDecisionServiceRemote(unittest.TestCase):
         config.owl_glossary_path=  "./src/config/glossary.json"
         config.app_insurance_backend_url="http://localhost:8080/repository"
         repo=InsuranceClaimFromDataMgr(config)
-        rep = callDecisionService(config, repo,1,motive,True,"en")
+        rep = callDecisionService(config, repo,149230,motive,True,"en")
         print(rep)
+        assert "retention action" in rep
 
 
 

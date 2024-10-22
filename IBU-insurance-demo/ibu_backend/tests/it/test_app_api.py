@@ -26,6 +26,8 @@ class TestAppApi(unittest.TestCase):
         cc.agent_id="ibu_agent"
         cc.user_id="remote_test"
         cc.thread_id=thread_id
+        cc.callWithVectorStore=True
+        cc.callWithDecisionService=True
         cc.chat_history=[]
         cc.query=query
         return cc.model_dump_json()
@@ -40,7 +42,7 @@ class TestAppApi(unittest.TestCase):
         Verify the client is loaded by the agent executor
         """
         print("\n--> #1 Validate client by id tool is called after decision from llm\n")
-        data=self.define_data_as_string("who is the client with id 1?","1")
+        data=self.define_data_as_string("who is the client with id 176541?","thread_1")
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
         content= self.get_response_content(rep)
         self.assertTrue(content.find("David Martin") > 0 )
@@ -50,7 +52,7 @@ class TestAppApi(unittest.TestCase):
         Verify the current claim of a customer is loaded
         """
         print("\n--> #2 Validate getting claim is called\n")
-        data=self.define_data_as_string("My name is Sonya Smith, I want to know the status of my current claim?","2")
+        data=self.define_data_as_string("My name is Sonya Smith, I want to know the status of my current claim?","thread_2")
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
         content= self.get_response_content(rep).lower()
         self.assertTrue(content.find("process") > 0 )
@@ -60,7 +62,7 @@ class TestAppApi(unittest.TestCase):
         """
         Verify the voucher is proposed by the rules
         """
-        print("\n--> Validate voucher is proposed for Sonya Smith\n")
+        print("\n--> Test to validate voucher is proposed for Sonya Smith\n")
         data=self.define_data_as_string("Hi IBU, I am on the phone with one of my very important customer. Her name is Sonya Smith. She has a problem with her claim 2 for their water damage. She told me that the carpet is expensive. She is surprised of the current coverage. Sonya finds this very disappointing. What would be the next best action?","3")
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
         content= self.get_response_content(rep).lower()
@@ -68,6 +70,28 @@ class TestAppApi(unittest.TestCase):
         rep = requests.get(IBU_BASE_URL + "/c/conversation/trace/3")
         print(f"\n@@@> {rep}")
 
+    def test_4_ask_for_email(self):
+        email="""I received this email from my customer. What should I answer?*
+
+        **From**:  Sonya Smith (sonya.smith@thecure.org)
+
+        **To**:  support@ibuinsurance.com
+
+        **Subject**:  Covering my carpet cleaning
+
+        Dear IBU,
+
+        During the recent water leak at my house (cf claim 250303), my expensive Moroccan carpet was damaged by the water.  You told me that this damage is not covered by my policy.  I’m very disappointed.  What do you propose?
+
+        Thank you!"""
+        data=self.define_data_as_string(email, "Thread_4")
+        rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+        content= self.get_response_content(rep).lower()
+        print(f"\n@@@> {content}")
+        data=self.define_data_as_string("write an email response to Sonya", "Thread_4")
+        rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}).content.decode()
+        content= self.get_response_content(rep).lower()
+        print(f"\n@@@> {content}")
 
 if __name__ == '__main__':
     unittest.main()

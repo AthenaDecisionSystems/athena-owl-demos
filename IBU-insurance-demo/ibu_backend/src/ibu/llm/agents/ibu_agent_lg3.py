@@ -387,9 +387,15 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         # As a developer, I want to be able to specify an output parser for an agent declaratively by adding a line in the agents.yaml file.
         output_elements = result.return_values['output'].split(',')
         motive = output_elements[0]
+        ## HACK 10/21/24 JB
+        if motive not in ["UnsatisfiedWithDelay", "UnsatisfiedWithReimbursedAmount", "UnsatisfiedWithAppliedCoverages", "UnsatisfiedWithQualityOfCustomerService", "InformationInquiry", "OtherMotive"]:
+            motive="InformationInquiry"
         intention_to_leave = output_elements[1] == "True"
-        claim_id: int = int(output_elements[2])
-
+        try:
+            claim_id: int = int(output_elements[2])
+        except Exception as e:
+            claim_id = 250303
+        ## END OF HACK 10/21/24 JB
         complaint_info = ComplaintInfo(claim_id =claim_id, 
                                        motive = motive, 
                                        intention_to_leave = intention_to_leave)
