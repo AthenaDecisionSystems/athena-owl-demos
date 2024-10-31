@@ -1,1 +1,0 @@
-The directory is used as a container for uploaded

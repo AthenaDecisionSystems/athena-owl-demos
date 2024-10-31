@@ -2,5 +2,6 @@
 IBU-insurance-demo/decisions/workspace/xom-utilities/bin/xom/utilities/DateUtilsTest.class
 .vscode/settings.json
 **/.env
+**/.log
 **/skvenv/
 **/ibuvenv/
