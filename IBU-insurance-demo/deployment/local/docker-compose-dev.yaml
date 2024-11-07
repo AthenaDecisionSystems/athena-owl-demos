@@ -49,6 +49,7 @@ services:
         Yours,
 
         **Sonya Smith**
+      - NEXT_PUBLIC_SHOW_SETTINGS_AND_DOCUMENTS=true
 
   insurance-data-mgr:
     image: athenadecisionsystems/ibu-insurance-data-mgr:1.0.0
