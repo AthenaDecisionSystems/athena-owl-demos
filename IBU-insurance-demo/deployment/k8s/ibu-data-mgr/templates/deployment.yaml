@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "insurance-data-mgr.fullname" . }}
+  name: {{ include "ibu-data-mgr.fullname" . }}
   labels:
-    {{- include "insurance-data-mgr.labels" . | nindent 4 }}
+    {{- include "ibu-data-mgr.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "insurance-data-mgr.selectorLabels" . | nindent 6 }}
+      {{- include "ibu-data-mgr.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "insurance-data-mgr.labels" . | nindent 8 }}
+        {{- include "ibu-data-mgr.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "insurance-data-mgr.serviceAccountName" . }}
+      serviceAccountName: {{ include "ibu-data-mgr.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -37,15 +37,22 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: athena-pg-cluster-app
+                  key: jdbc-uri
+              #value: jdbc:postgresql://athena-pg-cluster-rw.ibu.svc.cluster.local:5432/postgres
+            - name: QUARKUS_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: athena-pg-cluster-app
+                  key: username
             - name: QUARKUS_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: postgres-password
-                  name: ibu-db-postgresql
-            {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value | quote }}
-            {{- end }}
+                  name: athena-pg-cluster-app
+                  key: password
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
