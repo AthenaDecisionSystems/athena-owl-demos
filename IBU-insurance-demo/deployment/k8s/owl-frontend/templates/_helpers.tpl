@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ibu-data-mgr.name" -}}
+{{- define "owl-frontend.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ibu-data-mgr.fullname" -}}
+{{- define "owl-frontend.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ibu-data-mgr.chart" -}}
+{{- define "owl-frontend.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ibu-data-mgr.labels" -}}
-helm.sh/chart: {{ include "ibu-data-mgr.chart" . }}
-{{ include "ibu-data-mgr.selectorLabels" . }}
+{{- define "owl-frontend.labels" -}}
+helm.sh/chart: {{ include "owl-frontend.chart" . }}
+{{ include "owl-frontend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ibu-data-mgr.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ibu-data-mgr.name" . }}
+{{- define "owl-frontend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "owl-frontend.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ibu-data-mgr.serviceAccountName" -}}
+{{- define "owl-frontend.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ibu-data-mgr.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "owl-frontend.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
