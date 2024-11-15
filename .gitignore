@@ -5,3 +5,4 @@ IBU-insurance-demo/decisions/workspace/xom-utilities/bin/xom/utilities/DateUtils
 **/.log
 **/skvenv/
 **/ibuvenv/
+kubeconfig
