@@ -24,9 +24,12 @@ owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstan
 owl_best_action_ds_url: http://localhost:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
 owl_agent_default_agent: openai_chain_agent
 
-app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
-app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
-app_insurance_backend_url: http://localhost:8080/repository
+app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_filesystem.InsuranceClientFromFileSystem
+app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_filesystem.InsuranceClaimFromFileSystem
+app_insurance_data_folder: ../../datastore/insuranceclaims-data
+#app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
+#app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
+#app_insurance_backend_url: http://localhost:8080/repository
 
 watsonx_ai_url: https://eu-de.ml.cloud.ibm.com
 watsonx_ai_project_id: baa31d24-8eba-4765-af2a-4a3d9d364554

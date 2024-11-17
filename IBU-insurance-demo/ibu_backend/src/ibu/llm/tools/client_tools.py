@@ -31,7 +31,7 @@ def build_or_get_insurance_client_repo():
         klass = getattr(mod, class_name)
         LOGGER.debug(f"---> klass {klass}")
         _insurance_client= klass(config)
-        LOGGER.debug("Created repository for client")
+        LOGGER.info(f"Created repository for client using {config.app_insurance_client_repository}")
     return _insurance_client
 
 def build_or_get_instantiate_claim_repo():
@@ -45,8 +45,9 @@ def build_or_get_instantiate_claim_repo():
         mod = import_module(module_path)
         klass = getattr(mod, class_name)
         _insurance_claim= klass(config)
-        LOGGER.debug("Created repository for claim")
+        LOGGER.info(f"Created repository for claim using {config.app_insurance_claim_repository}")
     return _insurance_claim
+
 
 # ============================================= Function / Tool  Definitions ======================== 
 

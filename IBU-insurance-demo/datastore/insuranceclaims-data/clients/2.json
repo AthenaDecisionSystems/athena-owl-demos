@@ -1,0 +1,10 @@
+{
+    "id": 2,
+    "firstName": "Sonya",
+    "lastName": "Smith",
+    "dateOfBirth": "1999-03-12T00:00:00.000+00:00",
+    "firstContractDate": "2023-11-12T00:00:00.000+00:00",
+    "cltvPercentile": 62,
+    "propensityToUpgradePolicy": 0.61,
+    "preferredChannel": "phone"
+  }
