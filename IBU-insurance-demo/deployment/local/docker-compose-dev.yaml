@@ -20,7 +20,7 @@ services:
       # - ../../.env:/app/.env
       - ./data/file_content:/app/file_content
       - ./data/vs_db:/app/vs_db
-      - ./data/insuranceclaims-data:/app/insuranceclaims-data
+      - ../../datastore/insuranceclaims-data:/app/insuranceclaims-data
       - ../../decisions:/app/decisions
       - ../../ibu_backend/src/ibu:/app/ibu
   owl-frontend:
