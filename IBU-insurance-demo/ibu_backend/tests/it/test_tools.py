@@ -19,13 +19,13 @@ class TestTools(unittest.TestCase):
         print(client)
 
     def test_client(self):
-        client = get_client_by_id("2")
+        client = get_client_by_id("245678")
         assert client
         assert "Sonya" in client["firstName"] 
         print(client)
 
     def test_claim(self):
-        claim = get_claim_by_id("2")
+        claim = get_claim_by_id("250303")
         assert claim
         print(claim)
         assert "IN_PROCESS_VERIFIED" in claim["status"]

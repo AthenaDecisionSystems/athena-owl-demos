@@ -22,23 +22,23 @@ class TestRemoteDataManager(unittest.TestCase):
 
     def test_client_data_remote_access(self):
         """
-        should retrieve client with id 1 and attributes need to be loaded
+        should retrieve client with id 176541 and attributes need to be loaded
         """
       
-        client = self.client_repo.get_client(1)
+        client = self.client_repo.get_client(176541)
         self.assertEqual("Martin",client.lastName)
 
     def test_client_as_json(self):
-        client = self.client_repo.get_client_json(2)
+        client = self.client_repo.get_client_json(245678)
         self.assertEqual("Smith",client["lastName"])
 
     def test_claim_data_remote_access(self):
-        claim: Claim = self.claim_repo.get_claim(2)
+        claim: Claim = self.claim_repo.get_claim(250303)
         assert claim.policy is not None
         print(claim)
     
     def test_claim_json_remote_access(self):
-        claim_str=self.claim_repo.get_claim_json(2)
+        claim_str=self.claim_repo.get_claim_json(250303)
         print(f"\n ==> {claim_str}")
         self.assertEqual("IN_PROCESS_VERIFIED",claim_str["status"])
 

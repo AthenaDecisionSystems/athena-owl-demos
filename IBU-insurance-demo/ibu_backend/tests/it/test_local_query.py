@@ -40,7 +40,7 @@ class TestCustomQuery(unittest.TestCase):
         cur = conn.cursor()
 
         # Execute a SQL query
-        cur.execute("select c.id, c.status from public.claim as c join public.insurancepolicy as i on c.policy_id = i.id where i.client_id = 2;")
+        cur.execute("select c.id, c.status from public.claim as c join public.insurancepolicy as i on c.policy_id = i.id where i.client_id = 245678;")
         results = cur.fetchall()
         assert results
         assert len(results) > 0
