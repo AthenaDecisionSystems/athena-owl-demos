@@ -6,7 +6,7 @@
 **/data/
 **/chromadb/
 **/file_content/
-**/.env
+**/.env*
 **/output/
 **/**.class
 **/venv/
@@ -14,3 +14,5 @@
 **/rts.mv.db
 **/res.mv.db
 **/ibuvenv/
+**/*.log
+**/*.bak
