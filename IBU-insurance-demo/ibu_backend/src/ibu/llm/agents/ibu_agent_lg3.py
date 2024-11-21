@@ -405,6 +405,8 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         claim_data_repo = build_or_get_instantiate_claim_repo()
 
         load_claim = False
+        claim = None
+
         print(state)
         if 'claim' in state.keys() and state['claim'] != None and state['claim'].id == state['complaint_info'].claim_id:
             LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is already in the LG context")
@@ -412,32 +414,38 @@ class IBUInsuranceAgent(OwlAgentDefaultRunner):
         else:
             LOGGER.info(f"---- claim {state['complaint_info'].claim_id} is loaded from the backend data APIs")
             claim = claim_data_repo.get_claim(state['complaint_info'].claim_id)   
-            load_claim = True
+            if claim == None:
+                LOGGER.warning(f"---- claim with id {state['complaint_info'].claim_id} could not be found")
+            else:
+                load_claim = True
 
-        result = callDecisionServiceWithClaim(config, claim, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
+        if claim != None:
+            result = callDecisionServiceWithClaim(config, claim, state['complaint_info'].motive, state['complaint_info'].intention_to_leave, "en")
 
-        LOGGER.info("-------------")
-        LOGGER.info(f"claim type: {type(claim)}")
-        LOGGER.info(f"result: {result}")
+            LOGGER.info("-------------")
+            LOGGER.info(f"claim type: {type(claim)}")
+            LOGGER.info(f"result: {result}")
 
-        first_name = claim.policy.client.firstName
-        last_name = claim.policy.client.lastName
+            first_name = claim.policy.client.firstName
+            last_name = claim.policy.client.lastName
 
-        step1 = f"**REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
-        step2 = f"**CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
-        step3 = f"**CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
+            step1 = f"**REASON FOR THE INCOMING COMMUNICATION:** {first_name} {last_name} {verbalize_en(state['complaint_info'].motive)}.\n\n"
+            step2 = f"**CHURN RISK:** {first_name} {last_name} has shown {'some' if state['complaint_info'].intention_to_leave else 'no'} intention to leave.\n\n"
+            step3 = f"**CUSTOMER SITUATION:** {summarize_customer_situation(claim)} \n\n"
 
-        if load_claim:
-            return {
-                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
-                'claim': claim
-            }
+            if load_claim:
+                return {
+                    'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+                    'claim': claim
+                }
+            else:
+                return {
+                    'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+                }
         else:
             return {
-                'messages': step1 + step2 + step3 + "**RECOMMENDED ACTIONS:** " + result,
+                'messages': f"There is an issue with the customer complaint. The referenced claim with number {state['complaint_info'].claim_id} cannot be found in the claim database.",
             }
-
-
 
     # ==================== overrides =============================
     def invoke(self, request, thread_id: Optional[str], **kwargs) -> dict[str, Any] | Any:

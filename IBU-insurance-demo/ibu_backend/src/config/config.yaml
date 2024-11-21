@@ -20,9 +20,12 @@ owl_agent_vs_class_name: langchain_chroma.Chroma
 owl_agent_vs_embedding_fct: OpenAIEmbeddings
 owl_agent_llm_history_length: 5
 
-app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
-app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
-app_insurance_backend_url: http://datamgr:8080/repository
+app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_filesystem.InsuranceClientFromFileSystem
+app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_filesystem.InsuranceClaimFromFileSystem
+app_insurance_data_folder: /app/insuranceclaims-data
+#app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
+#app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
+#app_insurance_backend_url: http://datamgr:8080/repository
 
 owl_agent_decision_service_fct_name: callDecisionService
 owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory

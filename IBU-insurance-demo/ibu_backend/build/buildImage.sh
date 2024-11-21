@@ -9,7 +9,7 @@ then
   TAG=$1
   OS=$2
 else
-  TAG=1.0.0
+  TAG=1.0.1
   OS=linux
 fi
 
