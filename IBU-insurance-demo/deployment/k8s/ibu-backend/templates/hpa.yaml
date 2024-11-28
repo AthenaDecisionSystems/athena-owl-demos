@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "owl-backend.fullname" . }}
+  name: {{ include "ibu-backend.fullname" . }}
   labels:
-    {{- include "owl-backend.labels" . | nindent 4 }}
+    {{- include "ibu-backend.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "owl-backend.fullname" . }}
+    name: {{ include "ibu-backend.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
