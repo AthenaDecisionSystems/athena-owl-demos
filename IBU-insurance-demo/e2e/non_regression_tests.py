@@ -86,7 +86,7 @@ class TestHappyPathScenario(unittest.TestCase):
 
     def test_7_upload_md_insurance_doc(self):
         print("\n--> Upload MD document to vector store\n")
-        fname="../scenarios/IBU_policies_2.md"
+        fname="../scenarios/Property and Casualty Insurance - Retention Rules.md"
         f = open(fname, "rb")
         files = {'myFile' :  f }
         rep = requests.post(IBU_BASE_URL + "/a/documents?name=IBU_policies-complaint&description=The%20rules%20about%20claim%20complaint%20management&type=md&collection_name=ibutest", files=files, timeout = 10).content.decode()
@@ -115,7 +115,10 @@ class TestHappyPathScenario(unittest.TestCase):
                   "query": "One of our client, Sonya Smith, has a problem with her claim with the id=2 for water damage, her carpet is expensive, she is surprise by the current coverage, very disappointed?",\
                   "chat_history": [],\
                   "agent_id": "' + AGENT_REF + '",  \
+                  "callWithVectorStore": false, \
+                  "callWithDecisionService": true, \
                   "user_id" : "remote_test"\
+                   "thread_id" : "3" 
               }'
         print(data)
         rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
@@ -130,6 +133,8 @@ class TestHappyPathScenario(unittest.TestCase):
                   "query": ' + query + '", \
                   "chat_history": [],\
                   "agent_id": "' + AGENT_REF + '",  \
+                   "callWithVectorStore": false, \
+                  "callWithDecisionService": true, \
                   "user_id" : "remote_test", \
                   "thread_id" : "3" \
               }'

@@ -1,0 +1,33 @@
+
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: owl-frontend
+  namespace: ibu
+spec:
+  gateways:
+  - istio-system/athena-demo-decisionbrain-cloud-gateway
+  hosts:
+  - ibu.athena-demo.decisionbrain.cloud
+  http:
+  - route:
+    - destination:
+        host: owl-frontend
+        port:
+          number: 3000
+
+istio-system/athena-demo-decisionbrain-cloud-gateway écoute sur les ports 80 & 443, et gère les certificats wildcard de *.athena-demo.decisionbrain.cloud
+
+Donc avec l'exemple ci dessus https://ibu.athena-demo.decisionbrain.cloud sera redirigé vers le gateway-service sur son port 3000 qui redirige vers ton pod owl-frontend-7747dfc75-hm9vr port 3000
+
+$ k get svc owl-frontend
+NAME           TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)          AGE
+owl-frontend   LoadBalancer   10.38.81.153   195.154.72.46   3000:31156/TCP   13d
+
+$ k get endpoints owl-frontend
+NAME           ENDPOINTS          AGE
+owl-frontend   100.64.5.59:3000   13d
+
+$ k get po owl-frontend-7747dfc75-hm9vr -o wide
+NAME                           READY   STATUS    RESTARTS   AGE   IP            NODE                                             NOMINATED NODE   READINESS GATES
+owl-frontend-7747dfc75-hm9vr   1/1     Running   0          13d   100.64.5.59   scw-athena-demo-runners-e24b3bb0b74a4918a800c0   <none>           <none>

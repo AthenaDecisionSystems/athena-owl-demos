@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: owl-fe-config-cm
 data:
-  NEXT_PUBLIC_BACKEND_BASE_API: http://ibu-backend:8000/api/v1/
+  NEXT_PUBLIC_BACKEND_BASE_API: http://localhost:3000/api/v1/
+  OWL_BACKEND_URL: http://ibu-backend.ibu.svc.cluster.local:8000
   NEXT_PUBLIC_COLLECTION_NAME: ibu_insurance
   NEXT_PUBLIC_SHOW_SETTINGS_AND_DOCUMENTS: "true"
   NEXT_PUBLIC_DEMO_TEXT: |-

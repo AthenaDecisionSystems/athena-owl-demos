@@ -8,19 +8,20 @@ The goal is to deploy all the components in one command:
 make deploy_all
 ```
 
-but is is important to understand how each component are deployed as there are some dependencies:
+For maintenance purpose, it is important to understand how each components are deployed:
 
 * Deploy a Postgresql cluster using Postgres kubernetes operator: [Cloudnative PG](https://github.com/cloudnative-pg/cloudnative-pg). 
 * Deploy the Data Manager service for the IBU Insurance demo.
-* Deploy KeyCloack
+* Deploy the demonstration backend
+* Deploy the front end
 
-Most of the commands are added to a unique Makefile to simplify the deployment of a solution.
+All of the commands used are added to a unique Makefile to simplify the deployment of a solution.
 
 ## A Kubernetes Playground
 
-If you know nothing about Kubernetes, maybe start with [this official tutorial](https://kubernetes.io/docs/tutorials/), RedHat has also very [good content starting with](https://developers.redhat.com/products/openshift/overview). Also for ODM experts, it is mandatory to read [this git repo: Deploying IBM Operational Decision Manager on a Certified Kubernetes Cluster.](https://github.com/DecisionsDev/odm-docker-kubernetes)
+If you know nothing about Kubernetes, maybe start with [this official tutorial](https://kubernetes.io/docs/tutorials/), RedHat has also a very [good content starting with](https://developers.redhat.com/products/openshift/overview). For ODM experts, it is mandatory to read [this git repo: Deploying IBM Operational Decision Manager on a Certified Kubernetes Cluster.](https://github.com/DecisionsDev/odm-docker-kubernetes)
 
-We recommend using a local kubernetes with Minikube (See [installation guide](https://kubernetes.io/docs/tasks/tools/install-minikube)) or with [KinD](https://kind.sigs.k8s.io/docs/user/quick-start).
+For tutorial we recommend using a local kubernetes with Minikube (See [installation guide](https://kubernetes.io/docs/tasks/tools/install-minikube)) or with [KinD](https://kind.sigs.k8s.io/docs/user/quick-start). For internet facing deployment, Scaleway is used.
 
 ### Tools needed
 
@@ -32,8 +33,7 @@ The following CLI are needed:
 
 ### Access to Scaleway
 
-To access Scaleway, there is a kubernetes cluster already created by a system administrator. Be sure to get the security tokens and the access username within the file named: 
-`athena-demo_ibu_kubeconfig`, which is a kubeconfig specification manifest used to access the athena-demo cluster with write access on `ibu` namespace. Normally this file can be saved under `$HOME/.kube` folder. (If you have an existing `.kube/config` file to define existing Kubernetes contexts, then you may want to merge the  `athena-demo_ibu_kubeconfig` content into this `.kube/config` file, and then set the current context to `athena-demo`). 
+To access Scaleway, there is a kubernetes cluster already created by a system administrator. Be sure to get the security tokens and the access username within the file named: `athena-demo_ibu_kubeconfig`, which is a kubeconfig specification manifest used to access the `athena-demo` cluster with write access to the `ibu` namespace. Normally this file can be saved under the `$HOME/.kube` folder. (If you have an existing `.kube/config` file to define existing Kubernetes contexts, then you may want to merge the  `athena-demo_ibu_kubeconfig` content into this `.kube/config` file, and then set the current context to `athena-demo`). 
 
 Use this command to specify the kubectl context to use, so that all commands done with kubectl will go to the Scaleway cluster.
 
@@ -41,9 +41,7 @@ Use this command to specify the kubectl context to use, so that all commands don
 export KUBECONFIG=~/.kube/athena-demo_ibu_kubeconfig
 ```
 
-* Verify you can access the Scaleway cluster:
-
-* List the nodes within Kubernetes
+* Verify you can access the Scaleway cluster, by listing the nodes within Kubernetes
 
 ```sh
 $ kubectl get nodes 
@@ -54,15 +52,15 @@ scw-athena-demo-runners-a1fb1bcfe50647eabf642c   Ready    <none>   122m    v1.30
 
 * Verify the namespaces
 
-```
+```sh
 kubectl get  ns
 ```
 
 ## Postgres deployment
 
-Even if for production it may be relevant to consider using a managed services to deploy postgresql, like AWS RDS, it is also possible to deploy Postgres on k8s using Operator. Operator automate the deployment and keep it overtime according to the specification defined in the Customer Resource Definition.
+For production deployment, it may be relevant to consider using a managed services to deploy postgresql, like AWS RDS. In the current approach, we deploy Postgresql on k8s using an Operator. Operator automates the deployment and keeps it over time according to the specifications defined in the Customer Resource Definitions.
 
-CloudNativePG has been designed by Postgres experts with Kubernetes administrators in mind. We recommend reading [this introduction](https://github.com/cloudnative-pg/cloudnative-pg), you will find some good articles about the value of this operator.
+CloudNativePG has been designed by Postgres experts with Kubernetes administrators in mind. We recommend reading [this Postgres k8s operator introduction](https://github.com/cloudnative-pg/cloudnative-pg), you will find some good content about the value of this operator.
 
 ### Install Postgresql operator
 
@@ -80,7 +78,7 @@ kubectl get deployment -n cnpg-system cnpg-controller-manager
 
 ### Define Postgresql cluster
 
-There are multiple options, we select the deployment within a single kubernetes cluster using asynchronous streaming replication to manage multiple hot standby postgres server replicas. This will create 3 services for applications:
+There are multiple options to deploy Postgresql Cluster: we selected the deployment within a single kubernetes cluster using asynchronous streaming replication to manage multiple hot standby postgres server replicas. This will create 3 services for any applications to access Postgresql:
 
 * -rw: applications connect only to the primary instance of the cluster
 * -ro: applications connect only to hot standby replicas for read-only-workloads
@@ -88,12 +86,12 @@ There are multiple options, we select the deployment within a single kubernetes 
 
 (Read more from [this article](https://github.com/cloudnative-pg/cloudnative-pg/blob/main/docs/src/architecture.md#postgresql-architecture))
 
-For application like the DataManager will connect to the Postgres rw service via dns, using service.namespace names. The PostgreSQL operator generates two basic-auth type secrets for every PostgreSQL cluster it deploys:
+For application like the DataManager, it connects to the Postgres using the `rw service` via dns, using service.namespace names. The PostgreSQL operator generates two `basic-auth` type secrets for every PostgreSQL cluster it deploys:
 
 1. [cluster name]-app 
 1. [cluster name]-superuser
 
-We uses the `-app` secrets to access to the DB.
+We uses the `-app` secrets to access to the DB cluster. 
 
 * Deploy a Postgresql cluster with one active node and 2 backup nodes
 
@@ -109,12 +107,20 @@ make deploy_postgresql
 
 ```sh
 kubectl get pods -n ibu
+# output
+athena-pg-cluster-1     1/1     Running   0          24d
+athena-pg-cluster-2     1/1     Running   0          24d
+athena-pg-cluster-3     1/1     Running   0          24d
 ```
 
 * The 3 services 
 
 ```sh
 kubectl get svc -n ibu
+# output
+athena-pg-cluster-r       ClusterIP      10.xx.xx.xx    5432/TCP         24d
+athena-pg-cluster-ro      ClusterIP      10.xx.xx.xx   5432/TCP         24d
+athena-pg-cluster-rw      ClusterIP      10.xx.xx.xx   5432/TCP         24d
 ```
 
 * Get a deeper review of the cluster deployment:
@@ -137,18 +143,18 @@ The Database servers are exposed only internally within the Kubernetes cluster. 
 
 A helm chart is defined in the `ibu-data-mgr` folder. This microservice is a backend and should not be exposed to the internet, so it is also deployed with ClusterIP service.
 
-To access the Postgresql cluster in the same namespace it needs the admin user name, its password and the jdbc connection URL. Those were defined during the Postgresql cluster deployment. The helm chart is under ibu-data-mgr folder and is a standard chart. The deployment has environment variables defined to use the postgresql secrets.
+To access the Postgresql cluster, in the same namespace, application needs the admin user name, its password and the jdbc connection URL. Those were defined during the Postgresql cluster deployment. The deployment has environment variables defined to use the postgresql secrets.
 
 To deploy do the following command:
 
 ```sh
 # First time to deploy
 make  deploy_data_mgr
-# Any changes to the values.yaml or deployment.yaml can be propagated to the running pod via
+# Any changes to the values.yaml or deployment.yaml within the helm char folder can be propagated to the running pod via:
 make upgrade_data_mgr
 ```
 
-It should display a note explaining how to quickly test the access to the service using port forwarding.
+It should display a note explaining how to quickly test the access to the service using kubectl port forwarding command.
 
 ```sh
 export POD_NAME=$(kubectl get pods --namespace ibu -l "app.kubernetes.io/name=ibu-data-mgr,app.kubernetes.io/instance=ibu-data-mgr" -o jsonpath="{.items[0].metadata.name}")
@@ -158,7 +164,7 @@ kubectl --namespace ibu port-forward $POD_NAME 8080:$CONTAINER_PORT
 
 ### Troubleshooting
 
-If the pod is in state `CreateContainerConfigError` use the pod description to get the error: ` kubectl describe pod ibu-data-mgr`. 
+If the pod is in state `CreateContainerConfigError`, use the pod description to get the error log: ` kubectl describe pod ibu-data-mgr`. 
 
 ## Deploy IBU backend
 
@@ -179,10 +185,20 @@ kubectl exec -ti ibu-backend-8574d75f49-bcg24 -- env
 ```
 
 ```sh
-export POD_NAME=$(kubectl get pods --namespace ibu -l "app.kubernetes.io/name=ibu-data-mgr,app.kubernetes.io/instance=ibu-data-mgr" -o jsonpath="{.items[0].metadata.name}")
+export POD_NAME=$(kubectl get pods --namespace ibu -l "app.kubernetes.io/name=ibu-backend,app.kubernetes.io/instance=ibu-backend" -o jsonpath="{.items[0].metadata.name}")
 export CONTAINER_PORT=$(kubectl get pod --namespace ibu $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
 kubectl --namespace ibu port-forward $POD_NAME 8000:$CONTAINER_PORT
 ```
+
+The access to the API of the backend: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs), verify the access to the prompts, agents, and tools using a second terminal or using a Web Browser.
+
+```sh
+curl -X 'GET'  'http://127.0.0.1:8000/api/v1/a/prompts/' -H 'accept: application/json'
+# 
+curl -X 'GET'  'http://127.0.0.1:8000/api/v1/a/agents/' -H 'accept: application/json'
+```
+
+Stop the tunneling using ctrl-C
 
 ## Deploy OWL Frontend 
 
@@ -203,3 +219,25 @@ export CONTAINER_PORT=$(kubectl get pod --namespace ibu $POD_NAME -o jsonpath="{
 kubectl --namespace ibu port-forward $POD_NAME 3000:$CONTAINER_PORT
 ```
 
+## Deploying ODM dev mode
+
+The instructions are in this IBM's repository: [IBM-ODM-Kubernetes](https://github.com/DecisionsDev/odm-docker-kubernetes), which can be summarized as:
+
+* Add IBM Help chars repository
+
+```sh
+helm repo add ibmcharts https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm
+helm repo update
+```
+
+* Check your access to the ODM chart
+
+```sh
+helm search repo ibm-odm-prod
+```
+
+* Use the make target to deploy ODM
+
+```sh
+make deploy_odm_dev
+```

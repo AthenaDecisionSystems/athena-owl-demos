@@ -28,12 +28,15 @@ AGENT_REF="ibu_agent"
 if __name__ == "__main__":
     print("---> Welcome to query the agent tool")
     theQuery = process_args(sys.argv[1:])
+    print(theQuery)
     data='{ "locale": "en",\
                   "query": "' + theQuery + '", \
                   "chat_history": [],\
-                  "agent_id": "' + AGENT_REF + '",  \
+                  "agent_id": "ibu_agent",  \
                   "user_id" : "remote_test", \
-                  "thread_id" : "3" \
+                  "callWithVectorStore": false, \
+                  "callWithDecisionService": true, \
+                  "thread_id" : "40" 
               }'
     print(data)
     rep = requests.post(IBU_BASE_URL + "/c/generic_chat", data=data, headers = {"Content-Type": "application/json"}, timeout = 10).content.decode()
