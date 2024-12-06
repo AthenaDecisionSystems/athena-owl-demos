@@ -1,20 +1,20 @@
 services:
   # THE BACKEND
-  # ibu-backend:
-  #   hostname: ibu-backend
-  #   image: athenadecisionsystems/athena-owl-backend:1.0.0
-  #   #pull_policy: always
-  #   container_name: ibu-backend
-  #   ports:
-  #     - 8002:8000
-  #   environment:
-  #     CONFIG_FILE: /app/config/config.yaml
-  #   env_file:
-  #     - ../../.env                                # path to the file containing the API keys of your various providers
-  #   volumes:
-  #     - ../../ibu_backend/src/config:/app/config
-  #     - ./data/file_content:/app/file_content
-  #     - ../../ibu_backend/src/ibu:/app/ibu
+  ibu-backend:
+    hostname: ibu-backend
+    image: athenadecisionsystems/athena-owl-backend:1.0.0
+    #pull_policy: always
+    container_name: ibu-backend
+    ports:
+      - 8002:8000
+    environment:
+      CONFIG_FILE: /app/config/config.yaml
+    env_file:
+      - ../../.env                                # path to the file containing the API keys of your various providers
+    volumes:
+      - ../../ibu_backend/src/config:/app/config
+      - ./data/file_content:/app/file_content
+      - ../../ibu_backend/src/ibu:/app/ibu
 
   # Out-of-the-box FRONTEND WEBAPP
   owl-frontend:
