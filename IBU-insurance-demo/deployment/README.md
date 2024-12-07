@@ -2,7 +2,7 @@
 
 ## Running locally using docker
 
-From deployment/local folder use docker compose.
+From `deployment/local` folder use docker compose.
 
 ```sh
 start-demo.sh
@@ -13,26 +13,6 @@ The URL of the frontend is [http://localhost:3000/](http://localhost:3000/), the
 To stop everything
 
 ```
-docker compose down
-```
+docker compose -f docker-compose-dev.yaml down
+``` 
 
-## Running local using Minikube and helm charts
-
-This is to validate the deployment and helm charts before deploying to the cloud:
-
-* Start minikube 
-
-```sh
-minikube start  --cpus 3
-# list addons
-minikube addons list 
-# Enable ingress if not already enabled
-minikube addons enable ingress
-# and image registry
-minikube addons enable registry -
-```
-
-* Move images from local docker to minikube
-
-```
-```

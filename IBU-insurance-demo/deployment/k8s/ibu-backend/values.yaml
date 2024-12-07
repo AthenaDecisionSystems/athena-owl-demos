@@ -111,6 +111,9 @@ volumes:
   - name: app-config-vol
     configMap:
       name: ibu-config-cm
+  - name: rule-nba-vol
+    configMap:
+      name: ibu-rule-nba-cm
 # - name: foo
 #   secret:
 #     secretName: mysecret
@@ -120,6 +123,8 @@ volumes:
 volumeMounts:
   - name: app-config-vol
     mountPath: /app/ibu/config
+  - name: rule-nba-vol
+    mountPath: /app/decisions
 
 
 nodeSelector: {}

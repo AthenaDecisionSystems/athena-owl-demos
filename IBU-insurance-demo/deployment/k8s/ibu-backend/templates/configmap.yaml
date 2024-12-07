@@ -24,5 +24,6 @@ data:
     app_insurance_backend_url: http://ibu-data-mgr.ibu:8080/repository
     owl_agent_decision_service_fct_name: callDecisionService
     owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory
+  
 
 
