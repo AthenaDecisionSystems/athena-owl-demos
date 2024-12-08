@@ -71,6 +71,9 @@ connect_to_data_mgr:
 	CONTAINER_PORT=$$(kubectl get pod --namespace $(DEV_NS) $$POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}"); \
 	kubectl --namespace $(DEV_NS) port-forward $$POD_NAME 8080:$$CONTAINER_PORT
 
+delete_data_mgr:
+	@helm delete $(IBU_DATAMGR) -n $(DEV_NS)
+
 # ------------------------ IBU / Owl backend ----------------------------
 deploy_ibu_backend:
 	@helm install $(IBU_BACKEND) $(IBU_BACKEND) -n $(DEV_NS)
@@ -92,6 +95,9 @@ deploy_owl_frontend:
 
 upgrade_owl_frontend:
 	@helm upgrade $(OWL_FRONTEND) $(OWL_FRONTEND)  -n $(DEV_NS)
+
+delete_owl_frontend:
+	@helm delete $(OWL_FRONTEND) -n $(DEV_NS)
 
 connect_to_frontend:
 	POD_NAME=$$(kubectl get pods --namespace $(DEV_NS) -l "app.kubernetes.io/name=owl-frontend,app.kubernetes.io/instance=owl-frontend" -o jsonpath="{.items[0].metadata.name}"); \

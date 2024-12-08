@@ -275,7 +275,7 @@ make odm_user_pwd
 ```
 
 * Upload the ruleapp from deployment/k8s/RuleApp-archive
-* Add the resources for the xom jar file (datamgt/code/xom-insurance-pc-claims/target/xom-insurance-pc-claims-1.0.0-SNAPSHOT.jar) and attach the resource to the `ComplaintHandling` library
+* Add the resources for the xom jar file (datamgt/code/xom-insurance-pc-claims/target/xom-insurance-pc-claims-1.0.0-SNAPSHOT.jar), the xom-utilities from  deployment/k8s/RuleApp-archive folder and attach the resources to the `ComplaintHandling` library
 
 ## Exposing the Owl Frontend to the internet
 
@@ -285,4 +285,55 @@ To read more about this kind of routing [see this article](https://istio.io/late
 
 The system administrator shared the following important information:
 
-* 
+* host dns name is `host: ibu.athena-demo.decisionbrain.cloud` , the  cluster name: `cluster: athena-demo`
+* The ingress parameters used are: 
+
+```
+ingress:
+  default:
+    gatewayName: istio-system/athena-demo-decisionbrain-cloud-gateway
+    hostBase: '{{ tpl .Values.global.host $ }}'
+    kind: VirtualService
+    label: dbos
+```
+
+To expose the frontend to internet , the current approach is to use a VirtualService like:
+
+```yaml
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    helm.sh/chart: owl-frontend-1.0.2
+    app.kubernetes.io/name: owl-frontend
+    app.kubernetes.io/instance: owl-frontend
+    app.kubernetes.io/version: "1.0.2"
+    app.kubernetes.io/managed-by: Helm
+  name:  owl-frontend
+spec:
+  gateways:
+    - istio-system/athena-demo-decisionbrain-cloud-gateway
+  hosts:
+    - owl-frontend-ibu.athena-demo.decisionbrain.cloud
+  http:
+    - route:
+        - destination:
+            host: owl-frontend
+            port:
+              number: 3000
+```
+
+which will get the following DNS: [owl-frontend-ibu.athena-demo.decisionbrain.cloud](https://owl-frontend-ibu.athena-demo.decisionbrain.cloud)
+
+The template is in owl-frontend/templates/virtualService.yaml
+
+* Validate the route
+
+```sh
+k get virtualservices.networking.istio.io 
+```
+
+
+## To do in the future
+
+* [ ] Package a parent helm chart with global values with the other charts being children.

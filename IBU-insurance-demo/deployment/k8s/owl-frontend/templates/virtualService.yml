@@ -1,0 +1,31 @@
+{{- $host := printf "%s-%s" "owl-frontend" .Values.global.hostBase -}}
+
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    {{- include "owl-frontend.labels" . | nindent 4 }}
+  name:  {{ include "owl-frontend.fullname" . }}
+spec:
+  gateways:
+    - {{ .Values.global.gatewayName }}
+  hosts:
+    - {{ $host }}
+  http:
+    - name: "view-page"
+      route:
+        - destination:
+            host: {{ include "owl-frontend.fullname" . }}
+            port:
+              number: {{ .Values.service.port }}
+    - name: "apis"
+      match:
+      - uri:
+          prefix: "/api/v1" 
+      route:
+        - destination:
+            host: {{ include "owl-frontend.fullname" . }}
+            port:
+              number: {{ .Values.service.port }}
+---
+---
