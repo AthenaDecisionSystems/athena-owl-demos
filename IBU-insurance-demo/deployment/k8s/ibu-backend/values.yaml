@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images. one of IfNotPresent, Never, Always
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.0"
+  tag: "1.0.1"
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -111,6 +111,9 @@ volumes:
   - name: app-config-vol
     configMap:
       name: ibu-config-cm
+  - name: rule-nba-vol
+    configMap:
+      name: ibu-rule-nba-cm
 # - name: foo
 #   secret:
 #     secretName: mysecret
@@ -120,6 +123,8 @@ volumes:
 volumeMounts:
   - name: app-config-vol
     mountPath: /app/ibu/config
+  - name: rule-nba-vol
+    mountPath: /app/decisions
 
 
 nodeSelector: {}

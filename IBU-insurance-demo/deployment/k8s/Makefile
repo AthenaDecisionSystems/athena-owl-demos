@@ -5,14 +5,10 @@ IBU_BACKEND ?= ibu-backend
 OWL_FRONTEND ?= owl-frontend
 IBU_DATAMGR ?= ibu-data-mgr
 IBU_DB ?= ibu-db-postgresql
-# -------------------------------------------------------
-# Entry points
-# -------------------------------------------------------
-prepare: create_ns create_secret_from_env deploy_postgres_operator deploy_postgresql deploy_keycloak
 
-deploy_all: prepare  deploy_data_mgr
-
-
+# ------------------------
+# Reusable functions
+# -----------------------
 ensure_ns = \
 	@kubectl get ns $1 >/dev/null 2>&1; \
 	if [ $$? -ne 0 ]; then \
@@ -21,8 +17,33 @@ ensure_ns = \
 			echo "$1 exists";\
 	fi
 
+# -------------------------------------------------------
+# Entry points for aggregated targets
+# -------------------------------------------------------
+prepare: create_ns create_secret_from_env deploy_postgres_operator deploy_postgresql 
+
+deploy_all: prepare  deploy_data_mgr deploy_ibu_backend deploy_odm_dev deploy_owl_frontend
+
+# ------------------
+# one time settings
+# ------------------
+
 create_ns:
 	$(call ensure_ns, $(DEV_NC))
+
+create_secret_from_env:
+	@kubectl create secret generic ibu-dotenv --from-env-file=../local/.env -n $(DEV_NS)
+
+clean:
+	@helm delete $(IBU_DATAMGR)
+	@helm delete $(IBU_DB)
+	@helm delete $(IBU_BACKEND)
+	@helm delete $(OWL_FRONTEND)
+	@helm delete ibu-odm-dev
+	# -- add undeploy postgres ?
+
+set_k8s_context:
+	@kubectl config  --kubeconfig=$HOME/.kube/config  use-context athena-demo
 
 # ----------------------------- POSTGRESQL -------------
 deploy_postgres_operator:
@@ -36,10 +57,8 @@ deploy_postgresql:
 get_postgresql_pwd:
 	@kubectl get secret --namespace  $(DEV_NS) $(IBU_DB) -o jsonpath="{.data.postgres-password}" | base64 -d 
 
-# ------------------------------ KeyCloak -------------------------
-deploy_keycloak:
-	@kubectl create -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml
 
+# Application specifics
 # ------------------------------ DataManager microservice -------------------------
 deploy_data_mgr:
 	@helm install $(IBU_DATAMGR) $(IBU_DATAMGR) -n $(DEV_NS)
@@ -47,15 +66,28 @@ deploy_data_mgr:
 upgrade_data_mgr:
 	@helm upgrade $(IBU_DATAMGR) $(IBU_DATAMGR)  -n $(DEV_NS)
 
-# ------------------------ IBU / Owl backend ----------------------------
-create_secret_from_env:
-	@kubectl create secret generic ibu-dotenv --from-env-file=../local/.env -n $(DEV_NS)
+connect_to_data_mgr:
+	@POD_NAME=$$(kubectl get pods --namespace $(DEV_NS) -l "app.kubernetes.io/name=ibu-data-mgr,app.kubernetes.io/instance=ibu-data-mgr" -o jsonpath="{.items[0].metadata.name}"); \
+	CONTAINER_PORT=$$(kubectl get pod --namespace $(DEV_NS) $$POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}"); \
+	kubectl --namespace $(DEV_NS) port-forward $$POD_NAME 8080:$$CONTAINER_PORT
 
+delete_data_mgr:
+	@helm delete $(IBU_DATAMGR) -n $(DEV_NS)
+
+# ------------------------ IBU / Owl backend ----------------------------
 deploy_ibu_backend:
 	@helm install $(IBU_BACKEND) $(IBU_BACKEND) -n $(DEV_NS)
 
 upgrade_ibu_backend:
 	@helm upgrade $(IBU_BACKEND) $(IBU_BACKEND)  -n $(DEV_NS)
+
+delete_ibu_backend:
+	@helm delete $(IBU_BACKEND) -n $(DEV_NS)
+
+connect_to_backend:
+	@POD_NAME=$$(kubectl get pods --namespace $(DEV_NS) -l "app.kubernetes.io/name=ibu-backend,app.kubernetes.io/instance=ibu-backend" -o jsonpath="{.items[0].metadata.name}"); \
+	CONTAINER_PORT=$$(kubectl get pod --namespace $(DEV_NS) $$POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}"); \
+	kubectl --namespace $(DEV_NS) port-forward $$POD_NAME 8000:$$CONTAINER_PORT
 
 # ----------------------------------OWL FRONTEND ---------------------------------
 deploy_owl_frontend:
@@ -63,6 +95,15 @@ deploy_owl_frontend:
 
 upgrade_owl_frontend:
 	@helm upgrade $(OWL_FRONTEND) $(OWL_FRONTEND)  -n $(DEV_NS)
+
+delete_owl_frontend:
+	@helm delete $(OWL_FRONTEND) -n $(DEV_NS)
+
+connect_to_frontend:
+	POD_NAME=$$(kubectl get pods --namespace $(DEV_NS) -l "app.kubernetes.io/name=owl-frontend,app.kubernetes.io/instance=owl-frontend" -o jsonpath="{.items[0].metadata.name}"); \
+	echo $$POD_NAME; \
+	CONTAINER_PORT=$$(kubectl get pod --namespace $(DEV_NS) $$POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}");  echo $$CONTAINER_PORT;\
+	kubectl --namespace $(DEV_NS) port-forward $$POD_NAME 3000:$$CONTAINER_PORT
 
 # -------------------------- ODM --------------------------------------
 deploy_odm_dev:
@@ -73,10 +114,19 @@ info_odm_dev:
 	@helm get values ibu-odm-dev
 	@helm get hooks ibu-odm-dev
 
+# --- the following will not work as there is no authorization rules in the network policies define to get inbound traffic to the VPC, use next target
 where_is_odm:
 	@NODE_PORT=$$(kubectl get --namespace ibu -o jsonpath="{.spec.ports[0].nodePort}" services ibu-odm-dev-ibm-odm-dev); \
  	NODE_IP=$(kubectl get nodes --namespace ibu -o jsonpath="{.items[0].status.addresses[0].address}"); \
 	echo http://$$NODE_IP:$$NODE_PORT/res
+
+connect_to_odm:
+	@POD_NAME=$$(kubectl get pods --namespace ibu -l "app.kubernetes.io/name=ibm-odm-dev,app.kubernetes.io/instance=ibm-odm-dev" -o jsonpath="{.items[0].metadata.name}"); \
+	CONTAINER_PORT=$(kubectl get pod --namespace ibu $$POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}") \
+	kubectl --namespace  $(DEV_NS) port-forward $$POD_NAME 9060:$$CONTAINER_PORT
+
+odm_user_pwd:
+	kubectl get secret ibu-odm-dev-odm-secret -o jsonpath='{.data.users-password}' | base64 --decode
 
 list_odm_releases:
 	@helm repo list
@@ -84,15 +134,8 @@ list_odm_releases:
 	@helm search repo ibm-odm-prod -l
 
 
-clean:
-	@helm delete $(IBU_DATAMGR)
-	@helm delete $(IBU_DB)
-	@helm delete $(IBU_BACKEND)
-	@helm delete $(OWL_FRONTEND)
-	@helm delete ibu-odm-dev
 
-set_k8s_context:
-	@kubectl config  --kubeconfig=$HOME/.kube/config  use-context athena-demo
+
 
 
 # -------------------------- GET Some Addresses to validate deployment --------------------------------------
@@ -150,3 +193,8 @@ get_owl_front_address:
 		echo "Service external address: $$ADDRESS"; \
 		curl -X GET http://$$ADDRESS:3000/; \
 	fi
+
+
+# ------------------------------ KeyCloak -------------------------
+deploy_keycloak:
+	@kubectl create -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml

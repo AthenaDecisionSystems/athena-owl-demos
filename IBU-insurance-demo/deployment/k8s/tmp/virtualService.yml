@@ -1,0 +1,26 @@
+{{- if (eq .Values.default.kind "VirtualService") }}
+{{- $hostBase := tpl .Values.default.hostBase $ }}
+{{- $label := .Values.default.label }}
+{{- range $ingress := .Values.ingresses }}
+{{- $gatewayName := tpl ($ingress.gatewayName | default $.Values.default.gatewayName ) $ }}
+{{- $host := tpl (($ingress.hostName | default "") | default (printf "%s-%s" $ingress.serviceName $hostBase)) $ }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    app: {{ $label }}
+  name: {{ $ingress.serviceName }}
+spec:
+  gateways:
+    - {{ $gatewayName }}
+  hosts:
+    - {{ $host }}
+  http:
+    - route:
+        - destination:
+            host: {{ $ingress.serviceName }}
+            port:
+              number: {{ $ingress.servicePort }}
+---
+{{- end }}{{/*  {{- range $ingress := .Values.ingresses }}*/}}
+{{- end }}{{/*  {{- if (eq .Values.default.kind "VirtualService") }}*/}}

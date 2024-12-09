@@ -5,6 +5,7 @@ metadata:
 data:
   config.yaml: |
     logging_level: INFO
+    version: 1.0.1
     owl_env_path: /app/.env
     owl_glossary_path: /app/config/glossary.json
     owl_agents_path: /app/config/agents.yaml
@@ -13,15 +14,16 @@ data:
 
     owl_agent_content_collection_name: ibu_insurance
     owl_agent_content_file_path: /app/file_content
-    owl_agent_vs_path: /app/chromadb
+    owl_agent_vs_path: /app/vs_db
     owl_agent_vs_embedding_fct: OpenAIEmbeddings
     owl_agent_vs_class_name: langchain_chroma.Chroma
     owl_agent_llm_history_length: 5
     app_insurance_client_repository: ibu.itg.ds.insurance_client_repo_datamgr.InsuranceClientFromDataMgr
     app_insurance_claim_repository: ibu.itg.ds.insurance_claim_repo_datamgr.InsuranceClaimFromDataMgr
-    owl_best_action_ds_url: http://decisionsvc:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
+    owl_best_action_ds_url: http://ibu-odm-dev-ibm-odm-dev.ibu:9060/DecisionService/rest/v1/ComplaintHandling/1.0/nextBestAction/
     app_insurance_backend_url: http://ibu-data-mgr.ibu:8080/repository
     owl_agent_decision_service_fct_name: callDecisionService
     owl_agent_tool_factory_class:  ibu.llm.tools.client_tools.IbuInsuranceToolInstanceFactory
+  
 
 
