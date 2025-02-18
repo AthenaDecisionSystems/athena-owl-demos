@@ -6,6 +6,7 @@ owl_env_path: ../../.env
 
 owl_glossary_path: config/glossary.json
 owl_agents_path: config/agents.yaml
+llm_providers_path: config/llm_providers.yaml
 owl_tools_path: config/tools.yaml
 owl_prompts_path: config/prompts.yaml
 owl_prompts_key_name: openai_insurance_with_tool

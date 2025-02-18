@@ -1,6 +1,6 @@
 # Kubernetes Deployment for the demonstration
 
-This document centralizes materials to deploy OWL demonstrations and solutions to a Kubernetes platform. As target cluster we will use Scaleway cloud provider kubernetes services. As a first solution, we will use IBU Insurance demo.
+This document centralizes materials to deploy OWL demonstrations and solutions to a Kubernetes platform. As target cluster we use Scaleway cloud provider with kubernetes services. As a first solution, we will use IBU Insurance demo.
 
 The goal is to deploy all the components in one command:
 
@@ -176,7 +176,7 @@ A helm chart is defined in the `ibu-backend` folder. To deploy using make:
 
 ```sh
 make deploy_ibu_backend
-# Or if already deployed
+# Or if already deployed, be sure to push a new image to docker hub with a new tag and update the helm chart and value with the new tag value
 make upgrade_ibu_backend
 ```
 

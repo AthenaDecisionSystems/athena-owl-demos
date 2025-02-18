@@ -13,7 +13,7 @@ ibu_classify_query_watson_agent:
   name: "Classify query Watson Llama 3 Agent"
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   description: A default agent that uses LLM using WatsonX and Llama3
-  modelName: meta-llama/llama-3-70b-instruct
+  modelName: meta-llama/llama-3-3-70b-instruct
   modelClassName: langchain_ibm.WatsonxLLM
   prompt_ref: classify_query__llama_prompt
   temperature: 0
@@ -26,7 +26,7 @@ ibu_information_agent:
   description: OpenAI IBU agent with RAG and insurance tools without decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
-  modelName: gpt-4o-2024-08-06
+  modelName: gpt-4o-2024-11-20
   prompt_ref: ibu_rag_prompt
   temperature: 0
   top_k: 1
@@ -44,7 +44,7 @@ extract_info_to_decide:
   description: OpenAI agent to extract data from input query
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
-  modelName: gpt-4o-2024-08-06
+  modelName: gpt-4o-2024-11-20
   prompt_ref: extract_info_to_decide_prompt
   temperature: 0
   top_k: 1
@@ -58,7 +58,7 @@ ibu_complaint_agent:
   description: OpenAI IBU agent with RAG and insurance tools with decision service
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
-  modelName: gpt-4o-2024-08-06
+  modelName: gpt-4o-2024-11-20
   prompt_ref: openai_insurance_with_tool
   temperature: 0
   top_k: 1
@@ -77,7 +77,7 @@ ibu_complaint_agent2:
   description: OpenAI IBU agent with RAG and insurance tools
   runner_class_name: athena.llm.agents.agent_mgr.OwlAgentDefaultRunner
   modelClassName: langchain_openai.ChatOpenAI
-  modelName: gpt-4o-mini
+  modelName: gpt-4o-11-20
   prompt_ref: openai_insurance_with_tool
   temperature: 0
   top_k: 1

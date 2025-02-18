@@ -11,7 +11,7 @@ data:
     owl_agents_path: /app/config/agents.yaml
     owl_tools_path: /app/config/tools.yaml
     owl_prompts_path: /app/config/prompts.yaml
-
+    llm_providers_path: /app/athena/config/llm_providers.yaml
     owl_agent_content_collection_name: ibu_insurance
     owl_agent_content_file_path: /app/file_content
     owl_agent_vs_path: /app/vs_db
