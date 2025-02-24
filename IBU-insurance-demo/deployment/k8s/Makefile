@@ -43,7 +43,8 @@ clean:
 	# -- add undeploy postgres ?
 
 set_k8s_context:
-	@kubectl config  --kubeconfig=$HOME/.kube/config  use-context athena-demo
+	echo $(HOME); \
+	kubectl config  --kubeconfig=$(HOME)/.kube/config  use-context athena-demo
 
 # ----------------------------- POSTGRESQL -------------
 deploy_postgres_operator:

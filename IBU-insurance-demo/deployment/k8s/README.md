@@ -58,6 +58,12 @@ kubectl get  ns
 ```
 The `ibu` namespace is the one used for the demonstration.
 
+* If the solution is already deployed, verify the running pods:
+
+```sh
+kubectl get pods -n ibu
+```
+
 ## Postgres deployment
 
 For production deployment, it may be relevant to consider using a managed services to deploy Postgresql, like AWS RDS or [Scaleway managed database](https://www.scaleway.com/en/database/). In the current approach, we deploy Postgresql on k8s using an Operator. Operator automates the deployment and keeps it over time according to the specifications defined in the Customer Resource Definitions.
@@ -213,13 +219,33 @@ The API Keys to access the LLM used are defined in a secret named
 ## Deploy OWL Frontend 
 
 
-A helm chart is defined in the `owl-frontend` folder
+A helm chart is defined in the `owl-frontend` folder. For any new deployment it is important to change the tag while building the docker image, and push the new version on docker hub. Change the tag version in the chart.yaml and values.yaml. As an example for version 1.0.3
+
+* In the chart.yaml
+
+```yaml
+version: 1.0.3
+# ..
+appVersion: "1.0.3"
+```
+
+* In the values.yaml
+
+```yaml
+image:
+  repository: docker.io/athenadecisionsystems/athena-owl-frontend
+  tag: "1.0.3"
+```
+
+* Then use make to deploy the new helm release:
 
 ```sh
 make deploy_owl_frontend
 # Or if already deployed
 make upgrade_owl_frontend
 ```
+
+* Verify the owl-frontend pod is updated.
 
 * Get access to the front end using localhost and port-forward capability:
 
